@@ -76,5 +76,75 @@
         <createIndex indexName="idx_invite_id" tableName="invites">
             <column name="id"/>
         </createIndex>
+        <createTable tableName="pharma">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="primary_contact" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secondary_contact" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address1" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address2" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zip" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="landmark" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="DECIMAL(3, 5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="DECIMAL(3, 5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_radius" type="SMALLINT(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="working_hours" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="working_days" type="MEDIUMINT(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="license" type="MEDIUMBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verified" type="BOOL"/>
+            <column name="active" type="BOOL"/>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_contact_name" tableName="pharma">
+            <column name="contact_name"/>
+        </createIndex>
+        <createIndex indexName="idx_primary_contact" tableName="pharma">
+            <column name="primary_contact"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

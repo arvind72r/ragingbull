@@ -26,13 +26,20 @@ public class ValidationConstants {
     public static final String NAME_MSG_SIZE = "Name must be between "+ NAME_MIN +" and "+ NAME_MAX +" characters";
     public static final String NAME_MSG_EMPTY = "The name cannot be empty";
 
+    public static final int CONTACT_NAME_MIN = 3;
+    public static final int CONTACT_NAME_MAX = 128;
+    public static final String CONTACT_NAME_MSG_SIZE = "Contact name must be between "+ CONTACT_NAME_MIN +" and "+ CONTACT_NAME_MAX +" characters";
+    public static final String CONTACT_NAME_MSG_EMPTY = "The contact name cannot be empty";
+
+    public static final int LOCATION_NAME_MIN = 3;
+    public static final int LOCATION_NAME_MAX = 128;
+    public static final String LOCATION_NAME_MSG_SIZE = "Location must be between "+ CONTACT_NAME_MIN +" and "+ CONTACT_NAME_MAX +" characters";
+    public static final String LOCATION_NAME_MSG_EMPTY = "The location cannot be empty";
+
     public static final int PHONE_MIN = 1;
     public static final int PHONE_MAX = 15;
     public static final String PHONE_MSG_SIZE = "Mobile must be between "+ PHONE_MIN +" and "+ PHONE_MAX +" characters";
-
-    public static final int IMAGEURL_MIN = 1;
-    public static final int IMAGEURL_MAX = 80;
-    public static final String IMAGEURL_MSG_SIZE = "Image URL must be between "+ IMAGEURL_MIN +" and "+ IMAGEURL_MAX +" characters";
+    public static final String PHONE_MSG_EMPTY = "The mobile number cannot be empty";
 
     public static final int PIN_MIN= 3;
     public static final int PIN_MAX = 16;
@@ -49,26 +56,33 @@ public class ValidationConstants {
     public static final int CITY_MIN= 0;
     public static final int CITY_MAX = 40;
     public static final String CITY_MSG_SIZE = "City must be between "+CITY_MIN+" and "+CITY_MAX+" characters";
+    public static final String CITY_MSG_EMPTY = "The city name cannot be empty";
 
     public static final int STATE_MIN= 0;
     public static final int STATE_MAX = 2;
     public static final String STATE_MSG_SIZE = "State must be between "+STATE_MIN+" and "+STATE_MAX+" characters";
+    public static final String STATE_MSG_EMPTY = "The state name cannot be empty";
 
-    public static final int ZIP_MIN= 0;
-    public static final int ZIP_MAX = 16;
+    public static final int ZIP_MIN= 6;
+    public static final int ZIP_MAX = 6;
     public static final String ZIP_MSG_SIZE = "Zip must be between "+ZIP_MIN+" and "+ZIP_MAX+" characters";
+    public static final String ZIP_MSG_EMPTY = "Zip code cannot be empty";
 
     public static final int COUNTRY_MIN= 0;
     public static final int COUNTRY_MAX = 10;
     public static final String COUNTRY_MSG_SIZE = "Country must be between "+COUNTRY_MIN+" and "+COUNTRY_MAX+" characters";
+    public static final String COUNTRY_MSG_EMPTY = "Country name cannot be empty";
 
-    public static final int FEEDBACK_MAX = 300;
-    public static final int FEEDBACK_MIN = 1;
-    public static final String FEEDBACK_MSG_SIZE = "Feedback must be between "+FEEDBACK_MIN+" and "+FEEDBACK_MAX+" characters";
+    public static final int LANDMARK_MIN= 0;
+    public static final int LANDMARK_MAX = 128;
+    public static final String LANDMARK_MSG_SIZE = "Landmark must be between "+LANDMARK_MIN+" and "+LANDMARK_MAX+" characters";
+    public static final String LANDMARK_MSG_EMPTY = "Landmark cannot be empty";
 
-    public static final int FEEDBACK_ISGOOD_MAX = 16;
-    public static final int FEEDBACK_ISGOOD_MIN = 1;
-    public static final String FEEDBACK_ISGOOD_MSG_SIZE = "Feedback goodness must be between "+FEEDBACK_ISGOOD_MIN+" and "+FEEDBACK_ISGOOD_MAX+" characters";
+    public static final String DELIVERY_RADIUS_MSG_EMPTY = "Landmark cannot be empty";
+
+    public static final String WORKING_HOURS_MSG_EMPTY = "Landmark cannot be empty";
+
+    public static final String WORKING_DAYS_MSG_EMPTY = "Landmark cannot be empty";
 }
 
 
