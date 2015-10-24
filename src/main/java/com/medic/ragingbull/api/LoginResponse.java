@@ -6,24 +6,26 @@
 
 package com.medic.ragingbull.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 
 /**
  * Created by Vamshi Molleti
  */
-public class Session {
+public class LoginResponse {
 
+    @JsonProperty
     private String token;
+
+    @JsonProperty
     private String userEmail;
-    private String userId;
-    private DateTime createdAt;
+
+    @JsonProperty
     private DateTime expiry;
 
-    public Session(String token, String userEmail, String userId, DateTime createdAt, DateTime expiry) {
+    public LoginResponse(String token, String userEmail, DateTime expiry) {
         this.token = token;
         this.userEmail = userEmail;
-        this.userId = userId;
-        this.createdAt = createdAt;
         this.expiry = expiry;
     }
 
@@ -33,14 +35,6 @@ public class Session {
 
     public String getUserEmail() {
         return userEmail;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public DateTime getCreatedAt() {
-        return createdAt;
     }
 
     public DateTime getExpiry() {

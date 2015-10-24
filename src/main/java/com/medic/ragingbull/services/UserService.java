@@ -8,6 +8,7 @@ package com.medic.ragingbull.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.jdbi.dao.InviteDao;
 import com.medic.ragingbull.api.Invite;
@@ -17,9 +18,11 @@ import com.medic.ragingbull.jdbi.dao.UserDao;
 import com.medic.ragingbull.util.Time;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
+import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti
@@ -77,10 +80,9 @@ public class UserService {
         return Response.status(HttpStatus.FORBIDDEN_403).build();
     }
 
-    public Response getUserInvite(User user, String emailId) {
-        Invite invite = inviteDao.getInviteByEmail(user.getId());
-        // Check expiry of invite
-        return Response.ok(invite.getInviteId()).build();
+    public Response getUserInvite(String inviteId) {
+        Invite invite = inviteDao.getInviteById(inviteId);
+        return Response.ok(invite).build();
     }
 
     public User verifyUser(String email, String password) {
@@ -90,5 +92,22 @@ public class UserService {
             return user;
         }
         return null;
+    }
+
+    public Session generateSession(String username, String password) {
+        User user = userDao.getByEmail(username);
+        if (BCrypt.checkpw(password, user.getHash())) {
+            String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
+            DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
+            DateTime createdAt = new DateTime();
+            Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), expiry, createdAt);
+            return loggedInUserSession;
+        }
+        return null;
+    }
+
+    public Response getAllUserInvites(String userEmail) {
+        List<Invite> invite = inviteDao.getInviteByEmail(userEmail);
+        return Response.ok(invite).build();
     }
 }

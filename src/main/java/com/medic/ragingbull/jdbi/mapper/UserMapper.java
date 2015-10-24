@@ -27,6 +27,7 @@ public class UserMapper implements ResultSetMapper<User> {
                 r.getBoolean("verified"),
                 r.getBoolean("isNative"),
                 new DateTime(r.getTimestamp("created_at")),
-                new DateTime(r.getTimestamp("updated_at")));
+                new DateTime(r.getTimestamp("updated_at")),
+                r.getString("hash"));
     }
 }

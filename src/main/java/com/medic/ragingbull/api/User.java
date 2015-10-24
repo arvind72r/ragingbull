@@ -61,6 +61,9 @@ public class User {
     @JsonIgnore
     private DateTime createdAt;
 
+    @JsonIgnore
+    private String hash;
+
     public User() {
         // For Deserialization
     }
@@ -84,6 +87,17 @@ public class User {
         this.isNative = isNative;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
+    }
+
+    public User(String id, String name, String email, Boolean verified, Boolean isNative, DateTime updatedAt, DateTime createdAt, String hash) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.verified = verified;
+        this.isNative = isNative;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+        this.hash = hash;
     }
 
     @Override
@@ -171,5 +185,9 @@ public class User {
 
     public void setCreatedAt(DateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getHash() {
+        return hash;
     }
 }

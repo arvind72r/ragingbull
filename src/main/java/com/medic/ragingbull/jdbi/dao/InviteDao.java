@@ -15,6 +15,8 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
+import java.util.List;
+
 /**
  * Created by Vamshi Molleti
  */
@@ -30,5 +32,5 @@ public interface InviteDao {
     Invite getInviteById(@Bind("id") String id);
 
     @SqlQuery("SELECT * FROM invites where user_id = :user_id")
-    Invite getInviteByEmail(@Bind("user_id") String user_Id);
+    List<Invite> getInviteByEmail(@Bind("user_id") String user_Id);
 }

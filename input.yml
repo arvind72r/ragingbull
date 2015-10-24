@@ -13,7 +13,7 @@ database:
   password:
 
   # the JDBC URL
-  url: jdbc:mysql://localhost/nakedpenguin
+  url: jdbc:mysql://localhost/ragingbull
 
   # any properties specific to your JDBC driver:
   properties:
@@ -40,8 +40,8 @@ database:
   # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
   minIdleTime: 1 minute
 
-  # Logging settings.
-  logging:
+# Logging settings.
+logging:
 
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
   level: INFO

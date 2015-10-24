@@ -45,18 +45,21 @@ public class RagingBullModule extends AbstractModule {
         bind(UserDao.class).toInstance(database.onDemand(UserDao.class));
         bind(InviteDao.class).toInstance(database.onDemand(InviteDao.class));
         bind(SessionDao.class).toInstance(database.onDemand(SessionDao.class));
+        //bind(PharmacyDao.class).toInstance(database.onDemand(PharmacyDao.class));
 
         // Binding Services
         bind(UserService.class).asEagerSingleton();
         bind(AuthService.class).asEagerSingleton();
+        //bind(PharmacyService.class).asEagerSingleton();
 
         // Binding Resources
         bind(HelloRagingBull.class).asEagerSingleton();
         bind(RegistrationResource.class).asEagerSingleton();
-        bind(ConsultationResource.class).asEagerSingleton();
-        bind(OrderResource.class).asEagerSingleton();
-        bind(PharmacyResource.class).asEagerSingleton();
-        bind(PractitionerResource.class).asEagerSingleton();
+        bind(AuthResource.class).asEagerSingleton();
+        //bind(ConsultationResource.class).asEagerSingleton();
+        //bind(OrderResource.class).asEagerSingleton();
+        //bind(PharmacyResource.class).asEagerSingleton();
+        //bind(PractitionerResource.class).asEagerSingleton();
 
     }
 }

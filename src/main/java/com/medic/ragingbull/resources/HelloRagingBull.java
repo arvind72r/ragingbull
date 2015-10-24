@@ -8,6 +8,8 @@ package com.medic.ragingbull.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
+import com.medic.ragingbull.services.UserService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,6 +24,13 @@ import javax.ws.rs.core.Response;
 @Path("/hello")
 @Produces(MediaType.APPLICATION_JSON)
 public class HelloRagingBull {
+
+    private UserService userService;
+
+    @Inject
+    public HelloRagingBull(UserService userService) {
+        this.userService = userService;
+    }
 
     @GET
     @Timed

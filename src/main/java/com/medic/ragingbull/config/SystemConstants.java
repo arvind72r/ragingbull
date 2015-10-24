@@ -12,7 +12,7 @@ import org.joda.time.Days;
 /**
  * Created by Vamshi Molleti
  */
-public interface SystemContants {
+public interface SystemConstants {
 
     DateTime EXPIRY_TIME = new DateTime().plus(Days.ONE);
 
@@ -20,5 +20,7 @@ public interface SystemContants {
     Integer DEFAULT_WORKING_HOURS = 12;
     Integer DEFAULT_WORKING_DAYS = 7;
 
+    // COOKIE NAME
+    String SESSION_COOKIE_NAME = "Auth-Token";
 
 }
