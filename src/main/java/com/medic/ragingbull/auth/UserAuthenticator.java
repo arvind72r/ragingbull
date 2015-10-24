@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.services.UserService;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
@@ -34,7 +35,12 @@ public class UserAuthenticator implements Authenticator<BasicCredentials, Sessio
 
     @Override
     public Optional<Session> authenticate(BasicCredentials userCredentials) throws AuthenticationException {
-        Session loggedInUserSession = userService.generateSession(userCredentials.getUsername(), userCredentials.getPassword());
+        Session loggedInUserSession = null;
+        try {
+            loggedInUserSession = userService.generateSession(userCredentials.getUsername(), userCredentials.getPassword());
+        } catch (StorageException e) {
+            throw  new AuthenticationException("Error authenticating user. Please try again");
+        }
         return Optional.fromNullable(loggedInUserSession);
     }
 }

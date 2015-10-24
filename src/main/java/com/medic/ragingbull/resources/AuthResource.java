@@ -41,7 +41,6 @@ public class AuthResource {
     @Path("/login")
     @POST
     public Response login(@Auth Session session) throws StorageException {
-        authService.loginUser(session);
         LoginResponse response = new LoginResponse(session.getToken(), session.getUserEmail(), session.getExpiry());
         return Response.ok().entity(response).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
     }

@@ -31,7 +31,10 @@ public interface SessionDao {
     public Session getSession(@Bind("token") String token);
 
     @SqlQuery("SELECT * FROM SESSION where user_id = :user_id")
-    public List<Session> getSessionsPerUser(@Bind("user_id") String user_id);
+    public List<Session> getSessionsPerUserId(@Bind("user_id") String user_id);
+
+    @SqlQuery("SELECT * FROM SESSION where active = true and user_email = :user_email")
+    public List<Session> getActiveSessionsPerUserEmail(@Bind("user_email") String userEmail);
 
     @SqlUpdate("UPDATE SESSION set active = false where token = :token")
     public int logoutUser(@Bind("token")  String token);

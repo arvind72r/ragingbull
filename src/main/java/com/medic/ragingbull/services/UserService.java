@@ -10,16 +10,21 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.exception.ResourceCreationException;
+import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.InviteDao;
 import com.medic.ragingbull.api.Invite;
 import com.medic.ragingbull.api.RegistrationResponse;
 import com.medic.ragingbull.config.Ids;
+import com.medic.ragingbull.jdbi.dao.SessionDao;
 import com.medic.ragingbull.jdbi.dao.UserDao;
 import com.medic.ragingbull.util.Time;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -30,13 +35,17 @@ import java.util.List;
 @Singleton
 public class UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
     private final UserDao userDao;
     private final InviteDao inviteDao;
+    private final SessionDao sessionDao;
 
     @Inject
-    public UserService(UserDao userDao, InviteDao invitesDao) {
+    public UserService(UserDao userDao, InviteDao invitesDao, SessionDao sessionDao) {
         this.userDao = userDao;
         this.inviteDao = invitesDao;
+        this.sessionDao = sessionDao;
     }
     public RegistrationResponse register(final User user) {
         // 1. Create a user
@@ -94,14 +103,33 @@ public class UserService {
         return null;
     }
 
-    public Session generateSession(String username, String password) {
-        User user = userDao.getByEmail(username);
-        if (user != null && BCrypt.checkpw(password, user.getHash())) {
-            String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
-            DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
-            DateTime createdAt = new DateTime();
-            Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), expiry, createdAt);
-            return loggedInUserSession;
+    public Session generateSession(String username, String password) throws StorageException {
+        try {
+            User user = userDao.getByEmail(username);
+            if (user != null && BCrypt.checkpw(password, user.getHash())) {
+                List<Session> sessions = sessionDao.getActiveSessionsPerUserEmail(username);
+
+                if (sessions.size() > 0) {
+                    return sessions.get(0);
+                }
+
+                String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
+                DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
+                DateTime createdAt = new DateTime();
+                Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), expiry, createdAt);
+
+                int sessionCreated = sessionDao.createSession(sessionId, user.getId(), user.getEmail(), expiry.getMillis());
+                if (sessionCreated == 0) {
+                    LOGGER.error(String.format("Error creating session for user %s.", user.getEmail()));
+                    throw new ResourceCreationException("Error creating session for the user. Please try again");
+                }
+
+                return loggedInUserSession;
+            }
+        } catch(Exception e) {
+            LOGGER.error(String.format("Error creating session for user %s. Exception %s", username, e));
+            throw new StorageException(e.getMessage());
+
         }
         return null;
     }

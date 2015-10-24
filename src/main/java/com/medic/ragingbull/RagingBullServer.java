@@ -11,7 +11,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.auth.SessionAuthFactory;
-import com.medic.ragingbull.auth.SessionAuthProvider;
 import com.medic.ragingbull.auth.SessionAuthenticator;
 import com.medic.ragingbull.config.DbMigrateOnStartupBundle;
 import com.medic.ragingbull.resources.*;
