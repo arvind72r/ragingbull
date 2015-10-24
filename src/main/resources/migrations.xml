@@ -15,7 +15,12 @@
             <column name="user_id" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="data" type="TEXT"/>
+            <column name="user_email" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOL">
+                <constraints nullable="false"/>
+            </column>
             <column name="expiry" type="DATETIME">
                 <constraints nullable="false"/>
             </column>

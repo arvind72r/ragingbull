@@ -3,17 +3,22 @@
 dbMigrateOnStartup: true
 
 database:
+
   # the name of your JDBC driver
-  driverClass: com.mysql.jdbc.Driver
+  driverClass: org.h2.Driver
+  user: sa
+  url: jdbc:h2:./ragingbull_test
+
+  # MySQL JDBC driver, username, and url
+  #driverClass: com.mysql.jdbc.Driver
+  #user: root
+  #url: jdbc:mysql://localhost/ragingbull
 
   # the username
   user: root
 
   # the password
   password:
-
-  # the JDBC URL
-  url: jdbc:mysql://localhost/ragingbull
 
   # any properties specific to your JDBC driver:
   properties:

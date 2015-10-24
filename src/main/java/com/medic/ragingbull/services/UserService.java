@@ -96,7 +96,7 @@ public class UserService {
 
     public Session generateSession(String username, String password) {
         User user = userDao.getByEmail(username);
-        if (BCrypt.checkpw(password, user.getHash())) {
+        if (user != null && BCrypt.checkpw(password, user.getHash())) {
             String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
             DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
             DateTime createdAt = new DateTime();

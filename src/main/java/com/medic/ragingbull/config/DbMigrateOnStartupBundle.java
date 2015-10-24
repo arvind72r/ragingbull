@@ -57,7 +57,7 @@ public class DbMigrateOnStartupBundle implements ConfiguredBundle<RagingBullConf
                 liquibase.update(contexts);
             } else {
                 // If not migrating the db on startup, then fail if not all change sets have been applied
-                final List<ChangeSet> changeSetsToRun = liquibase.listUnrunChangeSets(contexts);
+                final List<ChangeSet> changeSetsToRun = liquibase.listUnrunChangeSets(contexts,null);
                 final ArrayList<ChangeSet> changeSetsToRunExcludingAlwaysRun = new ArrayList<>();
                 for (final ChangeSet changeSet : changeSetsToRun) {
                     // Liquibase.listUnrunChangeSets returns all change sets to run instead of just new change sets.

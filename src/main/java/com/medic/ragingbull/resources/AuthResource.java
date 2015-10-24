@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import com.medic.ragingbull.api.LoginResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.config.SystemConstants;
+import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.services.AuthService;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
@@ -39,9 +40,16 @@ public class AuthResource {
 
     @Path("/login")
     @POST
-    public Response login(@Auth Session session) {
-        authService.saveSession(session);
+    public Response login(@Auth Session session) throws StorageException {
+        authService.loginUser(session);
         LoginResponse response = new LoginResponse(session.getToken(), session.getUserEmail(), session.getExpiry());
         return Response.ok().entity(response).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
+    }
+
+    @Path("/logout")
+    @POST
+    public Response logout(@Auth Session session) throws StorageException {
+        authService.logoutUser(session);
+        return Response.ok().build();
     }
 }

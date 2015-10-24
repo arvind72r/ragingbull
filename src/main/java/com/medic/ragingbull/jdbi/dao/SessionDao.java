@@ -24,12 +24,15 @@ import java.util.List;
 @RegisterMapper(SessionMapper.class)
 public interface SessionDao {
 
-    @SqlUpdate("INSERT INTO SESSION (token, user_id, data, expiry) VALUES (:token, :user_id, :data, :expiry)")
-    public int createSession(@Bind("token") String token, @Bind("user_id")  String userId, @Bind("data") String data, @BindTimeStamp("expiry") DateTime expiry);
+    @SqlUpdate("INSERT INTO SESSION (token, user_id, user_email, active, expiry) VALUES (:token, :user_id, :email, true, :expiry)")
+    public int createSession(@Bind("token") String token, @Bind("user_id")  String userId, @Bind("email") String email, @BindTimeStamp("expiry") long expiry);
 
     @SqlQuery("SELECT * FROM SESSION where token = :token")
     public Session getSession(@Bind("token") String token);
 
     @SqlQuery("SELECT * FROM SESSION where user_id = :user_id")
     public List<Session> getSessionsPerUser(@Bind("user_id") String user_id);
+
+    @SqlUpdate("UPDATE SESSION set active = false where token = :token")
+    public int logoutUser(@Bind("token")  String token);
 }
