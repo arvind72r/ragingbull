@@ -31,7 +31,7 @@ public interface UserDao {
     @SqlQuery("SELECT * FROM user where email = :email")
     User getByEmail(@Bind("email") String email);
 
-    @SqlUpdate("UPDATE user set verified = 0 where id = :id")
+    @SqlUpdate("UPDATE user set verified = true where id = :id")
     int approveUser(@Bind("id") String id);
 
     @SqlQuery("SELECT * FROM user where name = :name")

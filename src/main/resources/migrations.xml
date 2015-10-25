@@ -154,5 +154,51 @@
         <createIndex indexName="idx_primary_contact" tableName="pharma">
             <column name="primary_contact"/>
         </createIndex>
+        <createTable tableName="practitioner">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="primary_contact" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secondary_contact" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="primary_id" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secondary_id" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registeration_id" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registeration_authority" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="license" type="MEDIUMBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verified" type="BOOL"/>
+            <column name="active" type="BOOL"/>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_id" tableName="practitioner">
+            <column name="id"/>
+        </createIndex>
+        <createIndex indexName="idx_user_id" tableName="practitioner">
+            <column name="user_id"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

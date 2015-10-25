@@ -55,4 +55,12 @@ public class RegistrationResource {
         return response;
     }
 
+    @POST
+    @Path("/{id}/approve")
+    public Response approveRegisteredUser(@PathParam("id") final String registrationId) {
+        Response response = userService.approveInvite(registrationId);
+        return response;
+    }
+
+
 }

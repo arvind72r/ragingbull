@@ -83,6 +83,17 @@ public class ValidationConstants {
     public static final String WORKING_HOURS_MSG_EMPTY = "Landmark cannot be empty";
 
     public static final String WORKING_DAYS_MSG_EMPTY = "Landmark cannot be empty";
+
+    public static final int DESCRIPTION_MIN = 3;
+    public static final int DESCRIPTION_MAX = 500;
+    public static final String DESCRIPTION_MSG_SIZE = "Description must be between "+ DESCRIPTION_MIN +" and "+ DESCRIPTION_MAX +" characters";
+    public static final String DESCRIPTION_MSG_EMPTY = "The description cannot be empty";
+
+    public static final int ID_MIN = 3;
+    public static final int ID_MAX = 128;
+    public static final String ID_MSG_SIZE = "Identification must be between "+ ID_MIN +" and "+ ID_MAX +" characters";
+    public static final String ID_MSG_EMPTY = "The identification cannot be empty";
+
 }
 
 

@@ -7,8 +7,13 @@
 package com.medic.ragingbull.resources;
 
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
 import com.medic.ragingbull.api.Practitioner;
 import com.medic.ragingbull.api.PractitionerResponse;
+import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.exception.StorageException;
+import com.medic.ragingbull.services.PractitionerService;
+import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +29,13 @@ public class PractitionerResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PractitionerResource.class);
 
+    private PractitionerService practitionerService;
+
+    @Inject
+    public PractitionerResource(PractitionerService practitionerService) {
+        this.practitionerService = practitionerService;
+    }
+
     @GET
     public PractitionerResponse searchPractitioner(@QueryParam("area") Optional<String> area, @QueryParam("type") Optional<String> type) {
         return null;
@@ -31,13 +43,15 @@ public class PractitionerResource {
 
     @GET
     @Path("/{id}")
-    public PractitionerResponse getPractitioner(@PathParam("id") Optional<String> id) {
-        return null;
+    public PractitionerResponse getPractitioner(@Auth Session session, @PathParam("id") String practitionerId) throws StorageException {
+        PractitionerResponse practitionerResponse = practitionerService.getPractitioner(session, practitionerId);
+        return practitionerResponse;
     }
 
     @POST
-    public PractitionerResponse createPractitioner(Practitioner practitioner) {
-        return null;
+    public PractitionerResponse createPractitioner(@Auth Session session, Practitioner practitioner) throws StorageException {
+        PractitionerResponse practitionerResponse = practitionerService.createPractitioner(session, practitioner);
+        return practitionerResponse;
     }
 
     @PUT
