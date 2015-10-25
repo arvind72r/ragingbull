@@ -135,3 +135,7 @@ Install MySQL Workbench 6.3
 Notes:
 
 - [https://dev.mysql.com/doc/workbench/en/wb-installing-mac.html](https://dev.mysql.com/doc/workbench/en/wb-installing-mac.html)
+
+### Architecture
+
+![Screen Shot 2015-10-25 at 7.32.06 pm.png](https://bitbucket.org/repo/nn8X8z/images/2661630430-Screen%20Shot%202015-10-25%20at%207.32.06%20pm.png)
