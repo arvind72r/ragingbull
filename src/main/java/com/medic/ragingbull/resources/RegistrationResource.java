@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import com.medic.ragingbull.api.RegistrationResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.services.UserService;
 import io.dropwizard.auth.Auth;
 import jdk.nashorn.internal.runtime.options.Option;
@@ -49,7 +50,7 @@ public class RegistrationResource {
     }
 
     @POST
-    public RegistrationResponse registerUser(User user) {
+    public RegistrationResponse registerUser(User user) throws StorageException {
         RegistrationResponse response =  userService.register(user);
         return response;
     }

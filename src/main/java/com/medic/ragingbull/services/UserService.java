@@ -47,9 +47,7 @@ public class UserService {
         this.inviteDao = invitesDao;
         this.sessionDao = sessionDao;
     }
-    public RegistrationResponse register(final User user) {
-        // 1. Create a user
-        // 2. Add entry in invite table
+    public RegistrationResponse register(final User user) throws StorageException {
         try {
             String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
             String email = StringUtils.lowerCase(user.getEmail());
@@ -61,7 +59,8 @@ public class UserService {
             int userCreated = userDao.createUser(userId, email, user.getName(), hashPass, isVerified, isNative);
 
             if (userCreated == 0 ) {
-                // Error created user, fallback
+                LOGGER.error(String.format("Error registering user %s.", user.getEmail()));
+                throw new ResourceCreationException("Error registering user. Please try again");
             }
 
             String inviteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.INVITE);
@@ -70,13 +69,13 @@ public class UserService {
             int inviteCreated = inviteDao.createInvite(inviteId, userId, expiry);
 
             if (inviteCreated == 0 ) {
-                // Push the invite to a queue so that it can be created again
+                LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
+                throw new ResourceCreationException("Error creating invite. Please try again");
             }
-
             return new RegistrationResponse(name, email, inviteId, expiry);
         } catch (final Exception e) {
-            e.printStackTrace();
-            throw e;
+            LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), e));
+            throw new StorageException(e.getMessage());
         }
     }
 
@@ -110,6 +109,7 @@ public class UserService {
                 List<Session> sessions = sessionDao.getActiveSessionsPerUserEmail(username);
 
                 if (sessions.size() > 0) {
+                    sessions.get(0).setIsUserValid(user.getVerified());
                     return sessions.get(0);
                 }
 
@@ -117,6 +117,7 @@ public class UserService {
                 DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
                 DateTime createdAt = new DateTime();
                 Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), expiry, createdAt);
+                loggedInUserSession.setIsUserValid(user.getVerified());
 
                 int sessionCreated = sessionDao.createSession(sessionId, user.getId(), user.getEmail(), expiry.getMillis());
                 if (sessionCreated == 0) {

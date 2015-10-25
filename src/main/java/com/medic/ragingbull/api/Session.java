@@ -16,6 +16,7 @@ public class Session {
     private String token;
     private String userEmail;
     private String userId;
+    private Boolean isUserValid;
     private DateTime createdAt;
     private DateTime expiry;
 
@@ -25,6 +26,14 @@ public class Session {
         this.userId = userId;
         this.createdAt = createdAt;
         this.expiry = expiry;
+    }
+
+    public Boolean getIsUserValid() {
+        return isUserValid;
+    }
+
+    public void setIsUserValid(Boolean isUserValid) {
+        this.isUserValid = isUserValid;
     }
 
     public String getToken() {

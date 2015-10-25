@@ -21,11 +21,15 @@ public class LoginResponse {
     private String userEmail;
 
     @JsonProperty
+    private Boolean isUserVerified;
+
+    @JsonProperty
     private DateTime expiry;
 
-    public LoginResponse(String token, String userEmail, DateTime expiry) {
+    public LoginResponse(String token, String userEmail, Boolean isUserVerified, DateTime expiry) {
         this.token = token;
         this.userEmail = userEmail;
+        this.isUserVerified = isUserVerified;
         this.expiry = expiry;
     }
 
@@ -35,6 +39,10 @@ public class LoginResponse {
 
     public String getUserEmail() {
         return userEmail;
+    }
+
+    public Boolean getIsUserVerified() {
+        return isUserVerified;
     }
 
     public DateTime getExpiry() {
