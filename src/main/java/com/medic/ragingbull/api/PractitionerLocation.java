@@ -11,24 +11,28 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.medic.ragingbull.config.ValidationConstants;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+
+import javax.validation.constraints.NotNull;
+
 
 /**
  * Created by Vamshi Molleti
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Pharmacy {
+public class PractitionerLocation {
 
     @JsonProperty
     private String id;
 
-    @Length(max = ValidationConstants.NAME_MAX,
-            min = ValidationConstants.NAME_MIN,
-            message = ValidationConstants.NAME_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.NAME_MSG_EMPTY)
     @JsonProperty
+    private String practitionerId;
+
+
+    @NotBlank(message = ValidationConstants.NAME_MSG_EMPTY)
     private String name;
 
     @Length(max = ValidationConstants.CONTACT_NAME_MAX,
@@ -38,6 +42,20 @@ public class Pharmacy {
     @JsonProperty
     private String contactName;
 
+    @Length(min = ValidationConstants.DESCRIPTION_MIN,
+            max = ValidationConstants.DESCRIPTION_MAX,
+            message = ValidationConstants.DESCRIPTION_MSG_SIZE)
+    @NotEmpty(message = ValidationConstants.DESCRIPTION_MSG_EMPTY)
+    @JsonProperty
+    private String description;
+
+    @Length(min = ValidationConstants.DISCIPLINE_MIN,
+            max = ValidationConstants.DISCIPLINE_MAX,
+            message = ValidationConstants.DISCIPLINE_MSG_SIZE)
+    @NotEmpty(message = ValidationConstants.DISCIPLINE_MSG_EMPTY)
+    @JsonProperty
+    private String discipline;
+
     @Length(max = ValidationConstants.LOCATION_NAME_MAX,
             min = ValidationConstants.LOCATION_NAME_MIN,
             message = ValidationConstants.LOCATION_NAME_MSG_SIZE)
@@ -45,59 +63,62 @@ public class Pharmacy {
     @JsonProperty
     private String location;
 
-    @Length(max = ValidationConstants.PHONE_MIN,
-            min = ValidationConstants.PHONE_MAX,
+    @Length(min = ValidationConstants.PHONE_MIN,
+            max = ValidationConstants.PHONE_MAX,
             message = ValidationConstants.PHONE_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.PHONE_MSG_EMPTY)
     @JsonProperty
-    private Integer primaryContact;
+    private String primaryContact;
 
+    @Length(min = ValidationConstants.PHONE_MIN,
+            max = ValidationConstants.PHONE_MAX,
+            message = ValidationConstants.PHONE_MSG_SIZE)
     @JsonProperty
-    private Integer secondaryContact;
+    private String secondaryContact;
 
-    @Length(max = ValidationConstants.ADDRESS1_MIN,
-            min = ValidationConstants.ADDRESS1_MAX,
+    @Length(min = ValidationConstants.ADDRESS1_MIN,
+            max = ValidationConstants.ADDRESS1_MAX,
             message = ValidationConstants.ADDRESS1_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.ADDRESS1_MSG_EMPTY)
     @JsonProperty
     private String address1;
 
-    @Length(max = ValidationConstants.ADDRESS2_MIN,
-            min = ValidationConstants.ADDRESS2_MAX,
+    @Length(min = ValidationConstants.ADDRESS2_MIN,
+            max = ValidationConstants.ADDRESS2_MAX,
             message = ValidationConstants.ADDRESS2_MSG_SIZE)
     @JsonProperty
     private String address2;
 
-    @Length(max = ValidationConstants.CITY_MIN,
-            min = ValidationConstants.CITY_MAX,
+    @Length(min = ValidationConstants.CITY_MIN,
+            max = ValidationConstants.CITY_MAX,
             message = ValidationConstants.CITY_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.CITY_MSG_EMPTY)
     @JsonProperty
     private String city;
 
-    @Length(max = ValidationConstants.STATE_MIN,
-            min = ValidationConstants.STATE_MAX,
+    @Length(min = ValidationConstants.STATE_MIN,
+            max = ValidationConstants.STATE_MAX,
             message = ValidationConstants.STATE_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.STATE_MSG_EMPTY)
     @JsonProperty
     private String state;
 
-    @Length(max = ValidationConstants.ZIP_MIN,
+    @Length(max = ValidationConstants.ZIP_MAX,
             min = ValidationConstants.ZIP_MIN,
             message = ValidationConstants.ZIP_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.ZIP_MSG_EMPTY)
     @JsonProperty
     private Long zip;
 
-    @Length(max = ValidationConstants.COUNTRY_MIN,
-            min = ValidationConstants.CONTACT_NAME_MAX,
+    @Length(max = ValidationConstants.COUNTRY_MAX,
+            min = ValidationConstants.CONTACT_NAME_MIN,
             message = ValidationConstants.COUNTRY_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.COUNTRY_MSG_EMPTY)
     @JsonProperty
     private String country;
 
-    @Length(max = ValidationConstants.LANDMARK_MIN,
-            min = ValidationConstants.LANDMARK_MAX,
+    @Length(max = ValidationConstants.LANDMARK_MAX,
+            min = ValidationConstants.LANDMARK_MIN,
             message = ValidationConstants.LANDMARK_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.LANDMARK_MSG_EMPTY)
     @JsonProperty
@@ -108,10 +129,6 @@ public class Pharmacy {
 
     @JsonProperty
     private Float latitude;
-
-    @NotEmpty(message = ValidationConstants.DELIVERY_RADIUS_MSG_EMPTY)
-    @JsonProperty
-    private Integer deliveryRadius;
 
     @NotEmpty(message = ValidationConstants.WORKING_HOURS_MSG_EMPTY)
     @JsonProperty
@@ -136,9 +153,15 @@ public class Pharmacy {
     @JsonProperty
     private DateTime updatedAt;
 
-    public Pharmacy(String name, String contactName, String location, Integer primaryContact, Integer secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer deliveryRadius, Integer workingHours, Integer workingDays, Boolean isVerified, Boolean isActive, String licenseDoc, DateTime createdAt, DateTime updatedAt) {
+    public PractitionerLocation() {}
+
+    public PractitionerLocation(String id, String practitionerId, String name, String contactName, String description, String discipline, String location, String primaryContact, String secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer workingHours, Integer workingDays, Boolean isVerified, Boolean isActive, String licenseDoc, DateTime createdAt, DateTime updatedAt) {
+        this.id = id;
+        this.practitionerId = practitionerId;
         this.name = name;
         this.contactName = contactName;
+        this.description = description;
+        this.discipline = discipline;
         this.location = location;
         this.primaryContact = primaryContact;
         this.secondaryContact = secondaryContact;
@@ -151,7 +174,6 @@ public class Pharmacy {
         this.landmark = landmark;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.deliveryRadius = deliveryRadius;
         this.workingHours = workingHours;
         this.workingDays = workingDays;
         this.isVerified = isVerified;
@@ -167,6 +189,14 @@ public class Pharmacy {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPractitionerId() {
+        return practitionerId;
+    }
+
+    public void setPractitionerId(String practitionerId) {
+        this.practitionerId = practitionerId;
     }
 
     public String getName() {
@@ -185,6 +215,22 @@ public class Pharmacy {
         this.contactName = contactName;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(String discipline) {
+        this.discipline = discipline;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -193,19 +239,19 @@ public class Pharmacy {
         this.location = location;
     }
 
-    public Integer getPrimaryContact() {
+    public String getPrimaryContact() {
         return primaryContact;
     }
 
-    public void setPrimaryContact(Integer primaryContact) {
+    public void setPrimaryContact(String primaryContact) {
         this.primaryContact = primaryContact;
     }
 
-    public Integer getSecondaryContact() {
+    public String getSecondaryContact() {
         return secondaryContact;
     }
 
-    public void setSecondaryContact(Integer secondaryContact) {
+    public void setSecondaryContact(String secondaryContact) {
         this.secondaryContact = secondaryContact;
     }
 
@@ -279,14 +325,6 @@ public class Pharmacy {
 
     public void setLatitude(Float latitude) {
         this.latitude = latitude;
-    }
-
-    public Integer getDeliveryRadius() {
-        return deliveryRadius;
-    }
-
-    public void setDeliveryRadius(Integer deliveryRadius) {
-        this.deliveryRadius = deliveryRadius;
     }
 
     public Integer getWorkingHours() {

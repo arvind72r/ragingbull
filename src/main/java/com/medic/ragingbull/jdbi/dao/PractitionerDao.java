@@ -38,4 +38,7 @@ public interface PractitionerDao {
 
     @SqlQuery("SELECT * FROM practitioner where id = :id")
     Practitioner getPractitionerById(@Bind("id") String id);
+
+    @SqlQuery("SELECT user_id FROM practitioner where id = :id")
+    String getUserIdPractitionerById(@Bind("id") String id);
 }

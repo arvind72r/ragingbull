@@ -74,10 +74,10 @@ public class PractitionerService {
 
             PractitionerResponse response = new PractitionerResponse(practitioner.getId(), practitioner.getDescription(), practitioner.getPrimaryContact(), practitioner.getSecondaryContact(), practitioner.getPrimaryId(), practitioner.getSecondaryId(), practitioner.getRegistrationId(), practitioner.getRegistrationAuthority(), practitioner.getLicense(), practitioner.getVerified(), practitioner.getActive());
             response.setStatus(HttpStatus.SC_OK);
+            return response;
         } catch(Exception e) {
             LOGGER.error(String.format("Error fetching a practitioner with email %s. Id: %s. Exception: %s", session.getUserEmail(), practitionerId, e));
             throw new StorageException(String.format("Error fetching a practitioner with email %s. Exception: %s", session.getUserEmail(), e));
         }
-        return null;
     }
 }

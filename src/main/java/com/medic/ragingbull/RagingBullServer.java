@@ -9,6 +9,7 @@ package com.medic.ragingbull;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.auth.SessionAuthFactory;
 import com.medic.ragingbull.auth.SessionAuthenticator;
@@ -82,13 +83,8 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         environment.jersey().register(injector.getInstance(HelloRagingBull.class));
         environment.jersey().register(injector.getInstance(RegistrationResource.class));
         environment.jersey().register(injector.getInstance(AuthResource.class));
-        //environment.jersey().register(injector.getInstance(PractitionerResource.class));
-        //environment.jersey().register(injector.getInstance(ConsultationResource.class));
-        //environment.jersey().register(injector.getInstance(OrderResource.class));
-        //environment.jersey().register(injector.getInstance(PharmacyResource.class));
-
-        //Registering Services
-        //environment.jersey().register(injector.getInstance(UserService.class));
+        environment.jersey().register(injector.getInstance(PractitionerResource.class));
+        environment.jersey().register(injector.getInstance(PractitionerLocationResource.class));
     }
 
 

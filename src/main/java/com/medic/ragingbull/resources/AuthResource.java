@@ -16,9 +16,7 @@ import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -53,6 +51,18 @@ public class AuthResource {
     public Response logout(@Auth Session session) throws StorageException {
         authService.logoutUser(session);
         return Response.ok().build();
+    }
+
+    @Path("/reset")
+    @GET
+    public Response getResetLink(@QueryParam("userId") String userId) throws StorageException {
+        return null;
+    }
+
+    @Path("/reset/{id}")
+    @POST
+    public Response resetPassword(@PathParam("id") String resetId, @QueryParam("userId") String userId) throws StorageException {
+        return null;
     }
 
 

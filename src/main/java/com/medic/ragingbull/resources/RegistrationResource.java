@@ -17,6 +17,7 @@ import jdk.nashorn.internal.runtime.options.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -50,7 +51,7 @@ public class RegistrationResource {
     }
 
     @POST
-    public RegistrationResponse registerUser(User user) throws StorageException {
+    public RegistrationResponse registerUser(@Valid User user) throws StorageException {
         RegistrationResponse response =  userService.register(user);
         return response;
     }

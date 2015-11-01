@@ -24,18 +24,19 @@ public class Practitioner {
     @JsonProperty
     private String id;
 
+
     @JsonProperty
     private String userId;
 
-    @Length(max = ValidationConstants.DESCRIPTION_MIN,
-            min = ValidationConstants.DESCRIPTION_MAX,
+    @Length(min = ValidationConstants.DESCRIPTION_MIN,
+            max = ValidationConstants.DESCRIPTION_MAX,
             message = ValidationConstants.DESCRIPTION_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.DESCRIPTION_MSG_EMPTY)
     @JsonProperty
     private String description;
 
-    @Length(max = ValidationConstants.PHONE_MIN,
-            min = ValidationConstants.PHONE_MAX,
+    @Length(min = ValidationConstants.PHONE_MIN,
+            max = ValidationConstants.PHONE_MAX,
             message = ValidationConstants.PHONE_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.PHONE_MSG_EMPTY)
     @JsonProperty
@@ -44,27 +45,27 @@ public class Practitioner {
     @JsonProperty
     private String secondaryContact;
 
-    @Length(max = ValidationConstants.ID_MIN,
-            min = ValidationConstants.ID_MAX,
+    @Length(min = ValidationConstants.ID_MIN,
+            max = ValidationConstants.ID_MAX,
             message = ValidationConstants.ID_MSG_SIZE)
     @JsonProperty
     private String primaryId;
 
-    @Length(max = ValidationConstants.ID_MIN,
-            min = ValidationConstants.ID_MAX,
+    @Length(min = ValidationConstants.ID_MIN,
+            max = ValidationConstants.ID_MAX,
             message = ValidationConstants.ID_MSG_SIZE)
     @JsonProperty
     private String secondaryId;
 
-    @Length(max = ValidationConstants.ID_MIN,
-            min = ValidationConstants.ID_MAX,
+    @Length(min = ValidationConstants.ID_MIN,
+            max = ValidationConstants.ID_MAX,
             message = ValidationConstants.ID_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.ID_MSG_EMPTY)
     @JsonProperty
     private String registrationId;
 
-    @Length(max = ValidationConstants.ID_MIN,
-            min = ValidationConstants.ID_MAX,
+    @Length(min = ValidationConstants.ID_MIN,
+            max = ValidationConstants.ID_MAX,
             message = ValidationConstants.ID_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.ID_MSG_EMPTY)
     @JsonProperty
@@ -85,6 +86,7 @@ public class Practitioner {
     @JsonProperty
     private DateTime updatedAt;
 
+    public Practitioner() {}
 
     public Practitioner(String id, String userId, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license, Boolean verified, Boolean active) {
         this.id = id;

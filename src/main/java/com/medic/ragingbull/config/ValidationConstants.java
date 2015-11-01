@@ -48,6 +48,7 @@ public class ValidationConstants {
     public static final int ADDRESS1_MIN= 1;
     public static final int ADDRESS1_MAX = 100;
     public static final String ADDRESS1_MSG_SIZE = "Address 1 must be between "+ADDRESS1_MIN+" and "+ADDRESS1_MAX+" characters";
+    public static final String ADDRESS1_MSG_EMPTY = "Address cannot be empty";
 
     public static final int ADDRESS2_MIN= 0;
     public static final int ADDRESS2_MAX = 100;
@@ -78,16 +79,21 @@ public class ValidationConstants {
     public static final String LANDMARK_MSG_SIZE = "Landmark must be between "+LANDMARK_MIN+" and "+LANDMARK_MAX+" characters";
     public static final String LANDMARK_MSG_EMPTY = "Landmark cannot be empty";
 
-    public static final String DELIVERY_RADIUS_MSG_EMPTY = "Landmark cannot be empty";
+    public static final String DELIVERY_RADIUS_MSG_EMPTY = "Delivery radius cannot be empty";
 
-    public static final String WORKING_HOURS_MSG_EMPTY = "Landmark cannot be empty";
+    public static final String WORKING_HOURS_MSG_EMPTY = "Working hours cannot be empty";
 
-    public static final String WORKING_DAYS_MSG_EMPTY = "Landmark cannot be empty";
+    public static final String WORKING_DAYS_MSG_EMPTY = "Working days cannot be empty";
 
     public static final int DESCRIPTION_MIN = 3;
     public static final int DESCRIPTION_MAX = 500;
     public static final String DESCRIPTION_MSG_SIZE = "Description must be between "+ DESCRIPTION_MIN +" and "+ DESCRIPTION_MAX +" characters";
     public static final String DESCRIPTION_MSG_EMPTY = "The description cannot be empty";
+
+    public static final int DISCIPLINE_MIN = 3;
+    public static final int DISCIPLINE_MAX = 500;
+    public static final String DISCIPLINE_MSG_SIZE = "Discipline must be between "+ DISCIPLINE_MIN +" and "+ DISCIPLINE_MAX +" characters";
+    public static final String DISCIPLINE_MSG_EMPTY = "The description cannot be empty";
 
     public static final int ID_MIN = 3;
     public static final int ID_MAX = 128;

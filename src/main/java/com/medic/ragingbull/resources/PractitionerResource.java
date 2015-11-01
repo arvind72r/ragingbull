@@ -17,6 +17,7 @@ import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -49,7 +50,7 @@ public class PractitionerResource {
     }
 
     @POST
-    public PractitionerResponse createPractitioner(@Auth Session session, Practitioner practitioner) throws StorageException {
+    public PractitionerResponse createPractitioner(@Auth Session session, @Valid Practitioner practitioner) throws StorageException {
         PractitionerResponse practitionerResponse = practitionerService.createPractitioner(session, practitioner);
         return practitionerResponse;
     }

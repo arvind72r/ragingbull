@@ -7,6 +7,7 @@
 package com.medic.ragingbull;
 
 import com.google.inject.AbstractModule;
+import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.resources.*;
 import com.medic.ragingbull.auth.UserAuthenticator;
@@ -45,21 +46,20 @@ public class RagingBullModule extends AbstractModule {
         bind(UserDao.class).toInstance(database.onDemand(UserDao.class));
         bind(InviteDao.class).toInstance(database.onDemand(InviteDao.class));
         bind(SessionDao.class).toInstance(database.onDemand(SessionDao.class));
-        //bind(PharmacyDao.class).toInstance(database.onDemand(PharmacyDao.class));
+        bind(PractitionerDao.class).toInstance(database.onDemand(PractitionerDao.class));
+        bind(PractitionerLocationDao.class).toInstance(database.onDemand(PractitionerLocationDao.class));
 
         // Binding Services
         bind(UserService.class).asEagerSingleton();
         bind(AuthService.class).asEagerSingleton();
-        //bind(PharmacyService.class).asEagerSingleton();
+        bind(PractitionerService.class).asEagerSingleton();
+        bind(PractitionerLocationService.class).asEagerSingleton();
 
         // Binding Resources
         bind(HelloRagingBull.class).asEagerSingleton();
         bind(RegistrationResource.class).asEagerSingleton();
         bind(AuthResource.class).asEagerSingleton();
-        //bind(ConsultationResource.class).asEagerSingleton();
-        //bind(OrderResource.class).asEagerSingleton();
-        //bind(PharmacyResource.class).asEagerSingleton();
-        //bind(PractitionerResource.class).asEagerSingleton();
-
+        bind(PractitionerResource.class).asEagerSingleton();
+        bind(PractitionerLocationResource.class).asEagerSingleton();
     }
 }
