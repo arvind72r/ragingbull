@@ -12,7 +12,7 @@ package com.medic.ragingbull.config;
 public class Ids {
 
     public enum Type {
-        SESSION("ss"), RESET("rs"), USER ("us"), CONSULTATION("cn"), PHARMACY("phm"), PRACTITIONER("pr"), INVITE("in"), PRACTITIONER_LOCATION("pr-lc");
+        SESSION("ss"), RESET("rs"), USER ("us"), CONSULTATION("cn"), PHARMACY("phm"), PRACTITIONER("pr"), INVITE("in"), PRACTITIONER_LOCATION("pr-lc"), PRESCRIPTION("pes");
         private String prefix;
 
         Type(String prefix) {

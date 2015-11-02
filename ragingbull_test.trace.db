@@ -1,0 +1,12 @@
+11-02 17:16:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "                                    SELECT ID FROM PASSWORD_RESET WHERE ID = ?,[*] EMAIL = ? EXPIRY < ?  "; SQL statement:
+/* PasswordResetDao.getResetLink */ SELECT id FROM password_reset WHERE id = ?, email = ? expiry < ?  [42000-187]
+11-02 17:17:54 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "                                    SELECT ID FROM PASSWORD_RESET WHERE ID = ?,[*] EMAIL = ?, EXPIRY < ?  "; SQL statement:
+/* PasswordResetDao.getResetLink */ SELECT id FROM password_reset WHERE id = ?, email = ?, expiry < ?  [42000-187]
+11-02 17:21:42 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "                                    SELECT ID FROM PASSWORD_RESET WHERE ID = ?,[*] EMAIL = ?, EXPIRY < ?  "; SQL statement:
+/* PasswordResetDao.getResetLink */ SELECT id FROM password_reset WHERE id = ?, email = ?, expiry < ?  [42000-187]
+11-02 17:23:06 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "                                    SELECT ID FROM PASSWORD_RESET WHERE ID = ?,[*] EMAIL = ?, EXPIRY < ?  "; SQL statement:
+/* PasswordResetDao.getResetLink */ SELECT id FROM password_reset WHERE id = ?, email = ?, expiry < ?  [42000-187]

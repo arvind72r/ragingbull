@@ -100,6 +100,28 @@ public class ValidationConstants {
     public static final String ID_MSG_SIZE = "Identification must be between "+ ID_MIN +" and "+ ID_MAX +" characters";
     public static final String ID_MSG_EMPTY = "The identification cannot be empty";
 
+    public static final int DRUGS_MIN = 1;
+    public static final int DRUGS_MAX = 128;
+    public static final String DRUGS_MSG_SIZE = "No of drugs must be between "+ DRUGS_MIN +" and "+ DRUGS_MAX;
+    public static final String DRUGS_MSG_EMPTY = "The drugs cannot be empty";
+
+    public static final int MANUFACTURER_NAME_MIN = 3;
+    public static final int MANUFACTURER_NAME_MAX = 128;
+    public static final String MANUFACTURER_NAME_MSG_SIZE = "Manufacturer name must be between "+ MANUFACTURER_NAME_MIN +" and "+ MANUFACTURER_NAME_MAX;
+    public static final String MANUFACTURER_NAME_MSG_EMPTY = "Manufacturer name cannot be empty";
+
+    public static final int DRUG_QUANTITY_MIN = 1;
+    public static final String DRUG_QUANTITY_MSG_EMPTY = "Quantity cannot be empty";
+
+    public static final int DRUG_FREQUENCY_MIN = 1;
+    public static final int DRUG_FREQUENCY_MAX = 4;
+    public static final String DRUG_FREQUENCY_MSG_SIZE = "Drug frequency must be between "+ DRUG_FREQUENCY_MIN +" and "+ DRUG_FREQUENCY_MAX;
+    public static final String DRUG_FREQUENCY_MSG_EMPTY = "Drug frequency cannot be empty";
+
+    public static final int DRUG_ALLERGY_MIN = 0;
+    public static final int DRUG_ALLERGY_MAX = 500;
+    public static final String DRUG_ALLERGY_MSG_SIZE = "Description must be between "+ DESCRIPTION_MIN +" and "+ DESCRIPTION_MAX +" characters";
+    public static final String DRUG_ALLERGY_MSG_EMPTY = "The description cannot be empty";
 }
 
 

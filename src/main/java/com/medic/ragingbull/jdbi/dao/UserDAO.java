@@ -39,4 +39,8 @@ public interface UserDao {
 
     @SqlQuery("SELECT hash FROM user where email = :email")
     String getHash(@Bind("email") String email);
+
+    @SqlUpdate("UPDATE USER set hash = :hash where email = :email")
+    int updatePassword(@Bind("email") String email,
+                       @Bind("hash") String hash);
 }

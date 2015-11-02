@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.exception.ResourceCreationException;
+import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.InviteDao;
 import com.medic.ragingbull.api.Invite;
@@ -78,6 +79,7 @@ public class UserService {
             throw new StorageException(e.getMessage());
         }
     }
+
 
     public Response approveInvite(final String inviteId) {
         Invite invite = inviteDao.getInviteById(inviteId);

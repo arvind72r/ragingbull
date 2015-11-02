@@ -16,6 +16,7 @@ import com.medic.ragingbull.exception.ResourceFetchException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.ConsultationDao;
 import com.medic.ragingbull.jdbi.mapper.ConsultationMapper;
+import org.apache.http.HttpStatus;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,12 +44,15 @@ public class ConsultationService {
             if (consultation.getUserId() != session.getUserEmail()) {
                 throw new ResourceFetchException(String.format("Error fetching consultation with emailId %s. Logged in user different from consultation owner", session.getUserEmail()));
             }
+
+            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
+            response.setStatus(HttpStatus.SC_OK);
+            return response;
         } catch(Exception e) {
             LOGGER.error(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
             throw new StorageException(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
         }
 
-        return null;
     }
 
     public ConsultationResponse createConsultation(Session session, String practitionerId, String locationId, Consultation consultation) throws StorageException {
@@ -61,6 +65,9 @@ public class ConsultationService {
                 LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
                 throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
             }
+
+            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
+            response.setStatus(HttpStatus.SC_OK);
         } catch(Exception e) {
             LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
             throw new StorageException(String.format("Error creating consultation with email %s", session.getUserEmail()));

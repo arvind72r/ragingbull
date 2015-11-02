@@ -17,6 +17,7 @@ import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.PractitionerDao;
 import com.medic.ragingbull.jdbi.dao.PractitionerLocationDao;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,9 @@ public class PractitionerLocationService {
     private PractitionerLocationDao practitionerLocationDao;
 
     @Inject
-    public PractitionerLocationService(PractitionerDao practitionerDao) {
+    public PractitionerLocationService(PractitionerDao practitionerDao, PractitionerLocationDao practitionerLocationDao) {
         this.practitionerDao = practitionerDao;
+        this.practitionerLocationDao = practitionerLocationDao;
     }
 
     public PractitionerLocationResponse getPractitioner(Session session, String practitionerId, String locationId) throws StorageException {
@@ -62,18 +64,19 @@ public class PractitionerLocationService {
             Boolean verified = false;
             Boolean active = true;
 
-//            int practitionerLocationCreated = practitionerLocationDao.createPractitionerLocation(practitionerLocationId, practitionerId, practitionerLocation.getName(), practitionerLocation.getContactName(), practitionerLocation.getDescription(), practitionerLocation.getDiscipline(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(), practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation.getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(),practitionerLocation.getLicenseDoc(), practitionerLocation.getIsVerified(), practitionerLocation.getIsActive());
-//
-//            if (practitionerLocationCreated == 0 ) {
-//                LOGGER.error(String.format("Error creating a practitioner location with email %s, locationId: %s", session.getUserEmail(), practitionerId));
-//                throw new ResourceCreationException(String.format("Error creating practitioner location with emailId %s", session.getUserEmail()));
-//            }
+            int practitionerLocationCreated = practitionerLocationDao.createPractitionerLocation(practitionerLocationId, practitionerId, practitionerLocation.getName(), practitionerLocation.getContactName(), practitionerLocation.getDescription(), practitionerLocation.getDiscipline(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(), practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation.getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(),practitionerLocation.getLicenseDoc(), practitionerLocation.getIsVerified(), practitionerLocation.getIsActive());
+
+            if (practitionerLocationCreated == 0 ) {
+                LOGGER.error(String.format("Error creating a practitioner location with email %s, locationId: %s", session.getUserEmail(), practitionerId));
+                throw new ResourceCreationException(String.format("Error creating practitioner location with emailId %s", session.getUserEmail()));
+            }
 
             practitionerLocation.setId(practitionerLocationId);
             practitionerLocation.setIsVerified(verified);
             practitionerLocation.setIsActive(active);
 
             PractitionerLocationResponse response = new PractitionerLocationResponse(practitionerLocation.getId(), practitionerLocation.getPractitionerId(), practitionerLocation.getName(), practitionerLocation.getContactName(), practitionerLocation.getDescription(), practitionerLocation.getDiscipline(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(),practitionerLocation.getIsVerified(), practitionerLocation.getIsActive());
+            response.setStatus(HttpStatus.SC_OK);
             return response;
 
         } catch(Exception e) {

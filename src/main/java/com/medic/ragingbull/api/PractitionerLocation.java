@@ -103,10 +103,7 @@ public class PractitionerLocation {
     @JsonProperty
     private String state;
 
-    @Length(max = ValidationConstants.ZIP_MAX,
-            min = ValidationConstants.ZIP_MIN,
-            message = ValidationConstants.ZIP_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.ZIP_MSG_EMPTY)
+
     @JsonProperty
     private Long zip;
 
@@ -130,11 +127,9 @@ public class PractitionerLocation {
     @JsonProperty
     private Float latitude;
 
-    @NotEmpty(message = ValidationConstants.WORKING_HOURS_MSG_EMPTY)
     @JsonProperty
     private Integer workingHours;
 
-    @NotEmpty(message = ValidationConstants.WORKING_DAYS_MSG_EMPTY)
     @JsonProperty
     private Integer workingDays;
 

@@ -28,9 +28,30 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex indexName="idx_token" tableName="session">
+        <createIndex indexName="idx_session_token" tableName="session">
             <column name="token"/>
         </createIndex>
+        <comment>Creating a password reset table</comment>
+        <createTable tableName="password_reset">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiry" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOL" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
         <comment>Creating a user tables</comment>
         <createTable tableName="user">
             <column name="id" type="CHAR(128)">
@@ -194,10 +215,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex indexName="idx_id" tableName="practitioner">
+        <createIndex indexName="idx_practitioner_id" tableName="practitioner">
             <column name="id"/>
         </createIndex>
-        <createIndex indexName="idx_user_id" tableName="practitioner">
+        <createIndex indexName="idx_practitioner_user_id" tableName="practitioner">
             <column name="user_id"/>
         </createIndex>
         <createTable tableName="practitioner_location">
@@ -273,7 +294,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <!-- Create INDEXES here -->
+        <createIndex indexName="idx_practitioner_location_id" tableName="practitioner_location">
+            <column name="id"/>
+        </createIndex>
         <createTable tableName="consultation">
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
@@ -296,6 +319,10 @@
             <column name="notes" type="VARCHAR(500)">
             <constraints nullable="false"/>
             </column>
+            <column name="confirmed" type="BOOL" defaultValueComputed="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOL" defaultValueComputed="true"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -303,6 +330,64 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
+        <createIndex indexName="idx_consultation_id" tableName="consultation">
+            <column name="id"/>
+        </createIndex>
+        <createIndex indexName="idx_consultation_practitioner_id" tableName="consultation">
+            <column name="practitioner_id"/>
+        </createIndex>
+        <createIndex indexName="idx_consultation_user_id" tableName="consultation">
+            <column name="user_id"/>
+        </createIndex>
+        <createTable tableName="prescription">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="consult_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="practitioner_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drug_name" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drug_manufacturer" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drug_quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drug_frequency" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drug_allergies" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_prescription_id" tableName="prescription">
+            <column name="id"/>
+        </createIndex>
+        <createIndex indexName="idx_prescription_practitioner_id" tableName="prescription">
+            <column name="practitioner_id"/>
+        </createIndex>
+        <createIndex indexName="idx_prescription_user_id" tableName="prescription">
+            <column name="user_id"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

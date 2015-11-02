@@ -17,6 +17,7 @@ import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -48,7 +49,7 @@ public class ConsultationResource {
     }
 
     @POST
-    public ConsultationResponse createConsultation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, Consultation consultation) throws StorageException {
+    public ConsultationResponse createConsultation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @Valid Consultation consultation) throws StorageException {
         ConsultationResponse response = consultationService.createConsultation(session, practitionerId, locationId, consultation);
         return response;
     }
