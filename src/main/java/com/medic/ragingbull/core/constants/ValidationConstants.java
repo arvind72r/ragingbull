@@ -4,7 +4,7 @@
  * NakedPenguin. All rights reserved.
  */
 
-package com.medic.ragingbull.config;
+package com.medic.ragingbull.core.constants;
 
 /**
  * Created by Vamshi Molleti
@@ -122,6 +122,11 @@ public class ValidationConstants {
     public static final int DRUG_ALLERGY_MAX = 500;
     public static final String DRUG_ALLERGY_MSG_SIZE = "Description must be between "+ DESCRIPTION_MIN +" and "+ DESCRIPTION_MAX +" characters";
     public static final String DRUG_ALLERGY_MSG_EMPTY = "The description cannot be empty";
+
+    public static final int INLET_TYPE_MIN = 4;
+    public static final int INLET_TYPE_MAX = 4;
+    public static final String INLET_TYPE_SIZE = "Description must be between "+ DESCRIPTION_MIN +" and "+ DESCRIPTION_MAX +" characters";
+    public static final String INLET_TYPE_EMPTY = "The description cannot be empty";
 }
 
 

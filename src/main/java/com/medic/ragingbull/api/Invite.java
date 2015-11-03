@@ -15,13 +15,16 @@ public class Invite {
 
     private String inviteId;
     private String userId;
+    private Integer code;
     private DateTime expiry;
     private DateTime created_at;
     private DateTime updated_at;
 
-    public Invite(String inviteId, String user_id, DateTime expiry, DateTime created_at, DateTime updated_at) {
+
+    public Invite(String inviteId, String userId, Integer code, DateTime expiry, DateTime created_at, DateTime updated_at) {
         this.inviteId = inviteId;
-        this.userId = user_id;
+        this.userId = userId;
+        this.code = code;
         this.expiry = expiry;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -33,6 +36,10 @@ public class Invite {
 
     public String getUserId() {
         return userId;
+    }
+
+    public Integer getCode() {
+        return code;
     }
 
     public DateTime getExpiry() {

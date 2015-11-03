@@ -12,7 +12,7 @@ import com.medic.ragingbull.api.Practitioner;
 import com.medic.ragingbull.api.PractitionerResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.services.PractitionerService;
+import com.medic.ragingbull.core.services.PractitionerService;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -4,20 +4,18 @@
  * RagingBull. All rights reserved
  */
 
-package com.medic.ragingbull.services;
+package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.Consultation;
 import com.medic.ragingbull.api.ConsultationResponse;
 import com.medic.ragingbull.api.Session;
-import com.medic.ragingbull.config.Ids;
+import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceFetchException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.ConsultationDao;
-import com.medic.ragingbull.jdbi.mapper.ConsultationMapper;
 import org.apache.http.HttpStatus;
-import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

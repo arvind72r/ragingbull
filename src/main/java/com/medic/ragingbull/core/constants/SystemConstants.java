@@ -4,7 +4,7 @@
  * NakedPenguin. All rights reserved.
  */
 
-package com.medic.ragingbull.config;
+package com.medic.ragingbull.core.constants;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -22,5 +22,11 @@ public interface SystemConstants {
 
     // COOKIE NAME
     String SESSION_COOKIE_NAME = "Auth-Token";
+
+    // NOTIFICATIONS
+    String SMS_REGISTRATION_TOKEN = "Ahoy from RagingBull!!! Enter %s on the sign up page to verify your account. This is a one time message.";
+
+    // RANDOMS
+    Integer MAX_BOUND = 100000;
 
 }

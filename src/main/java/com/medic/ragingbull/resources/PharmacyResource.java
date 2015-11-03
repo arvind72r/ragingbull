@@ -13,14 +13,13 @@ import com.medic.ragingbull.api.PharmacyResponse;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceFetchException;
-import com.medic.ragingbull.services.PharmacyService;
+import com.medic.ragingbull.core.services.PharmacyService;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * Created by Vamshi Molleti

@@ -4,7 +4,7 @@
  * NakedPenguin. All rights reserved.
  */
 
-package com.medic.ragingbull.config;
+package com.medic.ragingbull.core.constants;
 
 /**
  * Created by Vamshi Molleti

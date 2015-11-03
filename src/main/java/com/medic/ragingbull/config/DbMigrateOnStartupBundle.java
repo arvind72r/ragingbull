@@ -7,7 +7,6 @@
 package com.medic.ragingbull.config;
 
 import com.codahale.metrics.MetricRegistry;
-import com.medic.ragingbull.RagingBullConfiguration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.db.ManagedDataSource;

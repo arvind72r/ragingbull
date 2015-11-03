@@ -7,12 +7,11 @@
 package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.ConsultationResponse;
 import com.medic.ragingbull.api.Prescription;
 import com.medic.ragingbull.api.PrescriptionResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.services.PrescriptionService;
+import com.medic.ragingbull.core.services.PrescriptionService;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

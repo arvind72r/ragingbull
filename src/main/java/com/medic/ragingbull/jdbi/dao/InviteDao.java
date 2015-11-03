@@ -22,15 +22,16 @@ import java.util.List;
  */
 @RegisterMapper(InviteMapper.class)
 public interface InviteDao {
-    @SqlUpdate("INSERT INTO invites (id, user_id, expiry) " +
-            "VALUES(:id, :user_id, :expiry)")
+    @SqlUpdate("INSERT INTO invite (id, user_id, code, expiry) " +
+            "VALUES(:id, :user_id, :code, :expiry)")
     int createInvite(@Bind("id") String id,
                      @Bind("user_id") String user_id,
+                     @Bind("code") Integer code,
                      @BindTimeStamp("expiry") long expiry);
 
-    @SqlQuery("SELECT * FROM invites where id = :id")
+    @SqlQuery("SELECT * FROM invite where id = :id")
     Invite getInviteById(@Bind("id") String id);
 
-    @SqlQuery("SELECT * FROM invites where user_id = :user_id")
+    @SqlQuery("SELECT * FROM invite where user_id = :user_id")
     List<Invite> getInviteByEmail(@Bind("user_id") String user_Id);
 }

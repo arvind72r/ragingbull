@@ -22,6 +22,7 @@ public class InviteMapper implements ResultSetMapper<Invite> {
     public Invite map(int i, ResultSet r, StatementContext cntx) throws SQLException {
         return new Invite(r.getString("id"),
                 r.getString("user_id"),
+                r.getInt("code"),
                 new DateTime(r.getTimestamp("expiry")),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));

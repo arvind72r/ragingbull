@@ -12,7 +12,7 @@ import java.util.UUID;
  * Created by Vamshi Molleti
  */
 public class Ids {
-    public static String generateId(com.medic.ragingbull.config.Ids.Type type) {
+    public static String generateId(com.medic.ragingbull.core.constants.Ids.Type type) {
         return String.format("%s-%s", type.getPrefix(), UUID.randomUUID().toString());
     }
 }

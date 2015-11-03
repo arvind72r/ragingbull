@@ -9,7 +9,7 @@ package com.medic.ragingbull.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.medic.ragingbull.config.ValidationConstants;
+import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;

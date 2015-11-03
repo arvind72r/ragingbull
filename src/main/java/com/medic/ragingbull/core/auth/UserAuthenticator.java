@@ -4,15 +4,14 @@
  * NakedPenguin. All rights reserved.
  */
 
-package com.medic.ragingbull.auth;
+package com.medic.ragingbull.core.auth;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.Session;
-import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.services.UserService;
+import com.medic.ragingbull.core.services.UserService;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;

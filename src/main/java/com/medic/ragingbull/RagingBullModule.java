@@ -7,11 +7,14 @@
 package com.medic.ragingbull;
 
 import com.google.inject.AbstractModule;
-import com.medic.ragingbull.api.PractitionerLocation;
+import com.medic.ragingbull.config.RagingBullConfiguration;
+import com.medic.ragingbull.core.services.AuthService;
+import com.medic.ragingbull.core.services.PractitionerLocationService;
+import com.medic.ragingbull.core.services.PractitionerService;
+import com.medic.ragingbull.core.services.UserService;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.resources.*;
-import com.medic.ragingbull.auth.UserAuthenticator;
-import com.medic.ragingbull.services.*;
+import com.medic.ragingbull.core.auth.UserAuthenticator;
 import io.dropwizard.setup.Environment;
 import org.skife.jdbi.v2.DBI;
 
@@ -37,6 +40,7 @@ public class RagingBullModule extends AbstractModule {
 
         // Binding Configs
         bind(RagingBullConfiguration.class).toInstance(configuration);
+
 
         // Binding Authenticator
         bind(UserAuthenticator.class).asEagerSingleton();

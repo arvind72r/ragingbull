@@ -4,7 +4,7 @@
  * RagingBull. All rights reserved
  */
 
-package com.medic.ragingbull.auth;
+package com.medic.ragingbull.core.auth;
 
 import com.google.common.base.Optional;
 import io.dropwizard.auth.AuthenticationException;

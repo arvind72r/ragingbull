@@ -10,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.medic.ragingbull.config.ValidationConstants;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -49,11 +48,34 @@ public class User {
     @JsonProperty
     private String email;
 
+    @Length(max = ValidationConstants.PHONE_MAX,
+            min = ValidationConstants.PHONE_MIN,
+            message = ValidationConstants.PHONE_MSG_SIZE)
+    @NotEmpty(message = ValidationConstants.PHONE_MSG_EMPTY)
+    @JsonProperty
+    private String contactNo;
+
+    @Length(max = ValidationConstants.INLET_TYPE_MAX,
+            min = ValidationConstants.INLET_TYPE_MIN,
+            message = ValidationConstants.PHONE_MSG_SIZE)
+    @NotEmpty(message = ValidationConstants.PHONE_MSG_EMPTY)
+    @JsonProperty
+    private String inletType;
+
     @JsonProperty
     private Boolean verified;
 
     @JsonProperty
-    private Boolean isNative;
+    private Boolean active;
+
+    @JsonProperty
+    private String pictureUrl;
+
+    @JsonIgnore
+    private Integer role;
+
+    @JsonIgnore
+    private Integer category;
 
     @JsonIgnore
     private DateTime updatedAt;
@@ -68,59 +90,32 @@ public class User {
         // For Deserialization
     }
 
-    public User(String id, String name, String password, String email, Boolean verified, Boolean isNative, DateTime updatedAt, DateTime createdAt) {
+    public User(String id, String name, String password, String email, String contactNo, String inletType, Boolean verified, Boolean active, String pictureUrl) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.email = email;
+        this.contactNo = contactNo;
+        this.inletType = inletType;
         this.verified = verified;
-        this.isNative = isNative;
-        this.updatedAt = updatedAt;
-        this.createdAt = createdAt;
+        this.active = active;
+        this.pictureUrl = pictureUrl;
     }
 
-    public User(String id, String email, String name, Boolean isVerified, Boolean isNative, DateTime createdAt, DateTime updatedAt) {
+    public User(String id, String name, String hash, String email, String contactNo, String inletType, Boolean verified, Boolean active, String pictureUrl, Integer role, Integer category, DateTime updatedAt, DateTime createdAt) {
         this.id = id;
         this.name = name;
-        this.email = email;
-        this.verified = isVerified;
-        this.isNative = isNative;
-        this.updatedAt = updatedAt;
-        this.createdAt = createdAt;
-    }
-
-    public User(String id, String name, String email, Boolean verified, Boolean isNative, DateTime updatedAt, DateTime createdAt, String hash) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.verified = verified;
-        this.isNative = isNative;
-        this.updatedAt = updatedAt;
-        this.createdAt = createdAt;
         this.hash = hash;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
-
-        return !(email != null ? !email.equals(user.email) : user.email != null) && !(id != null ? !id.equals(user.id) : user.id != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        this.email = email;
+        this.contactNo = contactNo;
+        this.inletType = inletType;
+        this.verified = verified;
+        this.active = active;
+        this.pictureUrl = pictureUrl;
+        this.role = role;
+        this.category = category;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
     }
 
     public String getId() {
@@ -155,6 +150,38 @@ public class User {
         this.email = email;
     }
 
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public String getInletType() {
+        return inletType;
+    }
+
+    public void setInletType(String inletType) {
+        this.inletType = inletType;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
     public Boolean getVerified() {
         return verified;
     }
@@ -163,12 +190,20 @@ public class User {
         this.verified = verified;
     }
 
-    public Boolean getIsNative() {
-        return isNative;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setIsNative(Boolean isNative) {
-        this.isNative = isNative;
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public DateTime getUpdatedAt() {
@@ -189,5 +224,9 @@ public class User {
 
     public String getHash() {
         return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

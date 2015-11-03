@@ -9,7 +9,7 @@ package com.medic.ragingbull.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.medic.ragingbull.services.UserService;
+import com.medic.ragingbull.core.services.UserService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

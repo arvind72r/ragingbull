@@ -11,7 +11,7 @@ import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.api.PractitionerLocationResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.services.PractitionerLocationService;
+import com.medic.ragingbull.core.services.PractitionerLocationService;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -4,19 +4,21 @@
  * NakedPenguin. All rights reserved.
  */
 
-package com.medic.ragingbull.services;
+package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.core.constants.SystemConstants;
+import com.medic.ragingbull.core.notification.Notifiable;
+import com.medic.ragingbull.core.notification.NotificationFactory;
 import com.medic.ragingbull.exception.ResourceCreationException;
-import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.InviteDao;
 import com.medic.ragingbull.api.Invite;
 import com.medic.ragingbull.api.RegistrationResponse;
-import com.medic.ragingbull.config.Ids;
+import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.jdbi.dao.SessionDao;
 import com.medic.ragingbull.jdbi.dao.UserDao;
 import com.medic.ragingbull.util.Time;
@@ -24,11 +26,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
+import org.skife.jdbi.v2.sqlobject.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Vamshi Molleti
@@ -41,39 +45,44 @@ public class UserService {
     private final UserDao userDao;
     private final InviteDao inviteDao;
     private final SessionDao sessionDao;
+    private final NotificationFactory notificationFactory;
+
 
     @Inject
-    public UserService(UserDao userDao, InviteDao invitesDao, SessionDao sessionDao) {
+    public UserService(UserDao userDao, InviteDao inviteDao, SessionDao sessionDao, NotificationFactory notificationFactory) {
         this.userDao = userDao;
-        this.inviteDao = invitesDao;
+        this.inviteDao = inviteDao;
         this.sessionDao = sessionDao;
+        this.notificationFactory = notificationFactory;
     }
+
+
+    @Transaction
     public RegistrationResponse register(final User user) throws StorageException {
         try {
             String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-            String name = user.getName();
-            Boolean isVerified = Boolean.FALSE;
-            Boolean isNative = Boolean.TRUE;
 
-            int userCreated = userDao.createUser(userId, email, user.getName(), hashPass, isVerified, isNative);
+            int userCreated = userDao.createUser(userId, user.getName(), email, hashPass, user.getContactNo(), user.getInletType(), new Integer(20),new Integer(20), user.getPictureUrl());
 
             if (userCreated == 0 ) {
                 LOGGER.error(String.format("Error registering user %s.", user.getEmail()));
                 throw new ResourceCreationException("Error registering user. Please try again");
             }
+            int authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
+            notificationFactory.notifyUser(user, Notifiable.Mode.SMS, authCode);
 
             String inviteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.INVITE);
             long expiry = Time.getMillisAfterXDays(1);
 
-            int inviteCreated = inviteDao.createInvite(inviteId, userId, expiry);
+            int inviteCreated = inviteDao.createInvite(inviteId, userId, authCode, expiry);
 
             if (inviteCreated == 0 ) {
                 LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
                 throw new ResourceCreationException("Error creating invite. Please try again");
             }
-            return new RegistrationResponse(name, email, inviteId, expiry);
+            return new RegistrationResponse(user.getName(), email, inviteId, expiry);
         } catch (final Exception e) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), e));
             throw new StorageException(e.getMessage());

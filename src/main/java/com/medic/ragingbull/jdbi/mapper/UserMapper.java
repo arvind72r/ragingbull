@@ -21,13 +21,20 @@ public class UserMapper implements ResultSetMapper<User> {
 
     @Override
     public User map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-        return new User(r.getString("id"),
-                r.getString("email"),
+        return new User(
+                r.getString("id"),
                 r.getString("name"),
+                r.getString("hash"),
+                r.getString("email"),
+                r.getString("contact_no"),
+                r.getString("inlet_type"),
+                r.getBoolean("active"),
                 r.getBoolean("verified"),
-                r.getBoolean("isNative"),
+                r.getString("picture_url"),
+                r.getInt("role"),
+                r.getInt("category"),
                 new DateTime(r.getTimestamp("created_at")),
-                new DateTime(r.getTimestamp("updated_at")),
-                r.getString("hash"));
+                new DateTime(r.getTimestamp("updated_at")));
+
     }
 }

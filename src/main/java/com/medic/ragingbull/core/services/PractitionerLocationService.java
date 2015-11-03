@@ -4,13 +4,13 @@
  * RagingBull. All rights reserved
  */
 
-package com.medic.ragingbull.services;
+package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.api.PractitionerLocationResponse;
 import com.medic.ragingbull.api.Session;
-import com.medic.ragingbull.config.Ids;
+import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceFetchException;
 import com.medic.ragingbull.exception.StorageException;

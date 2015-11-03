@@ -4,7 +4,7 @@
  * NakedPenguin. All rights reserved.
  */
 
-package com.medic.ragingbull;
+package com.medic.ragingbull.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
@@ -36,6 +36,15 @@ public class RagingBullConfiguration extends Configuration
 
     public boolean isDbMigrateOnStartup() {
         return dbMigrateOnStartup;
+    }
+
+    @Valid
+    @NotNull
+    @JsonProperty("twilio")
+    private TwilioConfiguration twilioConfiguration = new TwilioConfiguration();
+
+    public TwilioConfiguration getTwilioConfiguration() {
+        return twilioConfiguration;
     }
 
 }

@@ -60,3 +60,11 @@ logging:
       archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}-%i.log.gz
       archivedFileCount: 7
       timeZone: UTC
+
+# Notifications
+# SMS provider name
+twilio:
+  # Account Identification ID
+  accountId: ACab3e8e24ff89ac09f6a1e39a2104b893
+  token: 5e6f82b02b23a687de76a43a47c1a3b7
+  registeredPhoneNo: +14804188821

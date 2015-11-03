@@ -11,9 +11,8 @@ import com.medic.ragingbull.api.RegistrationResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.services.UserService;
+import com.medic.ragingbull.core.services.UserService;
 import io.dropwizard.auth.Auth;
-import jdk.nashorn.internal.runtime.options.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

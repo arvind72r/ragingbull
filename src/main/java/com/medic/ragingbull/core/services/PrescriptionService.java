@@ -4,7 +4,7 @@
  * RagingBull. All rights reserved
  */
 
-package com.medic.ragingbull.services;
+package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.Prescription;
@@ -39,7 +39,7 @@ public class PrescriptionService {
     public PrescriptionResponse createPrescription(Session session, String practitionerId, String locationId, String consultId, Prescription prescription) {
         try {
 
-            String prescriptionId = Ids.generateId(com.medic.ragingbull.config.Ids.Type.PRESCRIPTION);
+            String prescriptionId = Ids.generateId(com.medic.ragingbull.core.constants.Ids.Type.PRESCRIPTION);
             prescriptionDao.createPrescription(prescriptionId, practitionerId, locationId, consultId, prescription.getDrugs());
 
         } catch(Exception e) {

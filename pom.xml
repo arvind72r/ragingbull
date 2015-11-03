@@ -107,6 +107,25 @@
           <artifactId>jbcrypt</artifactId>
           <version>${jbcrypt.version}</version>
       </dependency>
+
+      <!-- Notification jars -->
+      <dependency>
+          <groupId>com.twilio.sdk</groupId>
+          <artifactId>twilio-java-sdk</artifactId>
+          <version>5.3.0</version>
+      </dependency>
+
+      <!-- Netty for API layer -->
+      <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+          <version>4.2.6</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpcore</artifactId>
+          <version>4.2.5</version>
+      </dependency>
   </dependencies>
 
   <build>

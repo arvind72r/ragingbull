@@ -4,29 +4,26 @@
  * NakedPenguin. All rights reserved.
  */
 
-package com.medic.ragingbull.services;
+package com.medic.ragingbull.core.services;
 
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.PasswordReset;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
-import com.medic.ragingbull.config.Ids;
-import com.medic.ragingbull.config.SystemConstants;
+import com.medic.ragingbull.core.constants.Ids;
+import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.PasswordResetDao;
 import com.medic.ragingbull.jdbi.dao.SessionDao;
 import com.medic.ragingbull.jdbi.dao.UserDao;
-import com.medic.ragingbull.util.Time;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.core.Response;
 
 /**
  * Created by Vamshi Molleti

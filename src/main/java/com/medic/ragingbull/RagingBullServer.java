@@ -9,19 +9,18 @@ package com.medic.ragingbull;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.api.Session;
-import com.medic.ragingbull.auth.SessionAuthFactory;
-import com.medic.ragingbull.auth.SessionAuthenticator;
+import com.medic.ragingbull.config.RagingBullConfiguration;
+import com.medic.ragingbull.core.auth.SessionAuthFactory;
+import com.medic.ragingbull.core.auth.SessionAuthenticator;
 import com.medic.ragingbull.config.DbMigrateOnStartupBundle;
 import com.medic.ragingbull.resources.*;
-import com.medic.ragingbull.auth.UserAuthenticator;
-import com.medic.ragingbull.services.UserService;
+import com.medic.ragingbull.core.auth.UserAuthenticator;
+import com.medic.ragingbull.core.services.UserService;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthFactory;
 import io.dropwizard.auth.ChainedAuthFactory;
 import io.dropwizard.auth.basic.BasicAuthFactory;
-import io.dropwizard.auth.oauth.OAuthFactory;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
@@ -83,8 +82,8 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         environment.jersey().register(injector.getInstance(HelloRagingBull.class));
         environment.jersey().register(injector.getInstance(RegistrationResource.class));
         environment.jersey().register(injector.getInstance(AuthResource.class));
-        environment.jersey().register(injector.getInstance(PractitionerResource.class));
-        environment.jersey().register(injector.getInstance(PractitionerLocationResource.class));
+        //environment.jersey().register(injector.getInstance(PractitionerResource.class));
+        //environment.jersey().register(injector.getInstance(PractitionerLocationResource.class));
     }
 
 
