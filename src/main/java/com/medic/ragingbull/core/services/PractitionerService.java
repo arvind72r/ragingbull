@@ -35,26 +35,7 @@ public class PractitionerService {
     public PractitionerResponse createPractitioner(Session session, Practitioner practitioner) throws StorageException {
 
         try {
-            String practitionerId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.PRACTITIONER);
-            String userId = session.getUserId();
-            Boolean verified = false;
-            Boolean active = true;
-
-            int practitionerCreated = practitionerDao.createPractitioner(practitionerId, userId, practitioner.getDescription(), practitioner.getPrimaryContact(), practitioner.getSecondaryContact(), practitioner.getPrimaryId(), practitioner.getSecondaryId(), practitioner.getRegistrationId(), practitioner.getRegistrationAuthority(), practitioner.getLicense(), verified, active);
-
-            if (practitionerCreated == 0) {
-                LOGGER.error(String.format("Error creating a practitioner with email %s", session.getUserEmail()));
-                throw new ResourceCreationException(String.format("Error creating a practitioner with email %s", session.getUserEmail()));
-            }
-
-            practitioner.setId(practitionerId);
-            practitioner.setUserId(userId);
-            practitioner.setVerified(verified);
-            practitioner.setActive(active);
-
-            PractitionerResponse response = new PractitionerResponse(practitioner.getId(), practitioner.getDescription(), practitioner.getPrimaryContact(), practitioner.getSecondaryContact(), practitioner.getPrimaryId(), practitioner.getSecondaryId(), practitioner.getRegistrationId(), practitioner.getRegistrationAuthority(), practitioner.getLicense(), verified, active);
-            response.setStatus(HttpStatus.SC_OK);
-            return response;
+            return null;
         } catch(Exception e) {
             LOGGER.error(String.format("Error creating a practitioner with email %s. Exception: %s", session.getUserEmail(), e));
             throw new StorageException(String.format("Error creating a practitioner with email %s. Exception: %s", session.getUserEmail(), e));
@@ -72,9 +53,9 @@ public class PractitionerService {
                 throw new ResourceCreationException(String.format("Error creating a practitioner with email %s", session.getUserEmail()));
             }
 
-            PractitionerResponse response = new PractitionerResponse(practitioner.getId(), practitioner.getDescription(), practitioner.getPrimaryContact(), practitioner.getSecondaryContact(), practitioner.getPrimaryId(), practitioner.getSecondaryId(), practitioner.getRegistrationId(), practitioner.getRegistrationAuthority(), practitioner.getLicense(), practitioner.getVerified(), practitioner.getActive());
-            response.setStatus(HttpStatus.SC_OK);
-            return response;
+            //PractitionerResponse response = new PractitionerResponse(practitioner.getId(), practitioner.getDescription(), practitioner.getPrimaryContact(), practitioner.getSecondaryContact(), practitioner.getPrimaryId(), practitioner.getSecondaryId(), practitioner.getRegistrationId(), practitioner.getRegistrationAuthority(), practitioner.getLicense(), practitioner.getVerified(), practitioner.getActive());
+            //response.setStatus(HttpStatus.SC_OK);
+            return null;
         } catch(Exception e) {
             LOGGER.error(String.format("Error fetching a practitioner with email %s. Id: %s. Exception: %s", session.getUserEmail(), practitionerId, e));
             throw new StorageException(String.format("Error fetching a practitioner with email %s. Exception: %s", session.getUserEmail(), e));

@@ -8,7 +8,7 @@ package com.medic.ragingbull.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Pharmacy;
+import com.medic.ragingbull.api.PharmacyBack;
 import com.medic.ragingbull.api.PharmacyResponse;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.exception.ResourceCreationException;
@@ -54,23 +54,23 @@ public class PharmacyResource {
     }
 
     @POST
-    public PharmacyResponse createPharmacist(@Auth User user, @QueryParam("")  Optional<Boolean> includeDetails, Pharmacy pharmacy) throws ResourceCreationException {
+    public PharmacyResponse createPharmacist(@Auth User user, @QueryParam("")  Optional<Boolean> includeDetails, PharmacyBack pharmacyBack) throws ResourceCreationException {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Creating new pharmacist name: %s, landmark: %s. Request by: %s", pharmacy.getName(), pharmacy.getLandmark(), user.getName()));
+            LOGGER.debug(String.format("Creating new pharmacist name: %s, landmark: %s. Request by: %s", pharmacyBack.getName(), pharmacyBack.getLandmark(), user.getName()));
         }
 
-        PharmacyResponse response = pharmacyService.createPharmacy(user, pharmacy, includeDetails.get());
+        PharmacyResponse response = pharmacyService.createPharmacy(user, pharmacyBack, includeDetails.get());
         return response;
     }
 
     @PUT
-    public PharmacyResponse modifyPharmacist(Pharmacy pharmacy) {
+    public PharmacyResponse modifyPharmacist(PharmacyBack pharmacyBack) {
         return null;
     }
 
     @DELETE
     @Path("/{id}")
-    public PharmacyResponse deactivatePharmacist(Pharmacy pharmacy) {
+    public PharmacyResponse deactivatePharmacist(PharmacyBack pharmacyBack) {
         return null;
     }
 }

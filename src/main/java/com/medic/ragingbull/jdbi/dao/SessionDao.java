@@ -24,8 +24,8 @@ import java.util.List;
 @RegisterMapper(SessionMapper.class)
 public interface SessionDao {
 
-    @SqlUpdate("INSERT INTO SESSION (id, user_id, user_email, active, expiry) VALUES (:token, :user_id, :email, true, :expiry)")
-    public int createSession(@Bind("token") String token, @Bind("user_id")  String userId, @Bind("email") String email, @BindTimeStamp("expiry") long expiry);
+    @SqlUpdate("INSERT INTO SESSION (id, user_id, user_email, role, expiry) VALUES (:token, :user_id, :email, :role, :expiry)")
+    public int createSession(@Bind("token") String token, @Bind("user_id")  String userId, @Bind("email") String email, @Bind("role") Integer role, @BindTimeStamp("expiry") long expiry);
 
     @SqlQuery("SELECT * FROM SESSION where id = :token")
     public Session getSession(@Bind("token") String token);
@@ -33,7 +33,7 @@ public interface SessionDao {
     @SqlQuery("SELECT * FROM SESSION where user_id = :user_id")
     public List<Session> getSessionsPerUserId(@Bind("user_id") String user_id);
 
-    @SqlQuery("SELECT * FROM SESSION where active = true and user_email = :user_email")
+    @SqlQuery("SELECT * FROM SESSION where user_email = :user_email")
     public List<Session> getActiveSessionsPerUserEmail(@Bind("user_email") String userEmail);
 
     @SqlUpdate("UPDATE SESSION set active = false where id = :token")

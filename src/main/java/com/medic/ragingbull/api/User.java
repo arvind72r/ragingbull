@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.medic.ragingbull.core.access.RoleGenerator;
+import com.medic.ragingbull.core.access.roles.Role;
 import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -40,6 +42,9 @@ public class User {
     @JsonProperty
     private String password;
 
+    @JsonIgnore
+    private String hash;
+
     @Length(max = ValidationConstants.EMAIL_MAX,
             min = ValidationConstants.EMAIL_MIN,
             message = ValidationConstants.EMAIL_MSG_SIZE)
@@ -53,7 +58,7 @@ public class User {
             message = ValidationConstants.PHONE_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.PHONE_MSG_EMPTY)
     @JsonProperty
-    private String contactNo;
+    private String phone;
 
     @Length(max = ValidationConstants.INLET_TYPE_MAX,
             min = ValidationConstants.INLET_TYPE_MIN,
@@ -63,19 +68,22 @@ public class User {
     private String inletType;
 
     @JsonProperty
+    private String pictureUrl;
+
+    @JsonProperty
     private Boolean verified;
 
     @JsonProperty
     private Boolean active;
 
     @JsonProperty
-    private String pictureUrl;
+    private Practitioner practitioner;
+
+    @JsonProperty
+    private Pharmacist pharmacist;
 
     @JsonIgnore
-    private Integer role;
-
-    @JsonIgnore
-    private Integer category;
+    private Integer role = 0;
 
     @JsonIgnore
     private DateTime updatedAt;
@@ -83,40 +91,43 @@ public class User {
     @JsonIgnore
     private DateTime createdAt;
 
-    @JsonIgnore
-    private String hash;
-
     public User() {
         // For Deserialization
     }
 
-    public User(String id, String name, String password, String email, String contactNo, String inletType, Boolean verified, Boolean active, String pictureUrl) {
-        this.id = id;
+    /**
+     * Constructor for the JSON Mapper for request
+     */
+    public User(String name, String password, String email, String phone, String inletType, String pictureUrl, Practitioner practitioner, Pharmacist pharmacist) {
         this.name = name;
         this.password = password;
         this.email = email;
-        this.contactNo = contactNo;
+        this.phone = phone;
         this.inletType = inletType;
-        this.verified = verified;
-        this.active = active;
         this.pictureUrl = pictureUrl;
+        this.practitioner = practitioner;
+        this.pharmacist = pharmacist;
+        this.role = 0; // DEFAULT VALUE
     }
 
-    public User(String id, String name, String hash, String email, String contactNo, String inletType, Boolean verified, Boolean active, String pictureUrl, Integer role, Integer category, DateTime updatedAt, DateTime createdAt) {
+    /**
+     * Constructor to be used by DAO Mapper.
+     */
+    public User(String id, String name, String hash, String email, String phone, String inletType, Boolean active, Boolean verified, String pictureUrl, Integer role, DateTime updatedAt, DateTime createdAt) {
         this.id = id;
         this.name = name;
         this.hash = hash;
         this.email = email;
-        this.contactNo = contactNo;
+        this.phone = phone;
         this.inletType = inletType;
-        this.verified = verified;
         this.active = active;
+        this.verified = verified;
         this.pictureUrl = pictureUrl;
         this.role = role;
-        this.category = category;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
     }
+
 
     public String getId() {
         return id;
@@ -138,8 +149,8 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getHash() {
+        return hash;
     }
 
     public String getEmail() {
@@ -150,44 +161,20 @@ public class User {
         this.email = email;
     }
 
-    public String getContactNo() {
-        return contactNo;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getInletType() {
         return inletType;
     }
 
-    public void setInletType(String inletType) {
-        this.inletType = inletType;
-    }
-
-    public Integer getRole() {
-        return role;
-    }
-
-    public void setRole(Integer role) {
-        this.role = role;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-
     public Boolean getVerified() {
         return verified;
-    }
-
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
     }
 
     public Boolean getActive() {
@@ -202,31 +189,41 @@ public class User {
         return pictureUrl;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public Integer getRole() {
+        if (role == 0) {
+            // Not role set. Generate role
+            if (practitioner != null) {
+                role = RoleGenerator.generateRole(Role.NATIVE_USER, Role.PRACTITIONER);
+            } else if (pharmacist != null) {
+                role = RoleGenerator.generateRole(Role.NATIVE_USER, Role.PHARMACIST);
+            } else {
+                role = RoleGenerator.generateRole(Role.NATIVE_USER);
+            }
+        }
+        return role;
+    }
+
+    public Practitioner getPractitioner() {
+        return practitioner;
+    }
+
+    public void setPractitioner(Practitioner practitioner) {
+        this.practitioner = practitioner;
+    }
+
+    public Pharmacist getPharmacist() {
+        return pharmacist;
+    }
+
+    public void setPharmacist(Pharmacist pharmacist) {
+        this.pharmacist = pharmacist;
     }
 
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(DateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public DateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(DateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
     }
 }

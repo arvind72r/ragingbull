@@ -15,12 +15,12 @@ import org.joda.time.DateTime;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Practitioner extends Entity {
+public class Pharmacist extends Entity {
 
-    public Practitioner() {
+    public Pharmacist() {
     }
 
-    public Practitioner(String id, String userId, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license) {
+    public Pharmacist(String id, String userId, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license) {
         this.id = id;
         this.userId = userId;
         this.description = description;
@@ -33,7 +33,7 @@ public class Practitioner extends Entity {
         this.license = license;
     }
 
-    public Practitioner(String id, String userId, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license, DateTime createdAt, DateTime updatedAt) {
+    public Pharmacist(String id, String userId, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.description = description;
@@ -47,4 +47,5 @@ public class Practitioner extends Entity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 }

@@ -49,7 +49,7 @@ public class TwilioNotifier extends Notifiable {
             Account mainAccount = client.getAccount();
             final SmsFactory messageFactory = mainAccount.getSmsFactory();
             final List<NameValuePair> messageParams = new ArrayList<NameValuePair>();
-            messageParams.add(new BasicNameValuePair("To", user.getContactNo())); // Replace with a valid phone number
+            messageParams.add(new BasicNameValuePair("To", user.getPhone())); // Replace with a valid phone number
             messageParams.add(new BasicNameValuePair("From", configuration.getTwilioConfiguration().getRegisteredPhoneNo())); // Replace with a valid phone number in your account
             messageParams.add(new BasicNameValuePair("Body", body));
             messageFactory.create(messageParams);

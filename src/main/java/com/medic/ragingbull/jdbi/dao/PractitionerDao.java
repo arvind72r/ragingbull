@@ -20,9 +20,9 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 public interface PractitionerDao {
 
     @SqlUpdate("INSERT INTO practitioner (id, user_id, description, primary_contact, secondary_contact, primary_id, " +
-            "secondary_id, registration_id, registration_authority, license, verified, active) VALUES(:id, :userId, " +
+            "secondary_id, registration_id, registration_authority, license) VALUES(:id, :userId, " +
             ":description, :primaryContact, :secondaryContact, :primaryId, :secondaryId, :registrationId, " +
-            ":registrationAuthority, :license, :verified, :active)")
+            ":registrationAuthority, :license)")
     int createPractitioner(@Bind("id") String practitionerId,
                            @Bind("userId") String userId,
                            @Bind("description") String description,
@@ -32,9 +32,7 @@ public interface PractitionerDao {
                            @Bind("secondaryId") String secondaryId,
                            @Bind("registrationId") String registrationId,
                            @Bind("registrationAuthority") String registrationAuthority,
-                           @Bind("license") String license,
-                           @Bind("verified") Boolean verified,
-                           @Bind("active") Boolean active);
+                           @Bind("license") String license);
 
     @SqlQuery("SELECT * FROM practitioner where id = :id")
     Practitioner getPractitionerById(@Bind("id") String id);

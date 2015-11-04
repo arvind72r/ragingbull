@@ -34,4 +34,9 @@ public interface InviteDao {
 
     @SqlQuery("SELECT * FROM invite where user_id = :user_id")
     List<Invite> getInviteByEmail(@Bind("user_id") String user_Id);
+
+    @SqlQuery("SELECT * FROM invite where user_id = :user_id and availed = false")
+    Invite getInviteByUserId(@Bind("user_id") String userId);
+    @SqlQuery("SELECT * FROM invite where code = :code")
+    Invite getInviteByCode(@Bind("code") String code);
 }

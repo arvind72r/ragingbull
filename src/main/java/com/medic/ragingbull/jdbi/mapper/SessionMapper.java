@@ -20,6 +20,11 @@ import java.sql.SQLException;
 public class SessionMapper implements ResultSetMapper<Session> {
     @Override
     public Session map(int i, ResultSet r, StatementContext cntx) throws SQLException {
-        return new Session(r.getString("token"), r.getString("user_id"), r.getString("data"), new DateTime(r.getDate("expiry")), new DateTime(r.getDate("created_at")));
+        return new Session(r.getString("id"),
+                r.getString("user_id"),
+                r.getString("user_email"),
+                r.getInt("role"),
+                new DateTime(r.getDate("expiry")),
+                new DateTime(r.getDate("created_at")));
     }
 }

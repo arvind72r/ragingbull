@@ -26,13 +26,12 @@ public class UserMapper implements ResultSetMapper<User> {
                 r.getString("name"),
                 r.getString("hash"),
                 r.getString("email"),
-                r.getString("contact_no"),
+                r.getString("phone"),
                 r.getString("inlet_type"),
                 r.getBoolean("active"),
                 r.getBoolean("verified"),
                 r.getString("picture_url"),
                 r.getInt("role"),
-                r.getInt("category"),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));
 

@@ -6,7 +6,8 @@
 
 package com.medic.ragingbull.jdbi.mapper;
 
-import com.medic.ragingbull.api.Practitioner;
+import com.medic.ragingbull.api.Pharmacist;
+import com.medic.ragingbull.api.PharmacyBack;
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
@@ -17,11 +18,11 @@ import java.sql.SQLException;
 /**
  * Created by Vamshi Molleti
  */
-public class PractitionerMapper implements ResultSetMapper<Practitioner> {
+public class PharmacistMapper implements ResultSetMapper<Pharmacist> {
+
     @Override
-    public Practitioner map(int i, ResultSet r, StatementContext statementContext) throws SQLException {
-        return new Practitioner(
-                r.getString("id"),
+    public Pharmacist map(int i, ResultSet r, StatementContext cntx) throws SQLException {
+        return new Pharmacist(r.getString("id"),
                 r.getString("user_id"),
                 r.getString("description"),
                 r.getString("primary_contact"),
@@ -34,4 +35,5 @@ public class PractitionerMapper implements ResultSetMapper<Practitioner> {
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));
     }
+
 }

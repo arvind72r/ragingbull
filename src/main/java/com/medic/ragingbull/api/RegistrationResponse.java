@@ -11,20 +11,20 @@ package com.medic.ragingbull.api;
  */
 public class RegistrationResponse {
 
-    private String name;
+    private String id;
     private String email;
     private String inviteId;
     private long expiry;
 
-    public RegistrationResponse(String name, String email, String inviteId, long expiry) {
-        this.name = name;
+    public RegistrationResponse(String id, String email, String inviteId, long expiry) {
+        this.id = id;
         this.email = email;
         this.inviteId = inviteId;
         this.expiry = expiry;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     public String getEmail() {

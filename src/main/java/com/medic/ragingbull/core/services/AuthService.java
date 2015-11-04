@@ -42,20 +42,7 @@ public class AuthService {
         this.passwordResetDao = passwordResetDao;
     }
 
-    public void loginUser(Session session) throws StorageException {
-        try {
-            int sessionCreated = sessionDao.createSession(session.getToken(), session.getUserId(), session.getUserEmail(), session.getExpiry().getMillis());
-            if (sessionCreated == 0) {
-                LOGGER.error(String.format("Error creating session for user %s.", session.getUserEmail()));
-                throw new ResourceCreationException("Error creating session for the user. Please try again");
-            }
-        } catch(Exception e) {
-            LOGGER.error(String.format("Error creating session for user %s. Exception %s", session.getUserEmail(), e));
-            throw new StorageException(e.getMessage());
 
-        }
-
-    }
 
     public void logoutUser(Session session) throws StorageException {
         try {

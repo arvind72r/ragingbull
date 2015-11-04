@@ -9,7 +9,6 @@ package com.medic.ragingbull.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.http.HttpStatus;
 import org.joda.time.DateTime;
 
 /**
@@ -95,34 +94,34 @@ public  class PharmacyResponse extends AbstractResponse{
 
     public PharmacyResponse() {};
 
-    public PharmacyResponse(Pharmacy pharmacy, Boolean includeDetails) {
+    public PharmacyResponse(PharmacyBack pharmacyBack, Boolean includeDetails) {
 
-        this.id = pharmacy.getId();
-        this.name = pharmacy.getName();
-        this.location = pharmacy.getLocation();
-        this.landmark = pharmacy.getLandmark();
-        this.primaryContact = pharmacy.getPrimaryContact();
-        this.deliveryRadius = pharmacy.getDeliveryRadius();
-        this.workingHours = pharmacy.getWorkingHours();
-        this.workingDays = pharmacy.getWorkingDays();
-        this.isVerified = pharmacy.getIsVerified();
-        this.isActive = pharmacy.getIsActive();
-        this.createdAt = pharmacy.getCreatedAt();
-        this.updatedAt = pharmacy.getUpdatedAt();
+        this.id = pharmacyBack.getId();
+        this.name = pharmacyBack.getName();
+        this.location = pharmacyBack.getLocation();
+        this.landmark = pharmacyBack.getLandmark();
+        this.primaryContact = pharmacyBack.getPrimaryContact();
+        this.deliveryRadius = pharmacyBack.getDeliveryRadius();
+        this.workingHours = pharmacyBack.getWorkingHours();
+        this.workingDays = pharmacyBack.getWorkingDays();
+        this.isVerified = pharmacyBack.getIsVerified();
+        this.isActive = pharmacyBack.getIsActive();
+        this.createdAt = pharmacyBack.getCreatedAt();
+        this.updatedAt = pharmacyBack.getUpdatedAt();
 
         if (includeDetails) {
-            this.secondaryContact = pharmacy.getSecondaryContact();
-            this.contactName = pharmacy.getContactName();
-            this.address1 = pharmacy.getAddress1();
-            this.address2 = pharmacy.getAddress2();
-            this.city = pharmacy.getCity();
-            this.state = pharmacy.getState();
-            this.zip = pharmacy.getZip();
-            this.country = pharmacy.getCountry();
+            this.secondaryContact = pharmacyBack.getSecondaryContact();
+            this.contactName = pharmacyBack.getContactName();
+            this.address1 = pharmacyBack.getAddress1();
+            this.address2 = pharmacyBack.getAddress2();
+            this.city = pharmacyBack.getCity();
+            this.state = pharmacyBack.getState();
+            this.zip = pharmacyBack.getZip();
+            this.country = pharmacyBack.getCountry();
 
-            this.longitude = pharmacy.getLongitude();
-            this.latitude = pharmacy.getLatitude();
-            this.licenseDoc = pharmacy.getLicenseDoc();
+            this.longitude = pharmacyBack.getLongitude();
+            this.latitude = pharmacyBack.getLatitude();
+            this.licenseDoc = pharmacyBack.getLicenseDoc();
         }
     }
 

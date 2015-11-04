@@ -7,15 +7,13 @@
 package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Pharmacy;
+import com.medic.ragingbull.api.PharmacyBack;
 import com.medic.ragingbull.api.PharmacyResponse;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.core.constants.ErrorMessages;
-import com.medic.ragingbull.core.constants.Ids;
-import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceFetchException;
-import com.medic.ragingbull.jdbi.dao.PharmacyDao;
+import com.medic.ragingbull.jdbi.dao.PharmacistDao;
 import org.apache.http.HttpStatus;
 import org.slf4j.LoggerFactory;
 
@@ -25,78 +23,33 @@ import org.slf4j.LoggerFactory;
 public class PharmacyService {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(PharmacyService.class);
-    private final PharmacyDao pharmacyDao;
+    private final PharmacistDao pharmacistDao;
 
     @Inject
-    public PharmacyService(PharmacyDao pharmacyDao) {
-        this.pharmacyDao = pharmacyDao;
+    public PharmacyService(PharmacistDao pharmacistDao) {
+        this.pharmacistDao = pharmacistDao;
     }
 
-    public PharmacyResponse createPharmacy(User user, Pharmacy pharmacy, Boolean includeDetails) throws ResourceCreationException {
+    public PharmacyResponse createPharmacy(User user, PharmacyBack pharmacyBack, Boolean includeDetails) throws ResourceCreationException {
 
         try {
-            String pharmacyId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.PHARMACY);
-            String name = pharmacy.getName();
-            String contactName = pharmacy.getContactName();
-            String location = pharmacy.getLocation();
-            Integer primaryContact = pharmacy.getPrimaryContact();
-            Integer secondaryContact = pharmacy.getSecondaryContact() == null ? primaryContact: pharmacy.getSecondaryContact();
-            String address1 = pharmacy.getAddress1();
-            String address2 = pharmacy.getAddress2();
-            String city = pharmacy.getCity();
-            String state = pharmacy.getState();
-            Long zip = pharmacy.getZip();
-            String country = pharmacy.getCountry();
-            String landmark = pharmacy.getLandmark();
-            Float longitude = pharmacy.getLongitude();
-            Float latitude = pharmacy.getLatitude();
-            Integer deliveryRadius = pharmacy.getDeliveryRadius() == null ? SystemConstants.DEFAULT_DELIVERY_RADIUS : pharmacy.getDeliveryRadius();
-            Integer workingHours = pharmacy.getWorkingHours() == null ? SystemConstants.DEFAULT_WORKING_HOURS : pharmacy.getWorkingHours();
-            Integer workingDays = pharmacy.getWorkingDays() == null ? SystemConstants.DEFAULT_WORKING_DAYS : pharmacy.getWorkingDays();
-            Boolean isVerified = Boolean.FALSE;
-            Boolean isActive = Boolean.FALSE;
-            String licenseDoc  = pharmacy.getLicenseDoc();
-
-            // Setting generatedId
-            pharmacy.setId(pharmacyId);
-            pharmacy.setSecondaryContact(secondaryContact);
-            pharmacy.setDeliveryRadius(deliveryRadius);
-            pharmacy.setWorkingHours(workingHours);
-            pharmacy.setWorkingDays(workingDays);
-            pharmacy.setIsActive(isActive);
-            pharmacy.setIsVerified(isVerified);
-
-            int pharmacyCreated = pharmacyDao.createPharmacy(pharmacyId, name, contactName, location, primaryContact, secondaryContact, address1, address2, city, state, zip, country, landmark,longitude, latitude, deliveryRadius, workingHours, workingDays, isVerified, isActive, licenseDoc);
-
-            if (pharmacyCreated == 0) {
-                // Error creating pharmacy
-                PharmacyResponse response = new PharmacyResponse();
-                response.setStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                response.setErrorMessage(ErrorMessages.RESOURCE_CREATION_ERROR);
-                return response;
-
-            } else {
-                PharmacyResponse response = new PharmacyResponse(pharmacy, includeDetails);
-                response.setStatus(HttpStatus.SC_OK);
-                return response;
-            }
-
+            return null;
         } catch(Exception e) {
-            LOGGER.error(String.format("Error creating pharmacy name: %s, landmark: %s. Request by: %s. Error: %s", pharmacy.getName(), pharmacy.getLandmark(), user.getName(), e));
+            LOGGER.error(String.format("Error creating pharmacy name: %s, landmark: %s. Request by: %s. Error: %s", pharmacyBack.getName(), pharmacyBack.getLandmark(), user.getName(), e));
             throw new ResourceCreationException(e.getMessage());
         }
     }
 
     public PharmacyResponse getPharmacy(User user, String pharmacyId) throws ResourceFetchException {
         try {
-            Pharmacy pharmacy = pharmacyDao.getById(pharmacyId);
-            if (pharmacy == null) {
+            PharmacyBack pharmacyBack = pharmacistDao.getById(pharmacyId);
+            if (pharmacyBack == null) {
                 PharmacyResponse response = new PharmacyResponse();
                 response.setStatus(HttpStatus.SC_NOT_FOUND);
                 response.setErrorMessage(ErrorMessages.RESOURCE_NOT_FOUND);
                 return response;
             } else {
-                PharmacyResponse response = new PharmacyResponse(pharmacy, false);
+                PharmacyResponse response = new PharmacyResponse(pharmacyBack, false);
                 response.setStatus(HttpStatus.SC_OK);
                 return response;
             }

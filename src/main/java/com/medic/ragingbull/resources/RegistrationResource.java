@@ -37,15 +37,9 @@ public class RegistrationResource {
     }
 
     @GET
-    public Response getAllRegistrationStatuses(@Auth Session session) {
-        Response response = userService.getAllUserInvites(session.getUserEmail());
-        return response;
-    }
-
-    @GET
     @Path("/{id}")
-    public Response registrationStatus(@Auth Session session, @PathParam("id") final String registrationId) {
-        Response response = userService.getUserInvite(registrationId);
+    public Response resendInviteAuthCode(@Auth Session session, @PathParam("id") final String userId) throws StorageException {
+        Response response = userService.resendInviteAuthCode(session, userId);
         return response;
     }
 
@@ -57,8 +51,8 @@ public class RegistrationResource {
 
     @POST
     @Path("/{id}/approve")
-    public Response approveRegisteredUser(@PathParam("id") final String registrationId) {
-        Response response = userService.approveInvite(registrationId);
+    public Response approveRegisteredUser(@PathParam("id") final String authCode) {
+        Response response = userService.approveInvite(authCode);
         return response;
     }
 

@@ -19,16 +19,15 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(UserMapper.class)
 public interface UserDao {
 
-    @SqlUpdate("INSERT INTO user (id, email, name, hash, contact_no, inlet_type, role, category, picture_url) " +
-            "VALUES(:id, :email, :name, :hash, :contactNo, :inletType, :role, :category, :pictureUrl)")
+    @SqlUpdate("INSERT INTO user (id, email, name, hash, phone, inlet_type, role, picture_url) " +
+            "VALUES(:id, :email, :name, :hash, :phone, :inletType, :role, :pictureUrl)")
     int createUser(@Bind("id") String id,
                    @Bind("name") String name,
                    @Bind("email") String email,
                    @Bind("hash") String hash,
-                   @Bind("contactNo") String contactNo,
+                   @Bind("phone") String phone,
                    @Bind("inletType") String inletType,
                    @Bind("role")Integer role,
-                   @Bind("category")Integer category,
                    @Bind("pictureUrl")String pictureUrl);
 
     @SqlQuery("SELECT * FROM user where email = :email")

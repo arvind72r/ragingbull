@@ -14,10 +14,12 @@ import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.auth.SessionAuthFactory;
 import com.medic.ragingbull.core.auth.SessionAuthenticator;
 import com.medic.ragingbull.config.DbMigrateOnStartupBundle;
+import com.medic.ragingbull.core.providers.Authorization;
 import com.medic.ragingbull.resources.*;
 import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.services.UserService;
 import io.dropwizard.Application;
+import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthFactory;
 import io.dropwizard.auth.ChainedAuthFactory;
 import io.dropwizard.auth.basic.BasicAuthFactory;
@@ -43,6 +45,7 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
     public Injector createInjector(Module module) {
         return Guice.createInjector(module);
     }
+
     @Override
     public void initialize(Bootstrap<RagingBullConfiguration> bootstrap) {
         // Set up the migration bundle to manage the databases
@@ -77,6 +80,8 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
 
         environment.jersey().register(AuthFactory.binder(chainedFactory));
 
+        // Registering providers
+        //environment.jersey().register(injector.getInstance(Authorization.class));
 
         //Registering Resources
         environment.jersey().register(injector.getInstance(HelloRagingBull.class));

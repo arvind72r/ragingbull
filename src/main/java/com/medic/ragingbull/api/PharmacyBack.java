@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Pharmacy {
+public class PharmacyBack {
 
     @JsonProperty
     private String id;
@@ -136,7 +136,7 @@ public class Pharmacy {
     @JsonProperty
     private DateTime updatedAt;
 
-    public Pharmacy(String name, String contactName, String location, Integer primaryContact, Integer secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer deliveryRadius, Integer workingHours, Integer workingDays, Boolean isVerified, Boolean isActive, String licenseDoc, DateTime createdAt, DateTime updatedAt) {
+    public PharmacyBack(String name, String contactName, String location, Integer primaryContact, Integer secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer deliveryRadius, Integer workingHours, Integer workingDays, Boolean isVerified, Boolean isActive, String licenseDoc, DateTime createdAt, DateTime updatedAt) {
         this.name = name;
         this.contactName = contactName;
         this.location = location;
