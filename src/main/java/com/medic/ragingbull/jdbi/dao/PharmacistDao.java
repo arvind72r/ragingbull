@@ -6,6 +6,7 @@
 
 package com.medic.ragingbull.jdbi.dao;
 
+import com.medic.ragingbull.api.Pharmacist;
 import com.medic.ragingbull.api.PharmacyBack;
 import com.medic.ragingbull.jdbi.mapper.PharmacistMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
@@ -43,6 +44,6 @@ public interface PharmacistDao {
     @SqlQuery("SELECT * FROM pharmacist where primary_contact = :primary_contact")
     PharmacyBack getByPrimaryContact(@Bind("primary_contact") String primaryContact);
 
-
-
+    @SqlQuery("SELECT * FROM pharmacist where user_id = :userId")
+    Pharmacist getByUserId(@Bind("userId") String userId);
 }

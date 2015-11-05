@@ -80,14 +80,12 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
 
         environment.jersey().register(AuthFactory.binder(chainedFactory));
 
-        // Registering providers
-        //environment.jersey().register(injector.getInstance(Authorization.class));
-
         //Registering Resources
         environment.jersey().register(injector.getInstance(HelloRagingBull.class));
         environment.jersey().register(injector.getInstance(RegistrationResource.class));
         environment.jersey().register(injector.getInstance(AuthResource.class));
-        //environment.jersey().register(injector.getInstance(PractitionerResource.class));
+        environment.jersey().register(injector.getInstance(UserResource.class));
+        environment.jersey().register(injector.getInstance(OAuthResource.class));
         //environment.jersey().register(injector.getInstance(PractitionerLocationResource.class));
     }
 

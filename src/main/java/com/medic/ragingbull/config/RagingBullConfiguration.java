@@ -43,8 +43,17 @@ public class RagingBullConfiguration extends Configuration
     @JsonProperty("twilio")
     private TwilioConfiguration twilioConfiguration = new TwilioConfiguration();
 
+    @Valid
+    @NotNull
+    @JsonProperty("google")
+    private GoogleConfiguration googleConfiguration = new GoogleConfiguration();
+
+    public GoogleConfiguration getGoogleConfiguration() {
+        return googleConfiguration;
+    }
     public TwilioConfiguration getTwilioConfiguration() {
         return twilioConfiguration;
     }
+
 
 }

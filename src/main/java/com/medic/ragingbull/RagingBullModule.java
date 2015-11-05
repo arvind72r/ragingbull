@@ -10,10 +10,7 @@ import com.google.inject.AbstractModule;
 import com.medic.ragingbull.api.Pharmacist;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.providers.Authorization;
-import com.medic.ragingbull.core.services.AuthService;
-import com.medic.ragingbull.core.services.PractitionerLocationService;
-import com.medic.ragingbull.core.services.PractitionerService;
-import com.medic.ragingbull.core.services.UserService;
+import com.medic.ragingbull.core.services.*;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.resources.*;
 import com.medic.ragingbull.core.auth.UserAuthenticator;
@@ -61,6 +58,7 @@ public class RagingBullModule extends AbstractModule {
         // Binding Services
         bind(UserService.class).asEagerSingleton();
         bind(AuthService.class).asEagerSingleton();
+        bind(OAuthService.class).asEagerSingleton();
         bind(PractitionerService.class).asEagerSingleton();
         bind(PractitionerLocationService.class).asEagerSingleton();
 
@@ -71,6 +69,8 @@ public class RagingBullModule extends AbstractModule {
         bind(HelloRagingBull.class).asEagerSingleton();
         bind(RegistrationResource.class).asEagerSingleton();
         bind(AuthResource.class).asEagerSingleton();
+        bind(UserResource.class).asEagerSingleton();
+        bind(OAuthResource.class).asEagerSingleton();
         bind(PractitionerResource.class).asEagerSingleton();
         bind(PractitionerLocationResource.class).asEagerSingleton();
 

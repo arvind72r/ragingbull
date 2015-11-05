@@ -9,6 +9,7 @@ package com.medic.ragingbull.core.services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.core.access.roles.Role;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.Notifiable;
 import com.medic.ragingbull.core.notification.NotificationFactory;
@@ -200,10 +201,29 @@ public class UserService {
         return null;
     }
 
-    public Response getAllUserInvites(String userEmail) {
-        List<Invite> invite = inviteDao.getInviteByEmail(userEmail);
-        return Response.ok(invite).build();
+    public User getUser(Session session, String userId, Boolean hydrated) {
+        if (StringUtils.equals(session.getUserId(), userId)) {
+            User user = userDao.getById(userId);
+
+            if (hydrated) {
+                if ((user.getRole() & Role.PRACTITIONER.getBitValue()) == Role.PRACTITIONER.getBitValue()) {
+                    Practitioner practitioner = practitionerDao.getByUserId(userId);
+                    user.setPractitioner(practitioner);
+                } else if((user.getRole() & Role.PHARMACIST.getBitValue()) == Role.PHARMACIST.getBitValue()) {
+                    Pharmacist pharmacist = pharmacistDao.getByUserId(userId);
+                    user.setPharmacist(pharmacist);
+                }
+            }
+            return user;
+        }
+        return null;
     }
 
-
+    public User updateUser(Session session, String userId, User user) {
+        if (StringUtils.equals(session.getUserId(), userId)) {
+            userDao.updateInfo(userId,  user.getName(), user.getEmail(), user.getPictureUrl());
+            return user;
+        }
+        return null;
+    }
 }

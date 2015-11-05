@@ -71,10 +71,10 @@ public class Entity {
     @JsonProperty
     public String license;
 
-    @JsonProperty
+    @JsonIgnore
     public DateTime createdAt;
 
-    @JsonProperty
+    @JsonIgnore
     public DateTime updatedAt;
 
     public void setId(String id) {
