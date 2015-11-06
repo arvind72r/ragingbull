@@ -7,15 +7,19 @@
 package com.medic.ragingbull;
 
 import com.google.inject.AbstractModule;
-import com.medic.ragingbull.api.Pharmacist;
 import com.medic.ragingbull.config.RagingBullConfiguration;
+import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.providers.Authorization;
 import com.medic.ragingbull.core.services.*;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.resources.*;
-import com.medic.ragingbull.core.auth.UserAuthenticator;
+import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Environment;
+import org.apache.http.client.HttpClient;
 import org.skife.jdbi.v2.DBI;
+
+import javax.ws.rs.client.Client;
 
 /**
  * Created by Vamshi Molleti
@@ -40,7 +44,13 @@ public class RagingBullModule extends AbstractModule {
         // Binding Configs
         bind(RagingBullConfiguration.class).toInstance(configuration);
 
+        // Register HTTP Client
+        //final HttpClient httpClient = new HttpClientBuilder(environment).using(configuration.getHttpClientConfiguration()).build("Sample Application");
 
+        final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build("Sample Application");
+
+        //bind(HttpClient.class).toInstance(httpClient);
+        bind(Client.class).toInstance(client);
         // Binding Authenticator
         bind(UserAuthenticator.class).asEagerSingleton();
 
@@ -50,6 +60,7 @@ public class RagingBullModule extends AbstractModule {
         bind(PasswordResetDao.class).toInstance(database.onDemand(PasswordResetDao.class));
         bind(InviteDao.class).toInstance(database.onDemand(InviteDao.class));
         bind(SessionDao.class).toInstance(database.onDemand(SessionDao.class));
+        bind(OAuthDao.class).toInstance(database.onDemand(OAuthDao.class));
         bind(PractitionerDao.class).toInstance(database.onDemand(PractitionerDao.class));
         bind(PharmacistDao.class).toInstance(database.onDemand(PharmacistDao.class));
 

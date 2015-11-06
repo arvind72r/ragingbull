@@ -8,6 +8,8 @@ package com.medic.ragingbull.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.dropwizard.client.HttpClientConfiguration;
+import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 
 import javax.validation.Valid;
@@ -40,6 +42,24 @@ public class RagingBullConfiguration extends Configuration
 
     @Valid
     @NotNull
+    @JsonProperty("httpClient")
+    private HttpClientConfiguration httpClient = new HttpClientConfiguration();
+
+    @Valid
+    @NotNull
+    @JsonProperty("jerseyClient")
+    private JerseyClientConfiguration jersyClient = new JerseyClientConfiguration();
+
+    public HttpClientConfiguration getHttpClientConfiguration() {
+        return httpClient;
+    }
+
+    public JerseyClientConfiguration getJerseyClientConfiguration() {
+        return jersyClient;
+    }
+
+    @Valid
+    @NotNull
     @JsonProperty("twilio")
     private TwilioConfiguration twilioConfiguration = new TwilioConfiguration();
 
@@ -48,6 +68,12 @@ public class RagingBullConfiguration extends Configuration
     @JsonProperty("google")
     private GoogleConfiguration googleConfiguration = new GoogleConfiguration();
 
+    @Valid
+    @NotNull
+    @JsonProperty("facebook")
+    private FacebookConfiguration facebookConfiguration = new FacebookConfiguration();
+
+
     public GoogleConfiguration getGoogleConfiguration() {
         return googleConfiguration;
     }
@@ -55,5 +81,7 @@ public class RagingBullConfiguration extends Configuration
         return twilioConfiguration;
     }
 
-
+    public FacebookConfiguration getFacebookConfiguration() {
+        return facebookConfiguration;
+    }
 }

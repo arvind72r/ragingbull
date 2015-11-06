@@ -29,4 +29,6 @@ public interface SystemConstants {
     // RANDOMS
     Integer MAX_BOUND = 100000;
 
+    // OAuthResources
+    String FACEBOOK_GRAPH_API_URL = "https://graph.facebook.com/v2.5/";
 }

@@ -171,27 +171,7 @@ public class UserService {
         try {
             User user = userDao.getByEmail(username);
             if (user != null && BCrypt.checkpw(password, user.getHash())) {
-                List<Session> sessions = sessionDao.getActiveSessionsPerUserEmail(username);
-
-                if (sessions.size() > 0) {
-                    sessions.get(0).setIsUserValid(user.getVerified());
-                    sessions.get(0).setPhone(user.getPhone());
-                    return sessions.get(0);
-                }
-
-                String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
-                DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
-                DateTime createdAt = new DateTime();
-                Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), user.getRole(), expiry, createdAt);
-                loggedInUserSession.setIsUserValid(user.getVerified());
-
-                int sessionCreated = sessionDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());
-                if (sessionCreated == 0) {
-                    LOGGER.error(String.format("Error creating session for user %s.", user.getEmail()));
-                    throw new ResourceCreationException("Error creating session for the user. Please try again");
-                }
-
-                return loggedInUserSession;
+                return getSession(user);
             }
         } catch(Exception e) {
             LOGGER.error(String.format("Error creating session for user %s. Exception %s", username, e));
@@ -199,6 +179,30 @@ public class UserService {
 
         }
         return null;
+    }
+
+    public Session getSession(User user) throws ResourceCreationException {
+        List<Session> sessions = sessionDao.getActiveSessionsPerUserEmail(user.getEmail());
+
+        if (sessions.size() > 0) {
+            sessions.get(0).setIsUserValid(user.getVerified());
+            sessions.get(0).setPhone(user.getPhone());
+            return sessions.get(0);
+        }
+
+        String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
+        DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
+        DateTime createdAt = new DateTime();
+        Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), user.getRole(), expiry, createdAt);
+        loggedInUserSession.setIsUserValid(user.getVerified());
+
+        int sessionCreated = sessionDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());
+        if (sessionCreated == 0) {
+            LOGGER.error(String.format("Error creating session for user %s.", user.getEmail()));
+            throw new ResourceCreationException("Error creating session for the user. Please try again");
+        }
+
+        return loggedInUserSession;
     }
 
     public User getUser(Session session, String userId, Boolean hydrated) {

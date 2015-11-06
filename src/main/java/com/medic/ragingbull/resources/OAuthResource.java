@@ -7,13 +7,17 @@
 package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
+import com.medic.ragingbull.api.LoginResponse;
 import com.medic.ragingbull.api.OAuthUser;
+import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.services.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 /**
@@ -38,9 +42,11 @@ public class OAuthResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{provider}/callback")
     public Response providerOAuthCallback(@PathParam("provider") final OAuthService.Providers provider, @QueryParam("code") String authCode) throws Exception {
-        OAuthUser oAuthUser = oAuthService.getProfileInfoFromOAuth(provider, authCode);
-        return Response.ok().entity(oAuthUser).build();
+        Session session = oAuthService.getProfileInfoFromOAuth(provider, authCode);
+        LoginResponse response = new LoginResponse(session.getToken(), session.getUserEmail(), session.getIsUserValid(), session.getExpiry());
+        return Response.ok().entity(response).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
     }
 }

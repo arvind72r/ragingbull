@@ -2,6 +2,7 @@
 # true for testing, false for production
 dbMigrateOnStartup: true
 
+#database settings
 database:
 
   # the name of your JDBC driver
@@ -61,6 +62,25 @@ logging:
       archivedFileCount: 7
       timeZone: UTC
 
+#httpclient settings
+httpClient:
+  timeout: 500ms
+  connectionTimeout: 500ms
+  timeToLive: 1h
+  cookiesEnabled: false
+  maxConnections: 1024
+  maxConnectionsPerRoute: 1024
+  keepAlive: 0ms
+  retries: 4
+
+jerseyClient:
+  minThreads: 1
+  maxThreads: 128
+  workQueueSize: 8
+  gzipEnabled: true
+  gzipEnabledForRequests: true
+  chunkedEncodingEnabled: true
+
 # Notifications
 # SMS provider name
 twilio:
@@ -74,4 +94,9 @@ google:
   applicationName: RagingBull-Bootstrap/1.0
   clientId: 138215064791-dd2g96sfuqa1hp9p549vfqjl0gpvu0en.apps.googleusercontent.com
   secret: Aze8npzLgSb03wfSA_tUhaOC
-  redirectUrl: http://localhost:8080/oauth/google/callback
+  redirectUrl: http://localhost:8080/oauth/GOOGLE/callback
+
+facebook:
+   clientId: 140514032971218
+   secret: e63a49b3ff290002242815025e40dc51
+   redirectUrl: http://localhost:8080/oauth/FACEBOOK/callback

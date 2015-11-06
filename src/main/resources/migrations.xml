@@ -16,15 +16,15 @@
                 <constraints nullable="true"/>
             </column>
             <column name="hash" type="CHAR(60)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="email" type="VARCHAR(128)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="phone" type="VARCHAR(64)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="true" unique="true"/>
             </column>
-            <column name="inlet_type" type="CHAR(4)">
+            <column name="inlet_type" type="CHAR(16)">
                 <constraints nullable="false"/>
             </column>
             <column name="role" type="INT">
@@ -140,10 +140,10 @@
             <column name="user_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="token" type="VARCHAR(256)">
+            <column name="token" type="VARCHAR(512)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="refresh_token" type="VARCHAR(256)">
+            <column name="refresh_token" type="VARCHAR(512)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="provider" type="CHAR(2)">
