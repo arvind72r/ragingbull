@@ -56,5 +56,11 @@ public class RegistrationResource {
         return response;
     }
 
-
+    @POST
+    @Path("/anon")
+    public RegistrationResponse registerAnonUser(User user) throws StorageException {
+        RegistrationResponse response =  userService.registerAnon(user);
+        return response;
+    }
 }
+

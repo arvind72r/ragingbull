@@ -8,13 +8,15 @@ package com.medic.ragingbull.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.ws.rs.core.Response;
+
 /**
  * Created by Vamshi Molleti
  */
 public class AbstractResponse {
 
     @JsonProperty
-    private int status;
+    private Integer status;
 
     @JsonProperty
     private String errorMessage;
@@ -27,12 +29,11 @@ public class AbstractResponse {
         this.errorMessage = errorMessage;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

@@ -6,23 +6,16 @@
 
 package com.medic.ragingbull.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.joda.time.DateTime;
-
 /**
  * Created by Vamshi Molleti
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class PractitionerLocationResponse extends AbstractResponse{
+public class PharmacyLocationResponse extends AbstractResponse{
 
     private String id;
     private String userId;
     private String practitionerId;
     private String name;
     private String description;
-    private String speciality;
     private String location;
     private String primaryContact;
     private String secondaryContact;
@@ -41,13 +34,12 @@ public class PractitionerLocationResponse extends AbstractResponse{
     private Boolean isVerified;
     private Boolean isActive;
 
-    public PractitionerLocationResponse(String id, String userId, String practitionerId, String name, String description, String speciality, String location, String primaryContact, String secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer workingHours, Integer workingDays, String license, Boolean isVerified, Boolean isActive) {
+    public PharmacyLocationResponse(String id, String userId, String practitionerId, String name, String description, String location, String primaryContact, String secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer workingHours, Integer workingDays, String license, Boolean isVerified, Boolean isActive) {
         this.id = id;
         this.userId = userId;
         this.practitionerId = practitionerId;
         this.name = name;
         this.description = description;
-        this.speciality = speciality;
         this.location = location;
         this.primaryContact = primaryContact;
         this.secondaryContact = secondaryContact;
@@ -85,10 +77,6 @@ public class PractitionerLocationResponse extends AbstractResponse{
 
     public String getDescription() {
         return description;
-    }
-
-    public String getSpeciality() {
-        return speciality;
     }
 
     public String getLocation() {

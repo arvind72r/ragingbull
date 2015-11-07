@@ -6,8 +6,7 @@
 
 package com.medic.ragingbull.jdbi.mapper;
 
-import com.medic.ragingbull.api.PractitionerLocation;
-import com.medic.ragingbull.core.constants.LocationSpeciality;
+import com.medic.ragingbull.api.PharmacyLocation;
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
@@ -18,17 +17,15 @@ import java.sql.SQLException;
 /**
  * Created by Vamshi Molleti
  */
-public class PractitionerLocationMapper implements ResultSetMapper<PractitionerLocation> {
-
+public class PharmacyLocationMapper implements ResultSetMapper<PharmacyLocation> {
     @Override
-    public PractitionerLocation map(int i, ResultSet r, StatementContext statementContext) throws SQLException {
-        return new PractitionerLocation(
+    public PharmacyLocation map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+        return new PharmacyLocation(
                 r.getString("id"),
                 r.getString("user_id"),
                 r.getString("practitioner_id"),
                 r.getString("name"),
                 r.getString("description"),
-                LocationSpeciality.valueOf(r.getString("speciality")),
                 r.getString("location"),
                 r.getString("primary_contact"),
                 r.getString("secondary_contact"),

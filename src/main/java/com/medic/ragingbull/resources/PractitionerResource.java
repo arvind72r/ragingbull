@@ -38,13 +38,11 @@ public class PractitionerResource {
     }
 
     @GET
-    public PractitionerResponse searchPractitioner(@QueryParam("area") Optional<String> area, @QueryParam("type") Optional<String> type) {
-        return null;
-    }
-
-    @GET
     @Path("/{id}")
     public PractitionerResponse getPractitioner(@Auth Session session, @PathParam("id") String practitionerId) throws StorageException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format("Fetching practitioner id: %s. Request by: %s", practitionerId, session.getUserEmail()));
+        }
         PractitionerResponse practitionerResponse = practitionerService.getPractitioner(session, practitionerId);
         return practitionerResponse;
     }
@@ -54,15 +52,4 @@ public class PractitionerResource {
         PractitionerResponse practitionerResponse = practitionerService.createPractitioner(session, practitioner);
         return practitionerResponse;
     }
-
-    @PUT
-    public PractitionerResponse modifyPractitioner(Practitioner practitioner) {
-        return null;
-    }
-
-    @DELETE
-    public PractitionerResponse deactivatePractitioner(Practitioner practitioner) {
-        return null;
-    }
-
 }

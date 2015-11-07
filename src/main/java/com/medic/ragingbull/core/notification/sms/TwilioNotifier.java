@@ -58,4 +58,23 @@ public class TwilioNotifier extends Notifiable {
             throw new NotificationException(e);
         }
     }
+
+    public void notifyAnonUser(String phone, String body) throws NotificationException {
+        try {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug(String.format("Registration notification for anon user with number %s via SMS", phone));
+            }
+            final TwilioRestClient client = new TwilioRestClient(this.configuration.getTwilioConfiguration().getAccountId(), this.configuration.getTwilioConfiguration().getToken());
+            Account mainAccount = client.getAccount();
+            final SmsFactory messageFactory = mainAccount.getSmsFactory();
+            final List<NameValuePair> messageParams = new ArrayList<NameValuePair>();
+            messageParams.add(new BasicNameValuePair("To", phone)); // Replace with a valid phone number
+            messageParams.add(new BasicNameValuePair("From", configuration.getTwilioConfiguration().getRegisteredPhoneNo())); // Replace with a valid phone number in your account
+            messageParams.add(new BasicNameValuePair("Body", body));
+            messageFactory.create(messageParams);
+        } catch(Exception e) {
+            LOGGER.error("Error while sending registration notification to anon user %s", phone);
+            throw new NotificationException(e);
+        }
+    }
 }

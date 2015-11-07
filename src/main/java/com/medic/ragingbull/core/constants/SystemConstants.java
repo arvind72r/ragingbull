@@ -14,6 +14,11 @@ import org.joda.time.Days;
  */
 public interface SystemConstants {
 
+    // Entities in system.
+    enum Entities {
+        PHARMACY_LOCATION, PRACTITIONER_LOCATION, CONSULTATION, PRESCRIPTION, ORDER
+    }
+
     DateTime EXPIRY_TIME = new DateTime().plus(Days.ONE);
 
     Integer DEFAULT_DELIVERY_RADIUS = 3;

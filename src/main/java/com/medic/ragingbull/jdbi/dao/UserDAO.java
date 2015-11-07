@@ -54,4 +54,9 @@ public interface UserDao {
                    @Bind("name") String name,
                    @Bind("email") String email,
                    @Bind("pictureUrl") String pictureUrl);
+
+    @SqlUpdate("UPDATE USER set :field = :data where id = :id")
+    int updateInfo(@Bind("id") String id,
+                   @Bind("field") String field,
+                   @Bind("data") String data);
 }

@@ -7,7 +7,6 @@
 package com.medic.ragingbull.jdbi.mapper;
 
 import com.medic.ragingbull.api.Pharmacist;
-import com.medic.ragingbull.api.PharmacyBack;
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
@@ -22,7 +21,8 @@ public class PharmacistMapper implements ResultSetMapper<Pharmacist> {
 
     @Override
     public Pharmacist map(int i, ResultSet r, StatementContext cntx) throws SQLException {
-        return new Pharmacist(r.getString("id"),
+        return new Pharmacist(
+                r.getString("id"),
                 r.getString("user_id"),
                 r.getString("description"),
                 r.getString("primary_contact"),

@@ -44,4 +44,11 @@ public class NotificationFactory {
         }
     }
 
+    public void notifyAnonUser(String phone, Notifiable.Mode mode, int authCode) throws NotificationException {
+        switch (mode) {
+            case SMS:
+                twilioNotifier.notifyAnonUser(phone, String.format(SystemConstants.SMS_REGISTRATION_TOKEN, authCode));
+                break;
+        }
+    }
 }

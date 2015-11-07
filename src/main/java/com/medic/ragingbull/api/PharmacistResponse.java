@@ -6,16 +6,12 @@
 
 package com.medic.ragingbull.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Vamshi Molleti
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class PractitionerResponse extends AbstractResponse{
+public class PharmacistResponse extends AbstractResponse{
 
     @JsonProperty
     private String id;
@@ -44,8 +40,7 @@ public class PractitionerResponse extends AbstractResponse{
     @JsonProperty
     private String license;
 
-
-    public PractitionerResponse(String id, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license) {
+    public PharmacistResponse(String id, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license) {
         this.id = id;
         this.description = description;
         this.primaryContact = primaryContact;

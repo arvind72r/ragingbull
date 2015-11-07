@@ -13,10 +13,8 @@ import com.medic.ragingbull.core.providers.Authorization;
 import com.medic.ragingbull.core.services.*;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.resources.*;
-import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Environment;
-import org.apache.http.client.HttpClient;
 import org.skife.jdbi.v2.DBI;
 
 import javax.ws.rs.client.Client;
@@ -63,14 +61,17 @@ public class RagingBullModule extends AbstractModule {
         bind(OAuthDao.class).toInstance(database.onDemand(OAuthDao.class));
         bind(PractitionerDao.class).toInstance(database.onDemand(PractitionerDao.class));
         bind(PharmacistDao.class).toInstance(database.onDemand(PharmacistDao.class));
-
         bind(PractitionerLocationDao.class).toInstance(database.onDemand(PractitionerLocationDao.class));
+        bind(PharmacyLocationDao.class).toInstance(database.onDemand(PharmacyLocationDao.class));
+        bind(EntityAdminDao.class).toInstance(database.onDemand(EntityAdminDao.class));
+
 
         // Binding Services
         bind(UserService.class).asEagerSingleton();
         bind(AuthService.class).asEagerSingleton();
         bind(OAuthService.class).asEagerSingleton();
         bind(PractitionerService.class).asEagerSingleton();
+        bind(PharmacyService.class).asEagerSingleton();
         bind(PractitionerLocationService.class).asEagerSingleton();
 
         // Registering providers
@@ -83,7 +84,9 @@ public class RagingBullModule extends AbstractModule {
         bind(UserResource.class).asEagerSingleton();
         bind(OAuthResource.class).asEagerSingleton();
         bind(PractitionerResource.class).asEagerSingleton();
+        bind(PharmacistResource.class).asEagerSingleton();
         bind(PractitionerLocationResource.class).asEagerSingleton();
+        bind(PharmacyLocationResource.class).asEagerSingleton();
 
 
     }

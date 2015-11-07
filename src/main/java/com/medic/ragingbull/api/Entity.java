@@ -19,63 +19,63 @@ import org.joda.time.DateTime;
 public class Entity {
 
     @JsonProperty
-    public String id;
+    protected String id;
 
 
     @JsonIgnore
-    public String userId;
+    protected String userId;
 
     @Length(min = ValidationConstants.DESCRIPTION_MIN,
             max = ValidationConstants.DESCRIPTION_MAX,
             message = ValidationConstants.DESCRIPTION_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.DESCRIPTION_MSG_EMPTY)
     @JsonProperty
-    public String description;
+    protected String description;
 
     @Length(min = ValidationConstants.PHONE_MIN,
             max = ValidationConstants.PHONE_MAX,
             message = ValidationConstants.PHONE_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.PHONE_MSG_EMPTY)
     @JsonProperty
-    public String primaryContact;
+    protected String primaryContact;
 
     @JsonProperty
-    public String secondaryContact;
-
-    @Length(min = ValidationConstants.ID_MIN,
-            max = ValidationConstants.ID_MAX,
-            message = ValidationConstants.ID_MSG_SIZE)
-    @JsonProperty
-    public String primaryId;
+    protected String secondaryContact;
 
     @Length(min = ValidationConstants.ID_MIN,
             max = ValidationConstants.ID_MAX,
             message = ValidationConstants.ID_MSG_SIZE)
     @JsonProperty
-    public String secondaryId;
+    protected String primaryId;
 
     @Length(min = ValidationConstants.ID_MIN,
             max = ValidationConstants.ID_MAX,
             message = ValidationConstants.ID_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.ID_MSG_EMPTY)
     @JsonProperty
-    public String registrationId;
+    protected String secondaryId;
 
     @Length(min = ValidationConstants.ID_MIN,
             max = ValidationConstants.ID_MAX,
             message = ValidationConstants.ID_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.ID_MSG_EMPTY)
     @JsonProperty
-    public String registrationAuthority;
+    protected String registrationId;
+
+    @Length(min = ValidationConstants.ID_MIN,
+            max = ValidationConstants.ID_MAX,
+            message = ValidationConstants.ID_MSG_SIZE)
+    @NotEmpty(message = ValidationConstants.ID_MSG_EMPTY)
+    @JsonProperty
+    protected String registrationAuthority;
 
     @JsonProperty
-    public String license;
+    protected String license;
 
     @JsonIgnore
-    public DateTime createdAt;
+    protected DateTime createdAt;
 
     @JsonIgnore
-    public DateTime updatedAt;
+    protected DateTime updatedAt;
 
     public void setId(String id) {
         this.id = id;

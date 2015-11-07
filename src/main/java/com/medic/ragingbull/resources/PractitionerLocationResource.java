@@ -6,10 +6,15 @@
 
 package com.medic.ragingbull.resources;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.api.PractitionerLocationResponse;
 import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.core.access.permissions.Privileges;
+import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
 import io.dropwizard.auth.Auth;
@@ -19,6 +24,9 @@ import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vamshi Molleti
@@ -37,11 +45,6 @@ public class PractitionerLocationResource {
     }
 
     @GET
-    public PractitionerLocationResponse searchLocations() {
-        return null;
-    }
-
-    @GET
     @Path("/{locationId}")
     public PractitionerLocationResponse getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
         PractitionerLocationResponse response = practitionerLocationService.getPractitioner(session, practitionerId, locationId);
@@ -54,15 +57,25 @@ public class PractitionerLocationResource {
         return response;
     }
 
-    @PUT
-    @Path("/{locationId}")
-    public PractitionerLocationResponse updatePractitionerLocation(@PathParam("id") String practitionerId, @PathParam("locationId") String locationId, PractitionerLocation practitionerLocation) {
-        return null;
+    @GET
+    @Path("/{locationId}/users")
+    public Response getUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException, ResourceCreationException {
+        Response response = practitionerLocationService.getUsers(session, practitionerId, locationId);
+        return response;
     }
 
-    @DELETE
-    @Path("/{locationId}")
-    public PractitionerLocationResponse deletePractitionerLocation(@PathParam("id") String practitionerId, @PathParam("locationId") String locationId){
-        return null;
+    @GET
+    @Path("/{locationId}/users/{userId}")
+    public Response getUser(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @PathParam("userId") String userId) throws StorageException, ResourceCreationException {
+        Response response = practitionerLocationService.getUser(session, practitionerId, locationId, userId);
+        return response;
     }
+
+    @PUT
+    @Path("/{locationId}/users")
+    public Response addUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, List<Map<String, String>> users) throws StorageException, ResourceCreationException {
+        Response response = practitionerLocationService.addUsers(session, practitionerId, locationId, users);
+        return response;
+    }
+
 }

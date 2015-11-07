@@ -6,8 +6,8 @@
 
 package com.medic.ragingbull.jdbi.dao;
 
-import com.medic.ragingbull.api.PractitionerLocation;
-import com.medic.ragingbull.jdbi.mapper.PractitionerLocationMapper;
+import com.medic.ragingbull.api.PharmacyLocation;
+import com.medic.ragingbull.jdbi.mapper.PharmacyLocationMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -16,20 +16,19 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 /**
  * Created by Vamshi Molleti
  */
-@RegisterMapper(PractitionerLocationMapper.class)
-public interface PractitionerLocationDao {
+@RegisterMapper(PharmacyLocationMapper.class)
+public interface PharmacyLocationDao {
 
-    @SqlUpdate("INSERT INTO practitioner_location (id, user_id, practitioner_id, name, description, speciality, " +
+    @SqlUpdate("INSERT INTO pharmacy_location (id, user_id, practitioner_id, name, description, speciality, " +
             "location, primary_contact, secondary_contact, address1, address2, city, state, zip, country, landmark, longitude, " +
-            "latitude, working_hours, working_days, license) VALUES(:id, :userId, :practitionerId, :name," +
-            ":description, :speciality, :location, :primaryContact, :secondaryContact, :address1, :address2, :city, :state, :zip, :country," +
+            "latitude, working_hours, working_days, license) VALUES(:id, :userId, :practitionerId, :name, " +
+            ":description, :speciality, :primaryContact, :secondaryContact, :address1, :address2, :city, :state, :zip, :country, " +
             " :landmark, :longitude, :latitude, :workingHours, :workingDays, :license)")
-    int createPractitionerLocation(@Bind("id") String practitionerLocationId,
+    int createPharmacyLocation(@Bind("id") String practitionerLocationId,
                                    @Bind("userId") String userId,
                                    @Bind("practitionerId") String practitionerId,
                                    @Bind("name") String name,
                                    @Bind("description") String description,
-                                   @Bind("speciality") String speciality,
                                    @Bind("location") String location,
                                    @Bind("primaryContact") String primaryContact,
                                    @Bind("secondaryContact") String secondaryContact,
@@ -46,9 +45,7 @@ public interface PractitionerLocationDao {
                                    @Bind("workingDays") Integer workingDays,
                                    @Bind("license") String license);
 
-    @SqlQuery("SELECT * FROM practitioner_location where id = :id")
-    PractitionerLocation getPractitionerLocation(@Bind("id") String id);
-
-
+    @SqlQuery("SELECT * FROM pharmacy_location where id = :id")
+    PharmacyLocation getPharmacyLocation(@Bind("id") String id);
 
 }
