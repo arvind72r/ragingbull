@@ -73,6 +73,10 @@ public class RagingBullConfiguration extends Configuration
     @JsonProperty("facebook")
     private FacebookConfiguration facebookConfiguration = new FacebookConfiguration();
 
+    @Valid
+    @NotNull
+    @JsonProperty("images")
+    private ImagesConfiguration imagesConfiguration = new ImagesConfiguration();
 
     public GoogleConfiguration getGoogleConfiguration() {
         return googleConfiguration;
@@ -80,8 +84,11 @@ public class RagingBullConfiguration extends Configuration
     public TwilioConfiguration getTwilioConfiguration() {
         return twilioConfiguration;
     }
-
     public FacebookConfiguration getFacebookConfiguration() {
         return facebookConfiguration;
+    }
+
+    public ImagesConfiguration getImagesConfiguration() {
+        return imagesConfiguration;
     }
 }

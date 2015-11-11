@@ -12,16 +12,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.config.DbMigrateOnStartupBundle;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.auth.SessionAuthFactory;
 import com.medic.ragingbull.core.auth.SessionAuthenticator;
-import com.medic.ragingbull.config.DbMigrateOnStartupBundle;
-import com.medic.ragingbull.core.providers.Authorization;
-import com.medic.ragingbull.resources.*;
 import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.services.UserService;
+import com.medic.ragingbull.resources.*;
 import io.dropwizard.Application;
-import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthFactory;
 import io.dropwizard.auth.ChainedAuthFactory;
 import io.dropwizard.auth.basic.BasicAuthFactory;
@@ -31,13 +29,9 @@ import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.skife.jdbi.v2.DBI;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
 import java.math.BigInteger;
-import java.util.EnumSet;
 
 /**
  * Created by Vamshi Molleti
@@ -80,7 +74,6 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         final RagingBullModule newSendItAPIModule = new RagingBullModule(configuration, environment, jdbi);
         injector = createInjector(newSendItAPIModule);
 
-        // Allow cross-origin scripting for the Angular UI
 //        FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
 //        filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 //        filter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, configuration.getJavascriptAllowedOrigins());    // allowed origins comma separated
@@ -98,7 +91,7 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
 
         // Registering Authenticator
         ChainedAuthFactory<Session> chainedFactory = new ChainedAuthFactory<>(
-                new BasicAuthFactory<Session>(new UserAuthenticator(injector.getInstance(UserService.class)), "", Session.class),
+                new BasicAuthFactory<>(new UserAuthenticator(injector.getInstance(UserService.class)), "", Session.class),
                 new SessionAuthFactory<Session>(new SessionAuthenticator())
         );
 
@@ -114,6 +107,7 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         environment.jersey().register(injector.getInstance(PharmacistResource.class));
         environment.jersey().register(injector.getInstance(PharmacyLocationResource.class));
         environment.jersey().register(injector.getInstance(PractitionerLocationResource.class));
+        environment.jersey().register(injector.getInstance(ImageResource.class));
     }
 
 

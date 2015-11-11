@@ -20,6 +20,7 @@
       <guice.version>4.0</guice.version>
       <guava.version>18.0</guava.version>
       <jbcrypt.version>0.3m</jbcrypt.version>
+      <apache.common.io.version>2.4</apache.common.io.version>
       <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
   </properties>
 
@@ -108,6 +109,13 @@
           <version>${jbcrypt.version}</version>
       </dependency>
 
+      <!-- Apache common jars-->
+      <dependency>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+          <version>${apache.common.io.version}</version>
+      </dependency>
+
       <!-- Notification jars -->
       <dependency>
           <groupId>com.twilio.sdk</groupId>
@@ -121,13 +129,6 @@
           <version>4.4.4</version>
       </dependency>
 
-
-      <!-- HTTP Component for API layer (Remove this to use DW HttpClient-->
-      <!--<dependency>
-          <groupId>org.apache.httpcomponents</groupId>
-          <artifactId>httpclient</artifactId>
-          <version>4.2.6</version>
-      </dependency>-->
 
       <!-- OAuth Client jars-->
       <dependency>

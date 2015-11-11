@@ -213,7 +213,7 @@ public class UserService {
         String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
         DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
         DateTime createdAt = new DateTime();
-        Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), user.getRole(), expiry, createdAt);
+        Session loggedInUserSession = new Session(sessionId,  user.getId(), user.getEmail(), user.getRole(), expiry, createdAt);
         loggedInUserSession.setIsUserValid(user.getVerified());
 
         int sessionCreated = sessionDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());

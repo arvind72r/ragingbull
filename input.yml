@@ -100,3 +100,11 @@ facebook:
    clientId: 140514032971218
    secret: e63a49b3ff290002242815025e40dc51
    redirectUrl: http://localhost:8080/oauth/FACEBOOK/callback
+
+
+#images
+images:
+    path: /mnt/applications/rb/user/images
+    supportedTypes: jpg, jpeg, png
+    #Size in MB
+    maxSize: 5

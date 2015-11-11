@@ -59,4 +59,7 @@ public interface UserDao {
     int updateInfo(@Bind("id") String id,
                    @Bind("field") String field,
                    @Bind("data") String data);
+
+    @SqlUpdate("UPDATE USER SET picture_url = :pictureUrl where id = :id")
+    int pictureUrl(String userId, String absolutePath);
 }

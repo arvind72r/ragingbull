@@ -30,13 +30,6 @@ public class Drug {
     @JsonProperty
     private String name;
 
-    @Length(min = ValidationConstants.MANUFACTURER_NAME_MIN,
-            max = ValidationConstants.MANUFACTURER_NAME_MAX,
-            message = ValidationConstants.MANUFACTURER_NAME_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.MANUFACTURER_NAME_MSG_EMPTY)
-    @JsonProperty
-    private String manufacturer;
-
     @Min(ValidationConstants.DRUG_QUANTITY_MIN)
     @NotEmpty(message = ValidationConstants.DRUG_QUANTITY_MSG_EMPTY)
     @JsonProperty
@@ -58,11 +51,10 @@ public class Drug {
 
     private Integer frequencyBit;
 
-    public Drug(String allergies, Dosage.Frequency[] frequency, Integer quantity, String manufacturer, String name) {
+    public Drug(String allergies, Dosage.Frequency[] frequency, Integer quantity, String name) {
         this.allergies = allergies;
         this.frequency = frequency;
         this.quantity = quantity;
-        this.manufacturer = manufacturer;
         this.name = name;
     }
 
@@ -72,14 +64,6 @@ public class Drug {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
     }
 
     public Integer getQuantity() {
