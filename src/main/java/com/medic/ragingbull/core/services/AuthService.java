@@ -18,7 +18,7 @@ import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.PasswordResetDao;
 import com.medic.ragingbull.jdbi.dao.SessionDao;
-import com.medic.ragingbull.jdbi.dao.UserDao;
+import com.medic.ragingbull.jdbi.dao.UserDAO;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
@@ -32,11 +32,11 @@ public class AuthService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
     private final SessionDao sessionDao;
-    private final UserDao userDao;
+    private final UserDAO userDao;
     private final PasswordResetDao passwordResetDao;
 
     @Inject
-    public AuthService(SessionDao sessionDao, UserDao userDao, PasswordResetDao passwordResetDao) {
+    public AuthService(SessionDao sessionDao, UserDAO userDao, PasswordResetDao passwordResetDao) {
         this.sessionDao = sessionDao;
         this.userDao = userDao;
         this.passwordResetDao = passwordResetDao;

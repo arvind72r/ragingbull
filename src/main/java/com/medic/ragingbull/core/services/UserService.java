@@ -41,7 +41,7 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final DBI database;
-    private final UserDao userDao;
+    private final UserDAO userDao;
     private final InviteDao inviteDao;
     private final SessionDao sessionDao;
     private final PractitionerDao practitionerDao;
@@ -49,7 +49,7 @@ public class UserService {
     private final NotificationFactory notificationFactory;
 
     @Inject
-    public UserService(DBI database, NotificationFactory notificationFactory, UserDao userDao, InviteDao inviteDao, SessionDao sessionDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao) {
+    public UserService(DBI database, NotificationFactory notificationFactory, UserDAO userDao, InviteDao inviteDao, SessionDao sessionDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao) {
         this.database = database;
         this.notificationFactory = notificationFactory;
         this.userDao = userDao;
