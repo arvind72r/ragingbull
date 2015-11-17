@@ -10,6 +10,8 @@ import com.google.inject.Inject;
 import com.medic.ragingbull.api.RegistrationResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.exception.NotificationException;
+import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.core.services.UserService;
 import io.dropwizard.auth.Auth;
@@ -38,28 +40,28 @@ public class RegistrationResource {
 
     @GET
     @Path("/{id}")
-    public Response resendInviteAuthCode(@Auth Session session, @PathParam("id") final String userId) throws StorageException {
+    public Response resendInviteAuthCode(@Auth Session session, @PathParam("id") final String userId) throws StorageException, NotificationException, ResourceCreationException {
         Response response = userService.resendInviteAuthCode(session, userId);
         return response;
     }
 
     @POST
-    public RegistrationResponse registerUser(@Valid User user) throws StorageException {
+    public RegistrationResponse registerUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException {
         RegistrationResponse response =  userService.register(user);
         return response;
     }
 
     @POST
-    @Path("/{id}/approve")
-    public Response approveRegisteredUser(@PathParam("id") final String authCode) {
-        Response response = userService.approveInvite(authCode);
+    @Path("/anon")
+    public RegistrationResponse registerAnonUser(User user) throws StorageException, NotificationException, ResourceCreationException {
+        RegistrationResponse response =  userService.registerAnon(user);
         return response;
     }
 
     @POST
-    @Path("/anon")
-    public RegistrationResponse registerAnonUser(User user) throws StorageException {
-        RegistrationResponse response =  userService.registerAnon(user);
+    @Path("/{id}/approve")
+    public Response approveRegisteredUser(@PathParam("id") final String authCode) throws StorageException {
+        Response response = userService.approveInvite(authCode);
         return response;
     }
 }

@@ -17,7 +17,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
  * Created by Vamshi Molleti
  */
 @RegisterMapper(UserMapper.class)
-public interface UserDAO {
+public interface UserDao {
 
     @SqlUpdate("INSERT  INTO user (id, email, name, hash, phone, inlet_type, role, picture_url) " +
             "VALUES(:id, :email, :name, :hash, :phone, :inletType, :role, :pictureUrl)")

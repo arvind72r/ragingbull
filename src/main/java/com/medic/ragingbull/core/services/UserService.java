@@ -15,6 +15,7 @@ import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.Notifiable;
 import com.medic.ragingbull.core.notification.NotificationFactory;
+import com.medic.ragingbull.exception.NotificationException;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.*;
@@ -41,7 +42,7 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final DBI database;
-    private final UserDAO userDao;
+    private final UserDao userDao;
     private final InviteDao inviteDao;
     private final SessionDao sessionDao;
     private final PractitionerDao practitionerDao;
@@ -49,7 +50,7 @@ public class UserService {
     private final NotificationFactory notificationFactory;
 
     @Inject
-    public UserService(DBI database, NotificationFactory notificationFactory, UserDAO userDao, InviteDao inviteDao, SessionDao sessionDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao) {
+    public UserService(DBI database, NotificationFactory notificationFactory, UserDao userDao, InviteDao inviteDao, SessionDao sessionDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao) {
         this.database = database;
         this.notificationFactory = notificationFactory;
         this.userDao = userDao;
@@ -59,51 +60,31 @@ public class UserService {
         this.pharmacistDao = pharmacistDao;
     }
 
-    public RegistrationResponse register(final User user) throws StorageException {
+    public RegistrationResponse register(final User user) throws StorageException, NotificationException, ResourceCreationException {
         return registerUser(user, Role.NATIVE_USER);
     }
 
-    public RegistrationResponse registerAnon(User user) throws StorageException {
+    public RegistrationResponse registerAnon(User user) throws StorageException, NotificationException, ResourceCreationException {
         user.setEmail(user.getPhone());
         return registerUser(user, Role.ANON);
     }
 
-    private RegistrationResponse registerUser(User user, Role role) throws StorageException {
+    private RegistrationResponse registerUser(User user, Role role) throws StorageException, ResourceCreationException, NotificationException {
         try {
             if (role == Role.NATIVE_USER) {
                 user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
             } else {
                 user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.ANON_USER));
             }
+
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
             int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), user.getRole(), user.getPictureUrl());
 
             if (userCreated == 0 ) {
-                LOGGER.error(String.format("Error registering user %s.", user.getEmail()));
-                throw new ResourceCreationException("Error registering user. Please try again");
-            }
-
-            // Create Practitioner if data provided
-            if (user.getPractitioner() != null) {
-                String practitionerId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.PRACTITIONER);
-
-                int practitionerCreated = practitionerDao.createPractitioner(practitionerId, user.getId(), user.getPractitioner().getDescription(), user.getPractitioner().getPrimaryContact(), user.getPractitioner().getSecondaryContact(), user.getPractitioner().getPrimaryId(), user.getPractitioner().getSecondaryId(), user.getPractitioner().getRegistrationId(), user.getPractitioner().getRegistrationAuthority(), user.getPractitioner().getLicense());
-
-                if (practitionerCreated == 0) {
-                    LOGGER.error(String.format("Error creating a practitioner with email %s", user.getEmail()));
-                    throw new ResourceCreationException(String.format("Error creating a practitioner with email %s", user.getEmail()));
-                }
-            } else if (user.getPharmacist() != null) {
-                // Create Pharmacist if data provided
-                String pharmacistId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.PHARMACY);
-
-                int pharmacistCreated = pharmacistDao.createPharmacist(pharmacistId, user.getId(), user.getPharmacist().getDescription(), user.getPharmacist().getPrimaryContact(), user.getPharmacist().getSecondaryContact(), user.getPharmacist().getPrimaryId(), user.getPharmacist().getSecondaryId(), user.getPharmacist().getRegistrationId(), user.getPharmacist().getRegistrationAuthority(), user.getPharmacist().getLicense());
-                if (pharmacistCreated == 0) {
-                    LOGGER.error(String.format("Error creating a pharmacist with email %s", user.getEmail()));
-                    throw new ResourceCreationException(String.format("Error creating a pharmacist with email %s", user.getEmail()));
-                }
+                LOGGER.error(String.format("Error registering user %s. DB failed to save the record", user.getEmail()));
+                throw new StorageException("Error registering user. Please try again");
             }
 
             // Generate AuthCode and notify user via SMS.
@@ -120,15 +101,24 @@ public class UserService {
                 throw new ResourceCreationException("Error creating invite. Please try again");
             }
             return new RegistrationResponse(user.getId(), email, inviteId, expiry);
-        } catch (final Exception e) {
+        }
+        catch (StorageException re) {
+            LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), re));
+            throw re;
+        }
+        catch (NotificationException re) {
+            LOGGER.error(String.format("Error sending notification to the  user %s. Exception %s", user.getEmail(), re));
+            throw re;
+        }
+        catch (final Exception e) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), e));
-            throw new StorageException(e.getMessage());
+            throw new ResourceCreationException(e.getMessage());
         }
     }
 
 
 
-    public Response resendInviteAuthCode(Session session, String userId) throws StorageException {
+    public Response resendInviteAuthCode(Session session, String userId) throws StorageException, NotificationException, ResourceCreationException {
         try {
             if (StringUtils.equals(session.getUserId(), userId)) {
                 User user = new User();
@@ -150,12 +140,21 @@ public class UserService {
                         LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
                         throw new ResourceCreationException("Error creating invite. Please try again");
                     }
-                    return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+                    return Response.ok().build();
                 }
             } else {
-                return Response.status(HttpStatus.BAD_REQUEST_400).build();
+                return Response.status(HttpStatus.FORBIDDEN_403).build();
             }
-        } catch(Exception e) {
+        }
+        catch (ResourceCreationException re) {
+            LOGGER.error(String.format("Error creating invite entry for the  user %s. Exception %s", session.getUserEmail(), re));
+            throw re;
+        }
+        catch (NotificationException ne) {
+            LOGGER.error(String.format("Error resending notification to the  user %s. Exception %s", session.getUserEmail(), ne));
+            throw ne;
+        }
+        catch(Exception e) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", session.getUserEmail(), e));
             throw new StorageException(e.getMessage());
         }
@@ -163,13 +162,29 @@ public class UserService {
 
     }
 
-    public Response approveInvite(final String authCode) {
-        Invite invite = inviteDao.getInviteByCode(authCode);
-        int isApproved = userDao.approveUser(invite.getUserId());
-        if (isApproved > 0) {
-            return Response.ok().build();
+    public Response approveInvite(final String authCode) throws StorageException {
+        try {
+            Invite invite = inviteDao.getInviteByCode(authCode);
+
+            if (invite == null) {
+                return Response.status(HttpStatus.FORBIDDEN_403).build();
+            }
+            int isApproved = userDao.approveUser(invite.getUserId());
+            if (isApproved > 0) {
+                return Response.ok().build();
+            } else {
+                LOGGER.error(String.format("Error authenticating authCode %s. DB failed to update record", authCode));
+                throw new StorageException("Error registering user. Please try again");
+            }
         }
-        return Response.status(HttpStatus.FORBIDDEN_403).build();
+        catch (StorageException se) {
+            LOGGER.error(String.format("Error updating authCode for the  %s. Exception %s", authCode, se));
+            throw se;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error approving auth code %s. Exception %s", authCode, e));
+            throw e;
+        }
     }
 
     public Response getUserInvite(String inviteId) {
@@ -233,7 +248,8 @@ public class UserService {
                 if ((user.getRole() & Role.PRACTITIONER.getBitValue()) == Role.PRACTITIONER.getBitValue()) {
                     Practitioner practitioner = practitionerDao.getByUserId(userId);
                     user.setPractitioner(practitioner);
-                } else if((user.getRole() & Role.PHARMACIST.getBitValue()) == Role.PHARMACIST.getBitValue()) {
+                }
+                if((user.getRole() & Role.PHARMACIST.getBitValue()) == Role.PHARMACIST.getBitValue()) {
                     Pharmacist pharmacist = pharmacistDao.getByUserId(userId);
                     user.setPharmacist(pharmacist);
                 }

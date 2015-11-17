@@ -48,7 +48,6 @@ public class User {
     @Length(max = ValidationConstants.EMAIL_MAX,
             min = ValidationConstants.EMAIL_MIN,
             message = ValidationConstants.EMAIL_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.EMAIL_MSG_EMPTY)
     @Email(message = ValidationConstants.EMAIL_MSG_INVALID)
     @JsonProperty
     private String email;
@@ -62,8 +61,8 @@ public class User {
 
     @Length(max = ValidationConstants.INLET_TYPE_MAX,
             min = ValidationConstants.INLET_TYPE_MIN,
-            message = ValidationConstants.PHONE_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.PHONE_MSG_EMPTY)
+            message = ValidationConstants.INLET_TYPE_SIZE)
+    @NotEmpty(message = ValidationConstants.INLET_TYPE_EMPTY)
     @JsonProperty
     private String inletType;
 
@@ -181,24 +180,13 @@ public class User {
         return active;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public String getPictureUrl() {
         return pictureUrl;
     }
 
     public Integer getRole() {
         if (role == 0) {
-            // Not role set. Generate role
-            if (practitioner != null) {
-                role = RoleGenerator.generateRole(Role.NATIVE_USER, Role.PRACTITIONER);
-            } else if (pharmacist != null) {
-                role = RoleGenerator.generateRole(Role.NATIVE_USER, Role.PHARMACIST);
-            } else {
-                role = RoleGenerator.generateRole(Role.NATIVE_USER);
-            }
+            role = RoleGenerator.generateRole(Role.NATIVE_USER);
         }
         return role;
     }

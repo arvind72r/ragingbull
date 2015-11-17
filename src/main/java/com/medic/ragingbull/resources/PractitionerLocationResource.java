@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * Created by Vamshi Molleti
  */
-@Path("/practitioner/{id}/location")
+@Path("/location")
 @Produces(MediaType.APPLICATION_JSON)
 public class PractitionerLocationResource {
 
@@ -51,8 +51,24 @@ public class PractitionerLocationResource {
         return response;
     }
 
+    @GET
+    @Path("/{locationId}/consultation/{consultationId}")
+    public PractitionerLocationResponse getConsultation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
+        PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
+        return response;
+    }
+
+    @GET
+    @Path("/{locationId}/consultation")
+    public PractitionerLocationResponse getConsultations(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
+        PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
+        return response;
+    }
+
+
     @POST
-    public PractitionerLocationResponse addPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
+    @Path("/{locationId}/consultation")
+    public PractitionerLocationResponse addConsultation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
         PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
         return response;
     }

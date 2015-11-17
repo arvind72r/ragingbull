@@ -36,40 +36,41 @@ public class ConsultationService {
 
     public ConsultationResponse getConsultation(Session session, String practitionerId, String locationId, String consultId) throws StorageException {
 
-        try {
-            Consultation consultation = consultationDao.getConsultation(practitionerId, locationId, consultId);
-
-            if (consultation.getUserId() != session.getUserEmail()) {
-                throw new ResourceFetchException(String.format("Error fetching consultation with emailId %s. Logged in user different from consultation owner", session.getUserEmail()));
-            }
-
-            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
-            response.setStatus(HttpStatus.SC_OK);
-            return response;
-        } catch(Exception e) {
-            LOGGER.error(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
-            throw new StorageException(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
-        }
+//        try {
+//            Consultation consultation = consultationDao.getConsultation(practitionerId, locationId, consultId);
+//
+//            if (consultation.getUserId() != session.getUserEmail()) {
+//                throw new ResourceFetchException(String.format("Error fetching consultation with emailId %s. Logged in user different from consultation owner", session.getUserEmail()));
+//            }
+//
+//            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
+//            response.setStatus(HttpStatus.SC_OK);
+//            return response;
+//        } catch(Exception e) {
+//            LOGGER.error(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
+//            throw new StorageException(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
+//        }
+        return null;
 
     }
 
     public ConsultationResponse createConsultation(Session session, String practitionerId, String locationId, Consultation consultation) throws StorageException {
 
-        try {
-            String consultationId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.CONSULTATION);
-            int consultationCreated = consultationDao.createConsultation(consultationId, practitionerId, locationId, session.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
-
-            if (consultationCreated == 0) {
-                LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
-                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
-            }
-
-            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
-            response.setStatus(HttpStatus.SC_OK);
-        } catch(Exception e) {
-            LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
-            throw new StorageException(String.format("Error creating consultation with email %s", session.getUserEmail()));
-        }
+//        try {
+//            String consultationId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.CONSULTATION);
+//            int consultationCreated = consultationDao.createConsultation(consultationId, practitionerId, locationId, session.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
+//
+//            if (consultationCreated == 0) {
+//                LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
+//                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+//            }
+//
+//            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
+//            response.setStatus(HttpStatus.SC_OK);
+//        } catch(Exception e) {
+//            LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
+//            throw new StorageException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+//        }
 
         return null;
     }

@@ -8,9 +8,8 @@ package com.medic.ragingbull.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Practitioner;
-import com.medic.ragingbull.api.PractitionerResponse;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.core.services.PractitionerLocationService;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.core.services.PractitionerService;
 import io.dropwizard.auth.Auth;
@@ -31,10 +30,11 @@ public class PractitionerResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(PractitionerResource.class);
 
     private PractitionerService practitionerService;
-
+    private PractitionerLocationService practitionerLocationService;
     @Inject
-    public PractitionerResource(PractitionerService practitionerService) {
+    public PractitionerResource(PractitionerService practitionerService, PractitionerLocationService practitionerLocationService) {
         this.practitionerService = practitionerService;
+        this.practitionerLocationService = practitionerLocationService;
     }
 
     @GET
@@ -51,5 +51,19 @@ public class PractitionerResource {
     public PractitionerResponse createPractitioner(@Auth Session session, @Valid Practitioner practitioner) throws StorageException {
         PractitionerResponse practitionerResponse = practitionerService.createPractitioner(session, practitioner);
         return practitionerResponse;
+    }
+
+    @POST
+    @Path("/{id}/location")
+    public PractitionerLocationResponse addPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
+        PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
+        return response;
+    }
+
+    @GET
+    @Path("/{id}/location/{locationId}")
+    public PractitionerLocationResponse getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
+        PractitionerLocationResponse response = practitionerLocationService.getPractitioner(session, practitionerId, locationId);
+        return response;
     }
 }

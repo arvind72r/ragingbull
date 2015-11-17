@@ -20,15 +20,16 @@ import java.sql.SQLException;
 public class ConsultationMapper implements ResultSetMapper<Consultation> {
     @Override
     public Consultation map(int i, ResultSet r, StatementContext statementContext) throws SQLException {
-        return new Consultation(
-                r.getString("id"),
-                r.getString("practitioner_id"),
-                r.getString("location_id"),
-                r.getString("user_id"),
-                r.getString("name"),
-                r.getInt("slot"),
-                r.getString("notes"),
-                new DateTime(r.getTimestamp("created_at")),
-                new DateTime(r.getTimestamp("updated_at")));
+//        return new Consultation(
+//                r.getString("id"),
+//                r.getString("practitioner_id"),
+//                r.getString("location_id"),
+//                r.getString("user_id"),
+//                r.getString("name"),
+//                r.getInt("slot"),
+//                r.getString("notes"),
+//                new DateTime(r.getTimestamp("created_at")),
+//                new DateTime(r.getTimestamp("updated_at")));
+        return null;
     }
 }
