@@ -241,10 +241,7 @@ public class OAuthService {
             credential.setAccessToken(response.getAccessToken());
             credential.setRefreshToken(response.getRefreshToken());
         }
-        catch (IOException io) {
-
-        }
-        catch (TokenResponseException e) {
+                catch (TokenResponseException e) {
             if (e.getDetails() != null) {
                 LOGGER.error("Error retrieving google auth token: " + e.getDetails());
                 if (e.getDetails().getErrorDescription() != null) {
