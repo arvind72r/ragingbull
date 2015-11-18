@@ -107,4 +107,4 @@ images:
     path: /mnt/applications/rb/user/images
     supportedTypes: jpg, jpeg, png
     #Size in MB
-    maxSize: 5
+    size: 5
