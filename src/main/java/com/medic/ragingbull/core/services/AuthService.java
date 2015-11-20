@@ -92,7 +92,7 @@ public class AuthService {
             if (StringUtils.equals(resetId, resetLink)) {
                 String hash = BCrypt.hashpw(password, BCrypt.gensalt());
 
-                int passwordUpdated = userDao.updatePassword(email, hash);
+                int passwordUpdated = userDao.updatePasswordByEmail(email, hash);
 
                 if (passwordUpdated == 0) {
                     LOGGER.error(String.format("Error updating password for user %s.", email));

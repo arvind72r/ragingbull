@@ -6,11 +6,15 @@
 
 package com.medic.ragingbull.resources;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.core.services.UserService;
+import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import io.dropwizard.auth.Auth;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Vamshi Molleti
@@ -31,16 +37,20 @@ public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
     private UserService userService;
 
-    public enum Fields {
-        name("name"), email("email");
+    private enum Fields {
+        name("name"), email("email"), password ("password");
 
         private String value;
-        private Fields(String value) {
+        Fields(String value) {
             this.value = value;
         }
 
         public String getValue() {
             return value;
+        }
+
+        public static Fields fromString(String value) {
+            return valueOf(value);
         }
     }
     @Inject
@@ -60,11 +70,21 @@ public class UserResource {
 
     @PUT
     @Path("/{id}/modify/{field}")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public Response updateUser(@Auth Session session, @PathParam("id")  String userId, @PathParam("field") Fields field, String data) throws StorageException {
+    public Response updateUser(@Auth Session session, @PathParam("id")  String userId, @PathParam("field") String updateField, Map<String, String> data) throws StorageException, ResourceUpdateException, IOException {
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
-        return userService.updateUser(session, userId, field.name(), data);
+
+        if (Fields.valueOf(updateField) == null) {
+            // BAD REQUEST
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        Fields field = Fields.valueOf(updateField);
+
+        if (field == Fields.password) {
+            return userService.updatePassword(session, userId, data);
+        }
+        return userService.updateUser(session, userId, field.getValue(), data);
     }
 }

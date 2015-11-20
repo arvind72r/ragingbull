@@ -6,6 +6,7 @@
 
 package com.medic.ragingbull.core.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.*;
@@ -17,6 +18,7 @@ import com.medic.ragingbull.core.notification.Notifiable;
 import com.medic.ragingbull.core.notification.NotificationFactory;
 import com.medic.ragingbull.exception.NotificationException;
 import com.medic.ragingbull.exception.ResourceCreationException;
+import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.util.Time;
@@ -31,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -120,6 +123,9 @@ public class UserService {
 
     public Response resendInviteAuthCode(Session session, String userId) throws StorageException, NotificationException, ResourceCreationException {
         try {
+            if (StringUtils.equals(userId, "me")) {
+                userId = session.getUserId();
+            }
             if (StringUtils.equals(session.getUserId(), userId)) {
                 User user = new User();
                 user.setEmail(session.getUserEmail());
@@ -187,20 +193,6 @@ public class UserService {
         }
     }
 
-    public Response getUserInvite(String inviteId) {
-        Invite invite = inviteDao.getInviteByUserId(inviteId);
-        return Response.ok(invite).build();
-    }
-
-    public User verifyUser(String email, String password) {
-        User user = userDao.getByEmail(email);
-        String hashedPassword = userDao.getHash(email);
-        if (BCrypt.checkpw(password, hashedPassword)) {
-            return user;
-        }
-        return null;
-    }
-
     public Session generateSession(String username, String password) throws StorageException {
         try {
             User user = userDao.getByEmail(username);
@@ -259,22 +251,60 @@ public class UserService {
         return null;
     }
 
-    public User updateUser(Session session, String userId, User user) {
-        if (StringUtils.equals(session.getUserId(), userId)) {
-            userDao.updateInfo(userId,  user.getName(), user.getEmail(), user.getPictureUrl());
-            return user;
+    public Response updateUser(Session session, String userId, String field, Map<String, String> data) throws ResourceUpdateException, StorageException {
+        try {
+            if (StringUtils.equals(session.getUserId(), userId)) {
+                Handle h = database.open();
+                int update = h.update("UPDATE USER set " + field + " = ?  where id = ?",  data.get("value"), userId);
+                h.close();
+                if (update == 0) {
+                    LOGGER.error(String.format("Error updating field %s for user %s.", field, session.getUserEmail()));
+                    throw new ResourceUpdateException("Error updating user data. Please try again");
+                }
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).entity(new HttpError(ErrorMessages.FORBIDDEN_USER_RESOURCE_CODE, ErrorMessages.FORBIDDEN_USER_RESOURCE_MESSAGE)).build();
+            }
+        }catch (ResourceUpdateException re) {
+            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), re));
+            throw re;
         }
-        return null;
+        catch(Exception e) {
+            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), e));
+            throw new StorageException(e.getMessage());
+        }
     }
 
+    public Response updatePassword(Session session, String userId, Map<String, String> data) throws ResourceUpdateException, StorageException {
+        try {
+            if (StringUtils.equals(session.getUserId(), userId)) {
 
-    public Response updateUser(Session session, String userId, String field, String data) {
-        if (StringUtils.equals(session.getUserId(), userId)) {
-            Handle h = database.open();
-            int update = h.update("UPDATE USER set " + field + " = ?  where id = ?",  data, userId);
-            h.close();;
-            return Response.ok().build();
+                String currentPasswordHash = userDao.getHashById(userId);
+
+                if (BCrypt.checkpw(data.get("password"), currentPasswordHash) && StringUtils.equals(data.get("password1"), data.get("password2"))) {
+                    // Matching password
+                    String latestPasswordHash = BCrypt.hashpw(data.get("password1"), BCrypt.gensalt());
+
+                    int passwordUpdated = userDao.updatePasswordById(userId, latestPasswordHash);
+
+                    if (passwordUpdated == 0) {
+                        LOGGER.error(String.format("Error updating password for user %s.", session.getUserEmail()));
+                        throw new ResourceUpdateException("Error updating user password. Please try again");
+                    }
+                    return Response.ok().build();
+                }
+                return Response.status(Response.Status.BAD_REQUEST).entity(new HttpError(ErrorMessages.INVALID_PASSWORD_USER_RESOURCE_CODE, ErrorMessages.INVALID_PASSWORD_USER_RESOURCE_MESSAGE)).build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).entity(new HttpError(ErrorMessages.FORBIDDEN_USER_RESOURCE_CODE, ErrorMessages.FORBIDDEN_USER_RESOURCE_MESSAGE)).build();
+            }
         }
-        return Response.status(Response.Status.FORBIDDEN).entity(new HttpError(ErrorMessages.FORBIDDEN_USER_RESOURCE_CODE, ErrorMessages.FORBIDDEN_USER_RESOURCE_MESSAGE)).build();
+        catch (ResourceUpdateException re) {
+            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), re));
+            throw re;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), e));
+            throw new StorageException(e.getMessage());
+        }
     }
 }

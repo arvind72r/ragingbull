@@ -39,12 +39,19 @@ public interface UserDao {
     @SqlQuery("SELECT * FROM user where name = :name")
     User getByName(@Bind("name") String username);
 
+    @SqlQuery("SELECT hash FROM user where id = :id")
+    String getHashById(@Bind("id") String id);
+
     @SqlQuery("SELECT hash FROM user where email = :email")
-    String getHash(@Bind("email") String email);
+    String getHashByEmail(@Bind("email") String email);
 
     @SqlUpdate("UPDATE USER set hash = :hash where email = :email")
-    int updatePassword(@Bind("email") String email,
-                       @Bind("hash") String hash);
+    int updatePasswordByEmail(@Bind("email") String email,
+                              @Bind("hash") String hash);
+
+    @SqlUpdate("UPDATE USER set hash = :hash where id = :id")
+    int updatePasswordById(@Bind("id") String id,
+                              @Bind("hash") String hash);
 
     @SqlQuery("SELECT * FROM user where id = :id")
     User getById(@Bind("id") String id);

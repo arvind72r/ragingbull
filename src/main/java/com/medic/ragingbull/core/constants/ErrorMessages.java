@@ -18,4 +18,8 @@ public interface ErrorMessages {
     // SignedIn user different from user resource trying to access
     String FORBIDDEN_USER_RESOURCE_CODE = "API401";
     String FORBIDDEN_USER_RESOURCE_MESSAGE = "Can only access logged in user resources";
+
+
+    String INVALID_PASSWORD_USER_RESOURCE_CODE = "API402";
+    String INVALID_PASSWORD_USER_RESOURCE_MESSAGE = "Password mismatch";
 }
