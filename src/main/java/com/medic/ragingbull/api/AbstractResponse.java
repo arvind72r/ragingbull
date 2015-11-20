@@ -8,8 +8,6 @@ package com.medic.ragingbull.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.ws.rs.core.Response;
-
 /**
  * Created by Vamshi Molleti
  */

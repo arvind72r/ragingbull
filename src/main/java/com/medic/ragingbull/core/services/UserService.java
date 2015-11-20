@@ -6,7 +6,6 @@
 
 package com.medic.ragingbull.core.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.*;

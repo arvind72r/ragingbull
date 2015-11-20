@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -93,7 +94,7 @@ public class OAuthService {
 
     private String generateGoogleAuthorizationUrl() {
 
-        String scope = "https://www.googleapis.com/auth/plus.profiles.read https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.profile.emails.read";
+        String scope = "https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email  https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.profiles.read";
         String authUrl = "https://accounts.google.com/o/oauth2/auth?" +
                 "scope=" + scope +
                 "&redirect_uri=" + googleConfiguration.getRedirectUrl() +
@@ -110,7 +111,7 @@ public class OAuthService {
         return authUrl;
     }
 
-    public Session getProfileInfoFromOAuth(Providers provider, final @Nonnull String authCode)
+    public Session getProfileInfoFromOAuth(Providers provider, final @NotNull String authCode)
             throws Exception {
 
         if (provider == Providers.GOOGLE) {

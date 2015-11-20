@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.medic.ragingbull.core.constants.LocationSpeciality;
 import com.medic.ragingbull.core.constants.ValidationConstants;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
 import javax.validation.constraints.NotNull;

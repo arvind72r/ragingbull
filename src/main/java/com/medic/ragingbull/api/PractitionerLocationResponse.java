@@ -8,7 +8,6 @@ package com.medic.ragingbull.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.joda.time.DateTime;
 
 /**
  * Created by Vamshi Molleti

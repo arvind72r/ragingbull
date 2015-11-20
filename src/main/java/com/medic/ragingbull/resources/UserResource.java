@@ -37,7 +37,7 @@ public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
     private UserService userService;
 
-    private enum Fields {
+    public enum Fields {
         name("name"), email("email"), password ("password");
 
         private String value;
@@ -47,10 +47,6 @@ public class UserResource {
 
         public String getValue() {
             return value;
-        }
-
-        public static Fields fromString(String value) {
-            return valueOf(value);
         }
     }
     @Inject
@@ -70,17 +66,10 @@ public class UserResource {
 
     @PUT
     @Path("/{id}/modify/{field}")
-    public Response updateUser(@Auth Session session, @PathParam("id")  String userId, @PathParam("field") String updateField, Map<String, String> data) throws StorageException, ResourceUpdateException, IOException {
+    public Response updateUser(@Auth Session session, @PathParam("id")  String userId, @PathParam("field") Fields field, Map<String, String> data) throws StorageException, ResourceUpdateException, IOException {
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
-
-        if (Fields.valueOf(updateField) == null) {
-            // BAD REQUEST
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
-        Fields field = Fields.valueOf(updateField);
 
         if (field == Fields.password) {
             return userService.updatePassword(session, userId, data);
