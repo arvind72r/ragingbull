@@ -127,6 +127,8 @@ public class ValidationConstants {
     public static final int INLET_TYPE_MAX = 4;
     public static final String INLET_TYPE_SIZE = "Description must be between "+ DESCRIPTION_MIN +" and "+ DESCRIPTION_MAX +" characters";
     public static final String INLET_TYPE_EMPTY = "The description cannot be empty";
+
+    public static final String MANDATORY_PARAM_MISSING = "Missing mandatory param";
 }
 
 

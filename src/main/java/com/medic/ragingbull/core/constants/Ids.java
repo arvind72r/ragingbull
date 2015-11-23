@@ -25,7 +25,8 @@ public class Ids {
         PRESCRIPTION("ps"),
         OAUTH("oa"),
         ENTITY_ADMIN("ea"),
-        IMAGE("im");
+        IMAGE("im"),
+        NOTES("nt");
         private String prefix;
 
         Type(String prefix) {
@@ -35,5 +36,9 @@ public class Ids {
         public String getPrefix() {
             return prefix;
         }
+    }
+
+    public enum Notes{
+        DIAGNOSIS, SYMPTOMS, USER, FEEDBACK
     }
 }

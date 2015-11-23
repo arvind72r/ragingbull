@@ -10,10 +10,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.PractitionerLocation;
-import com.medic.ragingbull.api.PractitionerLocationResponse;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.permissions.Privileges;
+import com.medic.ragingbull.core.services.ConsultationService;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
@@ -39,37 +38,18 @@ public class PractitionerLocationResource {
 
     private PractitionerLocationService practitionerLocationService;
 
+    private ConsultationService consultationService;
+
     @Inject
-    public PractitionerLocationResource(PractitionerLocationService practitionerLocationService) {
+    public PractitionerLocationResource(PractitionerLocationService practitionerLocationService, ConsultationService consultationService) {
         this.practitionerLocationService = practitionerLocationService;
+        this.consultationService = consultationService;
     }
 
     @GET
     @Path("/{locationId}")
     public PractitionerLocationResponse getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
         PractitionerLocationResponse response = practitionerLocationService.getPractitioner(session, practitionerId, locationId);
-        return response;
-    }
-
-    @GET
-    @Path("/{locationId}/consultation/{consultationId}")
-    public PractitionerLocationResponse getConsultation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
-        PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
-        return response;
-    }
-
-    @GET
-    @Path("/{locationId}/consultation")
-    public PractitionerLocationResponse getConsultations(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
-        PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
-        return response;
-    }
-
-
-    @POST
-    @Path("/{locationId}/consultation")
-    public PractitionerLocationResponse addConsultation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
-        PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
         return response;
     }
 

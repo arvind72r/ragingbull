@@ -7,17 +7,22 @@
 package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Consultation;
-import com.medic.ragingbull.api.ConsultationResponse;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.constants.Ids;
+import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceFetchException;
+import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.ConsultationDao;
+import com.medic.ragingbull.jdbi.dao.NotesDao;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti
@@ -29,57 +34,150 @@ public class ConsultationService {
 
     private ConsultationDao consultationDao;
 
+    private NotesDao notesDao;
+
     @Inject
-    public ConsultationService(ConsultationDao consultationDao) {
+    public ConsultationService(ConsultationDao consultationDao, NotesDao notesDao) {
         this.consultationDao = consultationDao;
+        this.notesDao = notesDao;
     }
 
-    public ConsultationResponse getConsultation(Session session, String practitionerId, String locationId, String consultId) throws StorageException {
+    public ConsultationResponse createConsultation(Session session, String locationId, Consultation consultation) throws StorageException, ResourceCreationException {
 
-//        try {
-//            Consultation consultation = consultationDao.getConsultation(practitionerId, locationId, consultId);
-//
-//            if (consultation.getUserId() != session.getUserEmail()) {
-//                throw new ResourceFetchException(String.format("Error fetching consultation with emailId %s. Logged in user different from consultation owner", session.getUserEmail()));
-//            }
-//
-//            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
-//            response.setStatus(HttpStatus.SC_OK);
-//            return response;
-//        } catch(Exception e) {
-//            LOGGER.error(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
-//            throw new StorageException(String.format("Error fetching consultation with email %s and id: %s", session.getUserEmail(), consultId));
-//        }
+        try {
+            String consultationId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.CONSULTATION);
+
+            List<Notes> consultationNotes = new ArrayList<>();
+
+            for (String symptom : consultation.getSymptoms()) {
+                String noteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
+                Notes symptomNote = new Notes(noteId, consultationId, SystemConstants.NotesTypes.SYMPTOMS, symptom);
+                consultationNotes.add(symptomNote);
+            }
+
+            for (String symptom : consultation.getDiagnosisNotes()) {
+                String noteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
+                Notes symptomNote = new Notes(noteId, consultationId, SystemConstants.NotesTypes.DIAGNOSIS, symptom);
+                consultationNotes.add(symptomNote);
+            }
+
+            for (String symptom : consultation.getUserNotes()) {
+                String noteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
+                Notes symptomNote = new Notes(noteId, consultationId, SystemConstants.NotesTypes.USER, symptom);
+                consultationNotes.add(symptomNote);
+            }
+
+            int consultationCreated = consultationDao.createConsultation(consultationId, locationId, consultation.getPractitionerId(), consultation.getUserId(), consultation.getCreatorId());
+
+            if (consultationCreated == 0) {
+                LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
+                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+            }
+
+            int notesCreated = notesDao.createAll(consultationNotes);
+
+            if (notesCreated == 0) {
+                LOGGER.error(String.format("Error creating consultation notes with email %s", session.getUserEmail()));
+                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+            }
+
+            ConsultationResponse response = new ConsultationResponse(consultationId, consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosisNotes(), consultation.getUserNotes(), consultation.getActive());
+            response.setStatus(HttpStatus.SC_OK);
+            return response;
+        } catch (ResourceCreationException re) {
+            LOGGER.error(String.format("Error creating consultation with email %s. Exception: %s", session.getUserEmail(), re));
+            throw re;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error creating consultation with email %s. Exception: %s", session.getUserEmail(), e));
+            throw new StorageException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+        }
+    }
+
+    public ConsultationResponse getConsultation(Session session, String locationId, String consultationId) throws StorageException {
+        try {
+            Consultation consultation = consultationDao.getConsultation(consultationId);
+
+            if (consultation == null) {
+                ConsultationResponse response = new ConsultationResponse();
+                response.setStatus(HttpStatus.SC_OK);
+                return response;
+            }
+            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosisNotes(), consultation.getUserNotes(), consultation.getActive());
+        } catch(Exception e) {
+            LOGGER.error(String.format("Error getting consultation with email %s. Exception: %s", session.getUserEmail(), e));
+            throw new StorageException(String.format("Error getting consultation with email %s", session.getUserEmail()));
+        }
+    }
+
+    public ConsultationResponse getConsultations(Session session, String locationId) {
+        try {
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         return null;
-
     }
 
-    public ConsultationResponse createConsultation(Session session, String practitionerId, String locationId, Consultation consultation) throws StorageException {
+    public Response deleteConsultation(Session session, String locationId, String consultationId) throws StorageException, ResourceUpdateException {
+        try {
+            int consultationDeleted = consultationDao.deleteConsultation(consultationId, locationId);
+            if (consultationDeleted == 0) {
+                LOGGER.error(String.format("Error deleting consultation with email %s", session.getUserEmail()));
+                throw new ResourceUpdateException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+            }
 
-//        try {
-//            String consultationId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.CONSULTATION);
-//            int consultationCreated = consultationDao.createConsultation(consultationId, practitionerId, locationId, session.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
-//
-//            if (consultationCreated == 0) {
-//                LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
-//                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
-//            }
-//
-//            ConsultationResponse response = new ConsultationResponse(consultation.getId(), consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getName(), consultation.getSlot(), consultation.getNotes());
-//            response.setStatus(HttpStatus.SC_OK);
-//        } catch(Exception e) {
-//            LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
-//            throw new StorageException(String.format("Error creating consultation with email %s", session.getUserEmail()));
-//        }
-
-        return null;
+            return Response.ok().build();
+        } catch (ResourceUpdateException re) {
+            LOGGER.error(String.format("Error deleting consultation with email %s. Exception: %s", session.getUserEmail(), re));
+            throw re;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error deleting consultation with email %s. Exception: %s", session.getUserEmail(), e));
+            throw new StorageException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+        }
     }
 
-    public ConsultationResponse modifyConsultation(Session session, String practitionerId, String locationId, String consultId, Consultation consultation) {
-        return null;
+    public Response createNotes(Session session, String locationId, String consultationId, SystemConstants.NotesTypes type, String content) throws ResourceCreationException, StorageException {
+
+        try {
+            String notesId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
+            int notesCreated = notesDao.create(notesId, consultationId, type.toString(), content);
+            if (notesCreated == 0) {
+                LOGGER.error(String.format("Error creating notes notes with email %s", session.getUserEmail()));
+                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
+            }
+
+            return Response.ok().entity(new Notes(notesId, consultationId, type, content)).build();
+        } catch (ResourceCreationException re) {
+            LOGGER.error(String.format("Error creating notes with email %s. Exception: %s", session.getUserEmail(), re));
+            throw re;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error creating notes with email %s. Exception: %s", session.getUserEmail(), e));
+            throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
+        }
     }
 
-    public ConsultationResponse deleteConsultation(Session session, String practitionerId, String locationId, String consultId) {
-        return null;
+    public Response deleteNote(Session session, String locationId, String consultationId, String noteId) throws ResourceUpdateException, StorageException {
+        try {
+            int noteDeleted = notesDao.deleteNotes(consultationId, noteId);
+
+            if (noteDeleted == 0) {
+                LOGGER.error(String.format("Error deleting notes notes with email %s", session.getUserEmail()));
+                throw new ResourceUpdateException(String.format("Error creating notes with email %s", session.getUserEmail()));
+            }
+
+            return Response.ok().build();
+        }
+        catch (ResourceUpdateException re) {
+            LOGGER.error(String.format("Error deleting notes with email %s. Exception: %s", session.getUserEmail(), re));
+            throw re;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error deleting notes with email %s. Exception: %s", session.getUserEmail(), e));
+            throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
+        }
     }
+
+
 }

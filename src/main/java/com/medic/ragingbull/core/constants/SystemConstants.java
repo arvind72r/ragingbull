@@ -19,6 +19,10 @@ public interface SystemConstants {
         PHARMACY_LOCATION, PRACTITIONER_LOCATION, CONSULTATION, PRESCRIPTION, ORDER
     }
 
+    enum NotesTypes {
+        SYMPTOMS, DIAGNOSIS, USER, FEEDBACK
+    }
+
     DateTime EXPIRY_TIME = new DateTime().plus(Days.ONE);
 
     Integer DEFAULT_DELIVERY_RADIUS = 3;

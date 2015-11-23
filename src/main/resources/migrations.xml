@@ -33,8 +33,8 @@
             <column name="picture_url" type="VARCHAR(128)">
                 <constraints nullable="true"/>
             </column>
-            <column name="verified" type="BOOL" defaultValueBoolean="false"/>
-            <column name="active" type="BOOL" defaultValueBoolean="true"/>
+            <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -88,7 +88,7 @@
             <column name="expiry" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="active" type="BOOL" defaultValueBoolean="true">
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
@@ -113,7 +113,7 @@
             <column name="expiry" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="availed" type="BOOL" defaultValueBoolean="false">
+            <column name="availed" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
@@ -361,8 +361,8 @@
             <column name="license" type="MEDIUMTEXT">
                 <constraints nullable="false"/>
             </column>
-            <column name="verified" type="BOOL" defaultValueBoolean="false"/>
-            <column name="active" type="BOOL" defaultValueBoolean="true"/>
+            <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -442,8 +442,8 @@
             <column name="license" type="MEDIUMTEXT">
                 <constraints nullable="false"/>
             </column>
-            <column name="verified" type="BOOL" defaultValueBoolean="false"/>
-            <column name="active" type="BOOL" defaultValueBoolean="true"/>
+            <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -466,28 +466,19 @@
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="practitioner_id" type="CHAR(128)">
+            <column name="location_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="location_id" type="CHAR(128)">
+            <column name="practitioner_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="name" type="VARCHAR(128)">
+            <column name="creator_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="slot" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="notes" type="VARCHAR(500)">
-            <constraints nullable="false"/>
-            </column>
-            <column name="confirmed" type="BOOL" defaultValueComputed="false">
-                <constraints nullable="false"/>
-            </column>
-            <column name="active" type="BOOL" defaultValueComputed="true"/>
+            <column name="active" type="BOOLEAN" defaultValueComputed="true"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -503,6 +494,34 @@
         </createIndex>
         <createIndex indexName="idx_consultation_user_id" tableName="consultation">
             <column name="user_id"/>
+        </createIndex>
+
+        <comment>Creating notes tables</comment>
+        <createTable tableName="notes">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="entity_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_type" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_notes_entity_id" tableName="notes">
+            <column name="entity_id"/>
         </createIndex>
 
         <comment>Creating a prescription table</comment>

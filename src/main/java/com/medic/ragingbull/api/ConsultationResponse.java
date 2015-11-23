@@ -8,6 +8,8 @@ package com.medic.ragingbull.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  * Created by Vamshi Molleti
  */
@@ -26,22 +28,28 @@ public class ConsultationResponse extends AbstractResponse{
     private String userId;
 
     @JsonProperty
-    private String name;
+    private List<String> symptoms;
 
     @JsonProperty
-    private Integer slot;
+    private List<String> diagnosisNotes;
 
     @JsonProperty
-    private String notes;
+    private List<String> userNotes;
 
-    public ConsultationResponse(String id, String practitionerId, String locationId, String userId, String name, Integer slot, String notes) {
+    @JsonProperty
+    private Boolean active;
+
+    public ConsultationResponse() {};
+
+    public ConsultationResponse(String id, String practitionerId, String locationId, String userId, List<String> symptoms, List<String> diagnosisNotes, List<String> userNotes, Boolean active) {
         this.id = id;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
         this.userId = userId;
-        this.name = name;
-        this.slot = slot;
-        this.notes = notes;
+        this.symptoms = symptoms;
+        this.diagnosisNotes = diagnosisNotes;
+        this.userNotes = userNotes;
+        this.active = active;
     }
 
     public String getId() {
@@ -60,15 +68,19 @@ public class ConsultationResponse extends AbstractResponse{
         return userId;
     }
 
-    public String getName() {
-        return name;
+    public List<String> getSymptoms() {
+        return symptoms;
     }
 
-    public Integer getSlot() {
-        return slot;
+    public List<String> getDiagnosisNotes() {
+        return diagnosisNotes;
     }
 
-    public String getNotes() {
-        return notes;
+    public List<String> getUserNotes() {
+        return userNotes;
+    }
+
+    public Boolean getActive() {
+        return active;
     }
 }

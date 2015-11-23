@@ -21,15 +21,27 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 public interface ConsultationDao  {
 
     @SqlQuery("SELECT * FROM consultation where id = :id")
-    Consultation getConsultation(String practitionerId, String locationId, String consultId);
+    Consultation getConsultation(@Bind("id") String id);
 
-    @SqlUpdate("INSERT INTO consultation (id, practitioner_id, location_id, user_id, name, slot, notes) " +
-            "VALUES(:id, :practitionerId, :locationId, :userId, :name, :slot, :notes)")
+    @SqlUpdate("INSERT INTO consultation (id, location_id, practitioner_id, user_id, creator_id) " +
+            "VALUES(:id, :locationId, :practitionerId, :userId, :creatorId)")
     int createConsultation(@Bind("id") String consultationId,
-                           @Bind("practitionerId") String practitionerId,
                            @Bind("locationId") String locationId,
+                           @Bind("practitionerId") String practitionerId,
                            @Bind("userId") String userId,
-                           @Bind("name") String name,
-                           @Bind("slot") Integer slot,
-                           @Bind("notes") String notes);
+                           @Bind("creatorId") String creatorId);
+
+    @SqlUpdate("UPDATE CONSULTATION set active = false where id = :id and location_id = :locationId")
+    int deleteConsultation(@Bind("id") String id, @Bind("locationId") String locationId);
+
+
+//    @SqlUpdate("INSERT INTO consultation (id, practitioner_id, location_id, user_id, name, slot, notes) " +
+//            "VALUES(:id, :practitionerId, :locationId, :userId, :name, :slot, :notes)")
+//    int createConsultation(@Bind("id") String consultationId,
+//                           @Bind("practitionerId") String practitionerId,
+//                           @Bind("locationId") String locationId,
+//                           @Bind("userId") String userId,
+//                           @Bind("name") String name,
+//                           @Bind("slot") Integer slot,
+//                           @Bind("notes") String notes);
 }
