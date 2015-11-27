@@ -17,12 +17,12 @@ public class Session {
     private String userEmail;
     private String userId;
     private String phone;
-    private Integer role;
+    private Long role;
     private Boolean isUserValid;
     private DateTime createdAt;
     private DateTime expiry;
 
-    public Session(String token, String userId, String userEmail, Integer role, DateTime createdAt, DateTime expiry) {
+    public Session(String token, String userId, String userEmail, Long role, DateTime createdAt, DateTime expiry) {
         this.token = token;
         this.userEmail = userEmail;
         this.userId = userId;
@@ -39,7 +39,7 @@ public class Session {
         this.phone = phone;
     }
 
-    public Integer getRole() {
+    public Long getRole() {
         return role;
     }
 

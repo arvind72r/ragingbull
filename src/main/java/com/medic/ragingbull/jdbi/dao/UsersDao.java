@@ -27,7 +27,7 @@ public interface UsersDao {
                    @Bind("hash") String hash,
                    @Bind("phone") String phone,
                    @Bind("inletType") String inletType,
-                   @Bind("role")Integer role,
+                   @Bind("role")Long role,
                    @Bind("pictureUrl")String pictureUrl);
 
     @SqlQuery("SELECT * FROM users where email = :email")
@@ -69,4 +69,13 @@ public interface UsersDao {
 
     @SqlUpdate("UPDATE users SET picture_url = :pictureUrl where id = :id")
     int pictureUrl(String userId, String absolutePath);
+
+    @SqlQuery("SELECT id FROM users where id = :id")
+    String getId(@Bind("id") String id);
+
+    @SqlQuery("SELECT id, role FROM users where id = :id")
+    User getRoleById(@Bind("id") String id);
+
+    @SqlUpdate("UPDATE users SET role = :role where id = :id")
+    int updateRoleById(@Bind("id") String id, @Bind("role") Long role);
 }

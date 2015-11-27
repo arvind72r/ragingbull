@@ -25,7 +25,11 @@ import java.util.List;
 public interface SessionsDao {
 
     @SqlUpdate("INSERT INTO SESSIONS (id, user_id, user_email, role, expiry) VALUES (:token, :user_id, :email, :role, :expiry)")
-    public int createSession(@Bind("token") String token, @Bind("user_id")  String userId, @Bind("email") String email, @Bind("role") Integer role, @BindTimeStamp("expiry") long expiry);
+    public int createSession(@Bind("token") String token,
+                             @Bind("user_id")  String userId,
+                             @Bind("email") String email,
+                             @Bind("role") Long role,
+                             @BindTimeStamp("expiry") long expiry);
 
     @SqlQuery("SELECT * FROM SESSIONS where id = :token")
     public Session getSession(@Bind("token") String token);

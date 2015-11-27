@@ -24,8 +24,7 @@ import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.config.FacebookConfiguration;
 import com.medic.ragingbull.config.GoogleConfiguration;
 import com.medic.ragingbull.config.RagingBullConfiguration;
-import com.medic.ragingbull.core.access.RoleGenerator;
-import com.medic.ragingbull.core.access.roles.Role;
+import com.medic.ragingbull.core.access.UserRoles;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.InletType;
 import com.medic.ragingbull.core.constants.SystemConstants;
@@ -129,7 +128,7 @@ public class OAuthService {
                 String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
                 String email = StringUtils.lowerCase(profile.getEmails().get(0).getValue());
 
-                int userCreated = userDao.createUser(userId, profile.getDisplayName(), email, null, null, InletType.GOOGLE.getInletType(), RoleGenerator.generateRole(Role.NATIVE_USER), profile.getImage().getUrl());
+                int userCreated = userDao.createUser(userId, profile.getDisplayName(), email, null, null, InletType.GOOGLE.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), profile.getImage().getUrl());
                 if (userCreated == 0) {
                     LOGGER.error(String.format("Error registering oauth user %s.", profile.getEmails().get(0).getValue()));
                     throw new ResourceCreationException("Error registering user. Please try again");
@@ -177,7 +176,7 @@ public class OAuthService {
                 String email = StringUtils.lowerCase(facebookEmail);
 
 
-                int userCreated = userDao.createUser(userId, name, email, null, null, InletType.FACEBOOK.getInletType(), RoleGenerator.generateRole(Role.NATIVE_USER), pictureUrl);
+                int userCreated = userDao.createUser(userId, name, email, null, null, InletType.FACEBOOK.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), pictureUrl);
                 if (userCreated == 0) {
                     LOGGER.error(String.format("Error registering oauth user %s.", facebookEmail));
                     throw new ResourceCreationException("Error registering user. Please try again");

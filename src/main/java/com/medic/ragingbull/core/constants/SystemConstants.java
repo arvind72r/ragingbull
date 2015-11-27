@@ -16,7 +16,7 @@ public interface SystemConstants {
 
     // Entities in system.
     enum Entities {
-        PHARMACY_LOCATION, PRACTITIONER_LOCATION, CONSULTATION, PRESCRIPTION, ORDER
+        USER, PHARMACIST, PRACTITIONER, PHARMACY_LOCATION, PRACTITIONER_LOCATION, CONSULTATION, PRESCRIPTION, ORDER
     }
 
     enum NotesTypes {

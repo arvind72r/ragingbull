@@ -31,7 +31,7 @@ public class UserMapper implements ResultSetMapper<User> {
                 r.getBoolean("active"),
                 r.getBoolean("verified"),
                 r.getString("picture_url"),
-                r.getInt("role"),
+                r.getLong("role"),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));
 

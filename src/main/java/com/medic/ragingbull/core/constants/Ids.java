@@ -22,7 +22,7 @@ public class Ids {
         PRACTITIONER_LOCATION("pr-lc"),
         PRESCRIPTION("ps"),
         DRUG("dg"),
-        ENTITY_ADMIN("ea"),
+        ENTITY_USER("eu"),
         IMAGE("im"),
         NOTES("nt"),
         ACCESS("ac"),

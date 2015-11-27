@@ -6,26 +6,22 @@
 
 package com.medic.ragingbull.resources;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.*;
-import com.medic.ragingbull.core.access.permissions.Privileges;
+import com.medic.ragingbull.api.EntityUser;
+import com.medic.ragingbull.api.PractitionerLocationResponse;
+import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.services.ConsultationService;
+import com.medic.ragingbull.core.services.PractitionerLocationService;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.core.services.PractitionerLocationService;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Vamshi Molleti
@@ -69,8 +65,8 @@ public class PractitionerLocationResource {
 
     @PUT
     @Path("/{locationId}/users")
-    public Response addUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, List<Map<String, String>> users) throws StorageException, ResourceCreationException {
-        Response response = practitionerLocationService.addUsers(session, practitionerId, locationId, users);
+    public Response addUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, List<EntityUser> entityUsers) throws StorageException, ResourceCreationException {
+        Response response = practitionerLocationService.addUsers(session, practitionerId, locationId, entityUsers);
         return response;
     }
 

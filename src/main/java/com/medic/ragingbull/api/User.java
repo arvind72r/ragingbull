@@ -10,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.medic.ragingbull.core.access.RoleGenerator;
-import com.medic.ragingbull.core.access.roles.Role;
 import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -82,7 +80,7 @@ public class User {
     private Pharmacist pharmacist;
 
     @JsonIgnore
-    private Integer role = 0;
+    private Long role;
 
     @JsonIgnore
     private DateTime updatedAt;
@@ -106,13 +104,12 @@ public class User {
         this.pictureUrl = pictureUrl;
         this.practitioner = practitioner;
         this.pharmacist = pharmacist;
-        this.role = 0; // DEFAULT VALUE
     }
 
     /**
      * Constructor to be used by DAO Mapper.
      */
-    public User(String id, String name, String hash, String email, String phone, String inletType, Boolean active, Boolean verified, String pictureUrl, Integer role, DateTime updatedAt, DateTime createdAt) {
+    public User(String id, String name, String hash, String email, String phone, String inletType, Boolean active, Boolean verified, String pictureUrl, Long role, DateTime updatedAt, DateTime createdAt) {
         this.id = id;
         this.name = name;
         this.hash = hash;
@@ -184,10 +181,7 @@ public class User {
         return pictureUrl;
     }
 
-    public Integer getRole() {
-        if (role == 0) {
-            role = RoleGenerator.generateRole(Role.NATIVE_USER);
-        }
+    public Long getRole() {
         return role;
     }
 

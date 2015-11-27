@@ -8,6 +8,7 @@ package com.medic.ragingbull;
 
 import com.google.inject.AbstractModule;
 import com.medic.ragingbull.config.RagingBullConfiguration;
+import com.medic.ragingbull.core.access.UserRoleGenerator;
 import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.providers.Authorization;
 import com.medic.ragingbull.core.services.*;
@@ -43,15 +44,15 @@ public class RagingBullModule extends AbstractModule {
         bind(RagingBullConfiguration.class).toInstance(configuration);
 
         // Register HTTP Client
-        //final HttpClient httpClient = new HttpClientBuilder(environment).using(configuration.getHttpClientConfiguration()).build("Sample Application");
-
         final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build("Sample Application");
 
-        //bind(HttpClient.class).toInstance(httpClient);
         bind(Client.class).toInstance(client);
         // Binding Authenticator
         bind(UserAuthenticator.class).asEagerSingleton();
 
+        // Binding Independent classes
+        bind(UserRoleGenerator.class).asEagerSingleton();
+        
         // Binding Database and DAO's
         bind(DBI.class).toInstance(database);
         bind(UsersDao.class).toInstance(database.onDemand(UsersDao.class));
@@ -62,7 +63,7 @@ public class RagingBullModule extends AbstractModule {
         bind(PharmacistDao.class).toInstance(database.onDemand(PharmacistDao.class));
         bind(PractitionerLocationDao.class).toInstance(database.onDemand(PractitionerLocationDao.class));
         bind(PharmacyLocationDao.class).toInstance(database.onDemand(PharmacyLocationDao.class));
-        bind(EntityAdminDao.class).toInstance(database.onDemand(EntityAdminDao.class));
+        bind(EntityUsersDao.class).toInstance(database.onDemand(EntityUsersDao.class));
         bind(ImagesDao.class).toInstance(database.onDemand(ImagesDao.class));
         bind(ConsultationDao.class).toInstance(database.onDemand(ConsultationDao.class));
         bind(NotesDao.class).toInstance(database.onDemand(NotesDao.class));

@@ -23,7 +23,7 @@ public class SessionMapper implements ResultSetMapper<Session> {
         return new Session(r.getString("id"),
                 r.getString("user_id"),
                 r.getString("user_email"),
-                r.getInt("role"),
+                r.getLong("role"),
                 new DateTime(r.getDate("expiry")),
                 new DateTime(r.getDate("created_at")));
     }

@@ -27,7 +27,7 @@
             <column name="inlet_type" type="CHAR(16)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role" type="INT">
+            <column name="role" type="BIGINT(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="picture_url" type="VARCHAR(128)">
@@ -63,7 +63,7 @@
             <column name="user_email" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role" type="INT">
+            <column name="role" type="BIGINT(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="expiry" type="DATETIME">
@@ -143,7 +143,7 @@
         </createIndex>
 
         <comment>Creating Entity Location Users privilege table</comment>
-        <createTable tableName="entity_admin">
+        <createTable tableName="entity_users">
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -156,9 +156,6 @@
             <column name="entity_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role" type="INT">
-                <constraints nullable="false"/>
-            </column>
             <column name="entity" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>
@@ -169,10 +166,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex indexName="idx_entity_admin_user_id" tableName="entity_admin">
+        <createIndex indexName="idx_entity_users_user_id" tableName="entity_users">
             <column name="user_id"/>
         </createIndex>
-        <createIndex indexName="idx_entity_admin_entity_id" tableName="entity_admin">
+        <createIndex indexName="idx_entity_users_entity_id" tableName="entity_users">
             <column name="entity_id"/>
         </createIndex>
 

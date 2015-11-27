@@ -52,13 +52,6 @@ public class RegistrationResource {
     }
 
     @POST
-    @Path("/anon")
-    public RegistrationResponse registerAnonUser(User user) throws StorageException, NotificationException, ResourceCreationException {
-        RegistrationResponse response =  userService.registerAnon(user);
-        return response;
-    }
-
-    @POST
     @Path("/{id}/approve")
     public Response approveRegisteredUser(@PathParam("id") final String authCode) throws StorageException {
         Response response = userService.approveInvite(authCode);

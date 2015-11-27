@@ -9,7 +9,7 @@ package com.medic.ragingbull.core.services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.*;
-import com.medic.ragingbull.core.access.roles.Role;
+import com.medic.ragingbull.core.access.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
@@ -62,23 +62,14 @@ public class UserService {
         this.pharmacistDao = pharmacistDao;
     }
 
-    public RegistrationResponse register(final User user) throws StorageException, NotificationException, ResourceCreationException {
-        return registerUser(user, Role.NATIVE_USER);
-    }
-
-    public RegistrationResponse registerAnon(User user) throws StorageException, NotificationException, ResourceCreationException {
-        user.setEmail(user.getPhone());
-        return registerUser(user, Role.ANON);
-    }
-
-    private RegistrationResponse registerUser(User user, Role role) throws StorageException, ResourceCreationException, NotificationException {
+    public RegistrationResponse register(User user) throws StorageException, ResourceCreationException, NotificationException {
         try {
             user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
 
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
-            int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), user.getRole(), user.getPictureUrl());
+            int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), user.getPictureUrl());
 
             if (userCreated == 0 ) {
                 LOGGER.error(String.format("Error registering user %s. DB failed to save the record", user.getEmail()));
@@ -232,11 +223,11 @@ public class UserService {
             User user = userDao.getById(userId);
 
             if (hydrated) {
-                if ((user.getRole() & Role.PRACTITIONER.getBitValue()) == Role.PRACTITIONER.getBitValue()) {
+                if ((user.getRole() & UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) == UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) {
                     Practitioner practitioner = practitionerDao.getByUserId(userId);
                     user.setPractitioner(practitioner);
                 }
-                if((user.getRole() & Role.PHARMACIST.getBitValue()) == Role.PHARMACIST.getBitValue()) {
+                if((user.getRole() & UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) == UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) {
                     Pharmacist pharmacist = pharmacistDao.getByUserId(userId);
                     user.setPharmacist(pharmacist);
                 }
