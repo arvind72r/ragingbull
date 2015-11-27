@@ -12,7 +12,7 @@ import com.medic.ragingbull.config.ImagesConfiguration;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.jdbi.dao.ImagesDao;
-import com.medic.ragingbull.jdbi.dao.UserDao;
+import com.medic.ragingbull.jdbi.dao.UsersDao;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -32,10 +32,10 @@ public class ImageService {
 
     private ImagesConfiguration imagesConfig;
     private ImagesDao imagesDao;
-    private UserDao userDao;
+    private UsersDao userDao;
 
     @Inject
-    public ImageService(RagingBullConfiguration configuration, ImagesDao imagesDao, UserDao userDao) {
+    public ImageService(RagingBullConfiguration configuration, ImagesDao imagesDao, UsersDao userDao) {
         this.imagesConfig = configuration.getImagesConfiguration();
         this.imagesDao = imagesDao;
         this.userDao = userDao;

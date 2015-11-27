@@ -1,0 +1,53 @@
+
+    <!-- Registration APIS -->
+    GET     /register/{id} (com.medic.ragingbull.resources.RegistrationResource)
+    POST    /register (com.medic.ragingbull.resources.RegistrationResource)
+    POST    /register/anon (com.medic.ragingbull.resources.RegistrationResource)
+    POST    /register/{id}/approve (com.medic.ragingbull.resources.RegistrationResource)
+
+    <!-- Login APIS -->
+    POST    /auth/login (com.medic.ragingbull.resources.AuthResource)
+    POST    /auth/logout (com.medic.ragingbull.resources.AuthResource)
+    POST    /auth/reset (com.medic.ragingbull.resources.AuthResource)
+    POST    /auth/reset/{id} (com.medic.ragingbull.resources.AuthResource)
+
+    <!-- OAuth APIS -->
+    GET     /oauth/{provider} (com.medic.ragingbull.resources.OAuthResource)
+    GET     /oauth/{provider}/callback (com.medic.ragingbull.resources.OAuthResource)
+
+    <!-- User APIS -->
+    GET     /user/{id} (com.medic.ragingbull.resources.UserResource)
+    PUT     /user/{id}/modify/{field} (com.medic.ragingbull.resources.UserResource)
+
+    <!-- Practitioner APIS -->
+    POST    /practitioner (com.medic.ragingbull.resources.PractitionerResource)
+    GET     /practitioner/{id} (com.medic.ragingbull.resources.PractitionerResource)
+    POST    /practitioner/{id}/location (com.medic.ragingbull.resources.PractitionerResource)
+    GET     /practitioner/{id}/location/{locationId} (com.medic.ragingbull.resources.PractitionerResource)
+
+    <!-- Pharmacist APIS -->
+    POST    /pharmacist (com.medic.ragingbull.resources.PharmacistResource)
+    GET     /pharmacist/{id} (com.medic.ragingbull.resources.PharmacistResource)
+    POST    /pharmacist/{id}/location (com.medic.ragingbull.resources.PharmacyLocationResource)
+    GET     /pharmacist/{id}/location/{locationId} (com.medic.ragingbull.resources.PharmacyLocationResource)
+
+    <!-- Location APIS-->
+    DELETE  /location/{id}/consultation/{consultationId} (com.medic.ragingbull.resources.ConsultationResource)
+    DELETE  /location/{id}/consultation/{consultationId}/notes/{noteId} (com.medic.ragingbull.resources.ConsultationResource)
+    GET     /location/{id}/consultation (com.medic.ragingbull.resources.ConsultationResource)
+    GET     /location/{id}/consultation/{consultationId} (com.medic.ragingbull.resources.ConsultationResource)
+    POST    /location/{id}/consultation (com.medic.ragingbull.resources.ConsultationResource)
+    POST    /location/{id}/consultation/{consultationId}/notes/{type} (com.medic.ragingbull.resources.ConsultationResource)
+    GET     /location/{id} (com.medic.ragingbull.resources.PractitionerLocationResource)
+    GET     /location/{id}/users (com.medic.ragingbull.resources.PractitionerLocationResource)
+    GET     /location/{id}/users/{userId} (com.medic.ragingbull.resources.PractitionerLocationResource)
+    PUT     /location/{id}/users (com.medic.ragingbull.resources.PractitionerLocationResource)
+
+    <!-- Image APIS -->
+    GET     /images/entity/{id}/images (com.medic.ragingbull.resources.ImageResource)
+    GET     /images/{id} (com.medic.ragingbull.resources.ImageResource)
+    POST    /images/entity/{id} (com.medic.ragingbull.resources.ImageResource)
+
+    <!-- Sample API -->
+    GET     /hello (com.medic.ragingbull.resources.HelloRagingBull)
+

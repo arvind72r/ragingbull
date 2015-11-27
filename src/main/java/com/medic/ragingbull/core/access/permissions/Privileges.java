@@ -10,15 +10,148 @@ package com.medic.ragingbull.core.access.permissions;
  * Created by Vamshi Molleti
  */
 public enum Privileges {
+    // This is the privilege list for the platform. In total there are 64 privileges in total.
+    // 16 privileges are allocated to each entity. Current entities are User, Practitioner, Pharmacy
+    //      -------Unused--------       ------Pharmacist--------        ------Practitioner------        ---------User-----------
+    //      11111111     11111111       11111111        11111111        11111111        11111111        11111111        11111111
+    //                                                                                         131072   65536  512      256    2
+    /**
+     Values for User starting from 1
+     2
+     4
+     8
+     16
+     32
+     64
+     128
+     256
+     512
+     1024
+     2048
+     4096
+     8192
+     16384
+     32768
+     65536 --> End at 16
 
-    READ(1), WRITE(2), MODIFY(4), DELETE(8), READ_OTHERS(16), WRITE_OTHERS(32), MODIFY_OTHERS(64), DELETE_OTHERS(128);
-    private int BIT_VALUE;
+     Values for Practitioner starting from 17
+     131072
+     262144
+     524288
+     1048576
+     2097152
+     4194304
+     8388608
+     16777216
+     33554432
+     67108864
+     134217728
+     268435456
+     536870912
+     1073741824
+     2147483648
+     4294967296 --> End at 32
 
-    Privileges(int bitValue) {
-        this.BIT_VALUE = bitValue;
+     Values for Pharmacist starting at 33
+     8589934592
+     17179869184
+     34359738368
+     68719476736
+     137438953472
+     274877906944
+     549755813888
+     1099511627776
+     2199023255552
+     4398046511104
+     8796093022208
+     17592186044416
+     35184372088832
+     70368744177664
+     140737488355328
+     281474976710656 --> End at 48
+
+     Unused values starting at 49
+     562949953421312
+     1125899906842624
+     2251799813685248
+     4503599627370496
+     9007199254740992
+     18014398509481984
+     36028797018963968
+     72057594037927936
+     144115188075855872
+     288230376151711744
+     576460752303423488
+     1152921504606846976
+     2305843009213693952
+     4611686018427387904
+     9223372036854775807 --> End at 64
+     */
+
+    // Block User
+    BLOCK(0),
+
+    // User Privileges
+    USER_READ(2),
+    USER_MODIFY(4),
+    USER_DELETE(8),
+
+    USER_MEMBER_ADD(16),
+    USER_MEMBER_MODIFY(32),
+    USER_MEMBER_DELETE(64),
+
+    USER_CONSULTATION_READ(128),
+    USER_CONSULTATION_MODIFY(256),
+    USER_CONSULTATION_DELETE(512),
+
+    USER_ORDER_CREATE(1024),
+    USER_ORDER_CANCEL(2048),
+
+    // Practitioner Privileges
+    PRACTITIONER_READ(131072),
+    PRACTITIONER_MODIFY(262144),
+    PRACTITIONER_DELETE(524288),
+
+    PRACTITIONER_LOCATION_ADD(1048576),
+    PRACTITIONER_LOCATION_MODIFY(2097152),
+    PRACTITIONER_LOCATION_DELETE(4194304),
+
+    PRACTITIONER_LOCATION_USER_ADD(8388608),
+    PRACTITIONER_LOCATION_USER_REMOVE(16777216),
+
+    PRACTITIONER_LOCATION_CONSULTATION_ADD(33554432),
+    PRACTITIONER_LOCATION_CONSULTATION_MODIFY(67108864),
+    PRACTITIONER_LOCATION_CONSULTATION_DELETE(134217728),
+
+    PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD(268435456),
+
+    // Pharmacist Privileges
+    PHARMACIST_READ(8589934592L),
+    PHARMACIST_MODIFY(17179869184L),
+    PHARMACIST_DELETE(34359738368L),
+
+    PHARMACIST_LOCATION_ADD(68719476736L),
+    PHARMACIST_LOCATION_MODIFY(137438953472L),
+    PHARMACIST_LOCATION_DELETE(274877906944L),
+
+    PHARMACIST_LOCATION_USER_ADD(549755813888L),
+    PHARMACIST_LOCATION_USER_REMOVE(1099511627776L),
+
+    PHARMACIST_ORDER_READ(2199023255552L),
+    PHARMACIST_ORDER_APPROVE(4398046511104L),
+    PHARMACIST_ORDER_CANCEL(8796093022208L),
+
+    PHARMACIST_INVENTORY_READ(17592186044416L),
+    PHARMACIST_INVENTORY_MODIFY(35184372088832L),
+    PHARMACIST_INVENTORY_DELETE(70368744177664L);
+
+    private long BIT_VALUE;
+
+    Privileges(long BIT_VALUE) {
+        this.BIT_VALUE = BIT_VALUE;
     }
 
-    public int getBitValue() {
+    public long getBitValue() {
         return BIT_VALUE;
     }
 }

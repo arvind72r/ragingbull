@@ -30,7 +30,7 @@ public class NotificationFactory {
         this.twilioNotifier = twilioNotifier;
     }
 
-    public void notifyUser(User user, Notifiable.Mode mode, int authCode) throws NotificationException {
+    public void notifyUser(User user, Notifiable.Mode mode, String authCode) throws NotificationException {
             switch (mode) {
                 case MAIL:
                     mailGunNotifier.notify(user);

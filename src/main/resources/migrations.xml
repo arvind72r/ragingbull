@@ -8,7 +8,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet author="molletivamshi" id="1">
         <comment>Creating a user table</comment>
-        <createTable tableName="user">
+        <createTable tableName="users">
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -42,18 +42,18 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex indexName="idx_user_email" tableName="user">
+        <createIndex indexName="idx_user_email" tableName="users">
             <column name="email"/>
         </createIndex>
-        <createIndex indexName="idx_user_name" tableName="user">
+        <createIndex indexName="idx_user_name" tableName="users">
             <column name="name"/>
         </createIndex>
-        <createIndex indexName="idx_user_phone" tableName="user">
+        <createIndex indexName="idx_user_phone" tableName="users">
             <column name="phone"/>
         </createIndex>
 
         <comment>Creating session table</comment>
-        <createTable tableName="session">
+        <createTable tableName="sessions">
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -73,47 +73,28 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex indexName="idx_session_token" tableName="session">
+        <createIndex indexName="idx_session_token" tableName="sessions">
             <column name="id"/>
         </createIndex>
 
-        <comment>Creating a password reset table</comment>
-        <createTable tableName="password_reset">
-            <column name="id" type="CHAR(128)">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="email" type="VARCHAR(128)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="expiry" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <comment>Creating a invite table</comment>
-        <createTable tableName="invite">
+        <comment>Creating a user access table for password and invites</comment>
+        <createTable tableName="access">
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="user_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="code" type="INT">
+            <column name="code" type="VARCHAR(128)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="expiry" type="DATETIME">
+            <column name="entity" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="availed" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiry" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
@@ -123,14 +104,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex indexName="idx_invite_id" tableName="invite">
+        <createIndex indexName="idx_access_id" tableName="access">
             <column name="id"/>
         </createIndex>
-        <createIndex indexName="idx_invite_user_id" tableName="invite">
+        <createIndex indexName="idx_access_user_id" tableName="access">
             <column name="user_id"/>
-        </createIndex>
-        <createIndex indexName="idx_invite_code" tableName="invite">
-            <column name="code"/>
         </createIndex>
 
         <comment>Creating a oauth table</comment>
@@ -198,7 +176,7 @@
             <column name="entity_id"/>
         </createIndex>
 
-        <comment>Creating a pharmacy table</comment>
+        <comment>Creating a pharmacist table</comment>
         <createTable tableName="pharmacist">
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
@@ -529,34 +507,16 @@
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="consult_id" type="CHAR(128)">
+            <column name="consultation_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
             <column name="practitioner_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="location_id" type="CHAR(128)">
-                <constraints nullable="false"/>
-            </column>
             <column name="user_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="notes" type="VARCHAR(500)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="drug_name" type="VARCHAR(128)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="drug_manufacturer" type="VARCHAR(128)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="drug_quantity" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="drug_frequency" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="drug_allergies" type="VARCHAR(128)">
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
@@ -574,6 +534,52 @@
         </createIndex>
         <createIndex indexName="idx_prescription_user_id" tableName="prescription">
             <column name="user_id"/>
+        </createIndex>
+        <createIndex indexName="idx_prescription_consultation_id" tableName="prescription">
+            <column name="consultation_id"/>
+        </createIndex>
+        
+        <comment>Drugs table for the prescriptions</comment>
+        <createTable tableName="prescription_drug">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="consultation_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="practitioner_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manufacturer" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="frequency" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="allergies" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_prescription_drug_consultation_id" tableName="prescription">
+            <column name="consultation_id"/>
+        </createIndex>
+        <createIndex indexName="idx_prescription_drug_user_id" tableName="prescription">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex indexName="idx_prescription_drug_practitioner_id" tableName="prescription">
+            <column name="practitioner_id"/>
         </createIndex>
 
         <comment>Creating a images table</comment>

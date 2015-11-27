@@ -6,6 +6,7 @@
 
 package com.medic.ragingbull.core.access;
 
+import com.medic.ragingbull.core.access.permissions.Privileges;
 import com.medic.ragingbull.core.access.roles.Role;
 
 /**
@@ -23,5 +24,4 @@ public class RoleGenerator {
         }
         return -1;
     }
-
 }

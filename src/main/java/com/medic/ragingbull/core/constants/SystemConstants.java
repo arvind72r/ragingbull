@@ -23,6 +23,10 @@ public interface SystemConstants {
         SYMPTOMS, DIAGNOSIS, USER, FEEDBACK
     }
 
+    enum AccessEntities{
+        PASSWORD, INVITE
+    }
+
     DateTime EXPIRY_TIME = new DateTime().plus(Days.ONE);
 
     Integer DEFAULT_DELIVERY_RADIUS = 3;

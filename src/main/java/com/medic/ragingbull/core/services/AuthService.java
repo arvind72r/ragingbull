@@ -8,6 +8,7 @@ package com.medic.ragingbull.core.services;
 
 
 import com.google.inject.Inject;
+import com.medic.ragingbull.api.Access;
 import com.medic.ragingbull.api.PasswordReset;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
@@ -16,10 +17,9 @@ import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.jdbi.dao.PasswordResetDao;
-import com.medic.ragingbull.jdbi.dao.SessionDao;
-import com.medic.ragingbull.jdbi.dao.UserDao;
-import org.apache.commons.lang3.StringUtils;
+import com.medic.ragingbull.jdbi.dao.AccessDao;
+import com.medic.ragingbull.jdbi.dao.SessionsDao;
+import com.medic.ragingbull.jdbi.dao.UsersDao;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -31,22 +31,22 @@ import org.slf4j.LoggerFactory;
 public class AuthService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
-    private final SessionDao sessionDao;
-    private final UserDao userDao;
-    private final PasswordResetDao passwordResetDao;
+    private final SessionsDao sessionsDao;
+    private final UsersDao userDao;
+    private final AccessDao accessDao;
 
     @Inject
-    public AuthService(SessionDao sessionDao, UserDao userDao, PasswordResetDao passwordResetDao) {
-        this.sessionDao = sessionDao;
+    public AuthService(SessionsDao sessionsDao, UsersDao userDao, AccessDao accessDao) {
+        this.sessionsDao = sessionsDao;
         this.userDao = userDao;
-        this.passwordResetDao = passwordResetDao;
+        this.accessDao = accessDao;
     }
 
 
 
     public void logoutUser(Session session) throws StorageException {
         try {
-            int loggedOut = sessionDao.logoutUser(session.getToken());
+            int loggedOut = sessionsDao.logoutUser(session.getToken());
             if (loggedOut == 0) {
                 LOGGER.error(String.format("Error logging out user session with email %s", session.getUserEmail()));
                 throw new ResourceCreationException("Error creating session for the user. Please try again");
@@ -68,9 +68,10 @@ public class AuthService {
                 return reset;
             }
 
+            String accessId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ACCESS);
             String resetId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.RESET);
 
-            int count = passwordResetDao.resetPassword(resetId, userEmail, expiry.getMillis());
+            int count = accessDao.create(accessId, user.getId(), resetId, SystemConstants.AccessEntities.PASSWORD.name(), expiry.getMillis());
 
             PasswordReset reset = new PasswordReset(resetId, userEmail, expiry);
             if (count == 0) {
@@ -87,9 +88,9 @@ public class AuthService {
 
     public void resetPassword(String resetId, String email, String password) throws StorageException {
         try {
-            String resetLink = passwordResetDao.getResetLink(resetId, email, new DateTime().getMillis());
+            Access access = accessDao.getByCode(resetId);
 
-            if (StringUtils.equals(resetId, resetLink)) {
+            if (access != null) {
                 String hash = BCrypt.hashpw(password, BCrypt.gensalt());
 
                 int passwordUpdated = userDao.updatePasswordByEmail(email, hash);

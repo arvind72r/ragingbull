@@ -13,20 +13,21 @@ public class Ids {
 
     public enum Type {
         SESSION("ss"),
-        RESET("rs"),
         USER ("us"),
-        ANON_USER("au"),
+        OAUTH("oa"),
         CONSULTATION("cn"),
         PHARMACY("ph"),
         PHARMACY_LOCATION("ph-lc"),
         PRACTITIONER("pr"),
-        INVITE("in"),
         PRACTITIONER_LOCATION("pr-lc"),
         PRESCRIPTION("ps"),
-        OAUTH("oa"),
+        DRUG("dg"),
         ENTITY_ADMIN("ea"),
         IMAGE("im"),
-        NOTES("nt");
+        NOTES("nt"),
+        ACCESS("ac"),
+        INVITE("in"),
+        RESET("rs");
         private String prefix;
 
         Type(String prefix) {
@@ -38,7 +39,4 @@ public class Ids {
         }
     }
 
-    public enum Notes{
-        DIAGNOSIS, SYMPTOMS, USER, FEEDBACK
-    }
 }

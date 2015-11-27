@@ -31,7 +31,7 @@ import com.medic.ragingbull.core.constants.InletType;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.jdbi.dao.OAuthDao;
-import com.medic.ragingbull.jdbi.dao.UserDao;
+import com.medic.ragingbull.jdbi.dao.UsersDao;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class OAuthService {
     private FacebookConfiguration facebookConfiguration;
     private UserService userService;
     private OAuthDao oAuthDao;
-    private UserDao userDao;
+    private UsersDao userDao;
     private Client httpClient;
 
     public enum Providers {
@@ -74,7 +74,7 @@ public class OAuthService {
     }
 
     @Inject
-    public OAuthService(RagingBullConfiguration ragingBullConfiguration, OAuthDao oAuthDao, UserDao userDao, UserService userService, Client httpClient) {
+    public OAuthService(RagingBullConfiguration ragingBullConfiguration, OAuthDao oAuthDao, UsersDao userDao, UserService userService, Client httpClient) {
         this.googleConfiguration = ragingBullConfiguration.getGoogleConfiguration();
         this.facebookConfiguration = ragingBullConfiguration.getFacebookConfiguration();
         this.oAuthDao = oAuthDao;

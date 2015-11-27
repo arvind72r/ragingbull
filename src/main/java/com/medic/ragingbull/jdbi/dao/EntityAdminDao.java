@@ -26,7 +26,7 @@ public interface EntityAdminDao {
                @Bind("userId") String userId,
                @Bind("createdBy") String createdBy,
                @Bind("entityId") String entityId,
-               @Bind("role") Integer role,
+               @Bind("role") Long role,
                @Bind("entity") String entity);
 
     @SqlQuery("SELECT * FROM entity_admin where entity_id = :entityId")

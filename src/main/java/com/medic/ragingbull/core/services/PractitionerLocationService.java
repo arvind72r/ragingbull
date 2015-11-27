@@ -96,7 +96,7 @@ public class PractitionerLocationService {
     public Response addUsers(Session session, String practitionerId, String locationId, List<Map<String, String>> users) throws ResourceCreationException {
         for(Map<String, String> user : users) {
             String adminId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ENTITY_ADMIN);
-            Integer userRole = 0;
+            long userRole = 0L;
             String userId = user.get("id");
             String privileges = user.get("roles");
 

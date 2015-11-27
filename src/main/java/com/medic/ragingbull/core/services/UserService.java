@@ -44,20 +44,20 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final DBI database;
-    private final UserDao userDao;
-    private final InviteDao inviteDao;
-    private final SessionDao sessionDao;
+    private final UsersDao userDao;
+    private final AccessDao accessDao;
+    private final SessionsDao sessionsDao;
     private final PractitionerDao practitionerDao;
     private final PharmacistDao pharmacistDao;
     private final NotificationFactory notificationFactory;
 
     @Inject
-    public UserService(DBI database, NotificationFactory notificationFactory, UserDao userDao, InviteDao inviteDao, SessionDao sessionDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao) {
+    public UserService(DBI database, NotificationFactory notificationFactory, UsersDao userDao, AccessDao accessDao, SessionsDao sessionsDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao) {
         this.database = database;
         this.notificationFactory = notificationFactory;
         this.userDao = userDao;
-        this.inviteDao = inviteDao;
-        this.sessionDao = sessionDao;
+        this.accessDao = accessDao;
+        this.sessionsDao = sessionsDao;
         this.practitionerDao = practitionerDao;
         this.pharmacistDao = pharmacistDao;
     }
@@ -73,11 +73,7 @@ public class UserService {
 
     private RegistrationResponse registerUser(User user, Role role) throws StorageException, ResourceCreationException, NotificationException {
         try {
-            if (role == Role.NATIVE_USER) {
-                user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
-            } else {
-                user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.ANON_USER));
-            }
+            user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
 
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
@@ -90,19 +86,19 @@ public class UserService {
             }
 
             // Generate AuthCode and notify user via SMS.
-            int authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
-            notificationFactory.notifyUser(user, Notifiable.Mode.SMS, authCode);
+            Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
+            notificationFactory.notifyUser(user, Notifiable.Mode.SMS, authCode.toString());
 
-            String inviteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.INVITE);
+            String accessId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ACCESS);
             long expiry = Time.getMillisAfterXDays(1);
 
-            int inviteCreated = inviteDao.createInvite(inviteId, user.getId(), authCode, expiry);
+            int inviteCreated = accessDao.create(accessId, user.getId(), authCode.toString(), SystemConstants.AccessEntities.INVITE.name(), expiry);
 
             if (inviteCreated == 0 ) {
                 LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
                 throw new ResourceCreationException("Error creating invite. Please try again");
             }
-            return new RegistrationResponse(user.getId(), email, inviteId, expiry);
+            return new RegistrationResponse(user.getId(), email, accessId, expiry);
         }
         catch (StorageException re) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), re));
@@ -129,18 +125,18 @@ public class UserService {
                 User user = new User();
                 user.setEmail(session.getUserEmail());
                 user.setPhone(session.getPhone());
-                Invite invite = inviteDao.getInviteByUserId(userId);
-                if (invite != null) {
-                    notificationFactory.notifyUser(user, Notifiable.Mode.SMS, invite.getCode());
+                Access access = accessDao.getActiveByUserId(userId);
+                if (access != null) {
+                    notificationFactory.notifyUser(user, Notifiable.Mode.SMS, access.getCode());
                     return Response.ok().build();
                 } else {
-                    int authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
-                    notificationFactory.notifyUser(user, Notifiable.Mode.SMS, authCode);
+                    Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
+                    notificationFactory.notifyUser(user, Notifiable.Mode.SMS, authCode.toString());
 
                     String inviteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.INVITE);
                     long expiry = Time.getMillisAfterXDays(1);
 
-                    int inviteCreated = inviteDao.createInvite(inviteId, userId, authCode, expiry);
+                    int inviteCreated = accessDao.create(inviteId, userId, authCode.toString(), SystemConstants.AccessEntities.INVITE.name(), expiry);
                     if (inviteCreated == 0 ) {
                         LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
                         throw new ResourceCreationException("Error creating invite. Please try again");
@@ -169,12 +165,12 @@ public class UserService {
 
     public Response approveInvite(final String authCode) throws StorageException {
         try {
-            Invite invite = inviteDao.getInviteByCode(authCode);
+            Access access = accessDao.getByCode(authCode);
 
-            if (invite == null) {
+            if (access == null) {
                 return Response.status(HttpStatus.FORBIDDEN_403).build();
             }
-            int isApproved = userDao.approveUser(invite.getUserId());
+            int isApproved = userDao.approveUser(access.getUserId());
             if (isApproved > 0) {
                 return Response.ok().build();
             } else {
@@ -208,7 +204,7 @@ public class UserService {
     }
 
     public Session getSession(User user) throws ResourceCreationException {
-        List<Session> sessions = sessionDao.getActiveSessionsPerUserEmail(user.getEmail());
+        List<Session> sessions = sessionsDao.getActiveSessionsPerUserEmail(user.getEmail());
 
         if (sessions.size() > 0) {
             sessions.get(0).setIsUserValid(user.getVerified());
@@ -222,7 +218,7 @@ public class UserService {
         Session loggedInUserSession = new Session(sessionId,  user.getId(), user.getEmail(), user.getRole(), expiry, createdAt);
         loggedInUserSession.setIsUserValid(user.getVerified());
 
-        int sessionCreated = sessionDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());
+        int sessionCreated = sessionsDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());
         if (sessionCreated == 0) {
             LOGGER.error(String.format("Error creating session for user %s.", user.getEmail()));
             throw new ResourceCreationException("Error creating session for the user. Please try again");

@@ -54,10 +54,9 @@ public class RagingBullModule extends AbstractModule {
 
         // Binding Database and DAO's
         bind(DBI.class).toInstance(database);
-        bind(UserDao.class).toInstance(database.onDemand(UserDao.class));
-        bind(PasswordResetDao.class).toInstance(database.onDemand(PasswordResetDao.class));
-        bind(InviteDao.class).toInstance(database.onDemand(InviteDao.class));
-        bind(SessionDao.class).toInstance(database.onDemand(SessionDao.class));
+        bind(UsersDao.class).toInstance(database.onDemand(UsersDao.class));
+        bind(AccessDao.class).toInstance(database.onDemand(AccessDao.class));
+        bind(SessionsDao.class).toInstance(database.onDemand(SessionsDao.class));
         bind(OAuthDao.class).toInstance(database.onDemand(OAuthDao.class));
         bind(PractitionerDao.class).toInstance(database.onDemand(PractitionerDao.class));
         bind(PharmacistDao.class).toInstance(database.onDemand(PharmacistDao.class));

@@ -11,6 +11,7 @@ import com.medic.ragingbull.api.Prescription;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlBatch;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
+import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 
 import java.util.List;
 
@@ -23,12 +24,11 @@ public interface PrescriptionDao {
     @SqlQuery("SELECT * FROM prescription where id = :id")
     Prescription getPrescription(String prescriptionId);
 
-    @SqlBatch("INSERT INTO prescription (id, practitionerId, locationId, location, consultId, drug_name, " +
-            "drug_manufacturer, drug_quantity, drug_frequency, drug_allergies) " +
-            "VALUES(:id, :practitionerId, :locationId, :consultId, :drug.name, drug.manufacturer, drug.quantity, drug.frequencyBit, drug.allergies)")
+    @SqlUpdate("INSERT INTO prescription (id, consultation_id, practitionerId, user_id ) " +
+            "VALUES(:id, :consultationId, :practitionerId, :userId)")
     int createPrescription(@Bind("id") String id,
+                           @Bind("consultationId") String consultationId,
                            @Bind("practitionerId") String practitionerId,
-                           @Bind("locationId") String locationId,
-                           @Bind("consultId") String consultId,
-                           @Bind("drug") List<Drug> drugs);
+                           @Bind("userId") String userId);
+
 }

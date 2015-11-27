@@ -23,7 +23,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by Vamshi Molleti
  */
-@Path("/practitioner/{id}/location/{locationId}/consult/{id}/prescription")
+@Path("/consultation/{consultationId}/prescription")
 @Produces(MediaType.APPLICATION_JSON)
 public class PrescriptionResource {
 
@@ -44,8 +44,15 @@ public class PrescriptionResource {
     }
 
     @POST
-    public PrescriptionResponse createPrescription(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @PathParam("consultId") String consultId, @Valid Prescription prescription) throws StorageException {
-        PrescriptionResponse response = prescriptionService.createPrescription(session, practitionerId, locationId, consultId, prescription);
+    public PrescriptionResponse createPrescription(@Auth Session session, @PathParam("consultationId") String consultId, @Valid Prescription prescription) throws StorageException {
+        PrescriptionResponse response = prescriptionService.createPrescription(session, consultId, prescription);
+        return response;
+    }
+
+    @DELETE
+    @Path("/{prescriptionId}")
+    public PrescriptionResponse deletePrescription(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @PathParam("consultId") String consultId, @PathParam("prescriptionId") String prescriptionId) throws StorageException {
+        PrescriptionResponse response = prescriptionService.getPrescription(session, practitionerId, locationId, consultId, prescriptionId);
         return response;
     }
 
