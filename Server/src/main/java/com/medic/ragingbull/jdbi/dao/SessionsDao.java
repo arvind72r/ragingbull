@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2015
  *
- * NakedPenguin. All rights reserved.
+ * RagingBull. All rights reserved
  */
 
 package com.medic.ragingbull.jdbi.dao;
@@ -25,7 +25,7 @@ public interface SessionsDao {
 
     @SqlUpdate("INSERT INTO SESSIONS (id, user_id, user_email, role, expiry) VALUES (:token, :user_id, :email, :role, :expiry)")
     public int createSession(@Bind("token") String token,
-                             @Bind("user_id")  String userId,
+                             @Bind("user_id") String userId,
                              @Bind("email") String email,
                              @Bind("role") Long role,
                              @BindTimeStamp("expiry") long expiry);
@@ -40,5 +40,5 @@ public interface SessionsDao {
     public List<Session> getActiveSessionsPerUserEmail(@Bind("user_email") String userEmail);
 
     @SqlUpdate("UPDATE SESSIONS set active = false where id = :token")
-    public int logoutUser(@Bind("token")  String token);
+    public int logoutUser(@Bind("token") String token);
 }

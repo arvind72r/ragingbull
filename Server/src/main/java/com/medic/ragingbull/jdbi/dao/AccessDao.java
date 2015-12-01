@@ -25,10 +25,10 @@ public interface AccessDao {
     @SqlUpdate("INSERT INTO access (id, user_id, code, entity, expiry) " +
             "VALUES(:id, :user_id, :code, :entity, :expiry)")
     int create(@Bind("id") String id,
-                     @Bind("user_id") String user_id,
-                     @Bind("code") String code,
-                     @Bind("entity") String entity,
-                     @BindTimeStamp("expiry") long expiry);
+               @Bind("user_id") String user_id,
+               @Bind("code") String code,
+               @Bind("entity") String entity,
+               @BindTimeStamp("expiry") long expiry);
 
     @SqlQuery("SELECT * FROM access where id = :id")
     Access getById(@Bind("id") String id);

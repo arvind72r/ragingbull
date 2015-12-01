@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2015
  *
- * NakedPenguin. All rights reserved.
+ * RagingBull. All rights reserved
  */
 
 package com.medic.ragingbull.config;
