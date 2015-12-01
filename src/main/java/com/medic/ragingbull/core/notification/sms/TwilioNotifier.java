@@ -9,11 +9,9 @@ package com.medic.ragingbull.core.notification.sms;
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.config.RagingBullConfiguration;
-import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.Notifiable;
 import com.medic.ragingbull.exception.NotificationException;
 import com.twilio.sdk.TwilioRestClient;
-import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.SmsFactory;
 import com.twilio.sdk.resource.instance.Account;
 import org.apache.http.NameValuePair;
@@ -23,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Vamshi Molleti

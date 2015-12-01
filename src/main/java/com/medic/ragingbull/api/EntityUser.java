@@ -13,12 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.medic.ragingbull.core.access.UserRoles;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.constants.ValidationConstants;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 /**

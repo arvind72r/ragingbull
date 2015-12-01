@@ -6,19 +6,17 @@
 
 package com.medic.ragingbull.resources;
 
-import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.services.ImageService;
 import io.dropwizard.auth.Auth;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.IOException;
 
 /**
  * Created by Vamshi Molleti

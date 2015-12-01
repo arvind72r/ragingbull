@@ -89,6 +89,23 @@ twilio:
   token: 5e6f82b02b23a687de76a43a47c1a3b7
   registeredPhoneNo: +14804188821
 
+pusher:
+  applicationId: 151818
+  applicationKey: 138f725bcfc3dd4201d1
+  applicationSecret: 9b07a3ea9f49be2ee402
+  userChannel: user_channel
+
+mailChimp
+  url: https://usX.api.mailchimp.com/3.0/
+  applicationKey : 3eb0fe0d51e02041f14762000444e660-us12
+
+mandrillApp:
+  url:  https://mandrillapp.com/api/1.0/
+  applicationKey: UHZlwbsolEv6AP3c-wjJXw
+
+  mailChimpKey: 3eb0fe0d51e02041f14762000444e660-us12
+
+
 #OAuth Providers
 google:
   applicationName: RagingBull-Bootstrap/1.0

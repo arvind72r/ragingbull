@@ -6,12 +6,13 @@
 
 package com.medic.ragingbull.resources;
 
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.api.Pharmacist;
+import com.medic.ragingbull.api.PharmacistResponse;
+import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.core.services.PharmacyService;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceFetchException;
-import com.medic.ragingbull.core.services.PharmacyService;
 import com.medic.ragingbull.exception.StorageException;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;

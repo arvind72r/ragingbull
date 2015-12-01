@@ -6,7 +6,6 @@
 
 package com.medic.ragingbull.jdbi.mapper;
 
-import com.medic.ragingbull.api.EntityAdmin;
 import com.medic.ragingbull.api.EntityUser;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import org.joda.time.DateTime;

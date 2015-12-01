@@ -9,7 +9,6 @@ package com.medic.ragingbull.jdbi.dao;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.jdbi.mapper.BindTimeStamp;
 import com.medic.ragingbull.jdbi.mapper.SessionMapper;
-import org.joda.time.DateTime;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;

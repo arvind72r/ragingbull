@@ -6,12 +6,11 @@
 
 package com.medic.ragingbull.resources;
 
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
-import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.core.services.PractitionerService;
+import com.medic.ragingbull.exception.StorageException;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

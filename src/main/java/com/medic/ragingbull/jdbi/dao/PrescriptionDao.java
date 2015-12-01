@@ -6,14 +6,10 @@
 
 package com.medic.ragingbull.jdbi.dao;
 
-import com.medic.ragingbull.api.Drug;
 import com.medic.ragingbull.api.Prescription;
 import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.SqlBatch;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
-
-import java.util.List;
 
 /**
  * Created by Vamshi Molleti

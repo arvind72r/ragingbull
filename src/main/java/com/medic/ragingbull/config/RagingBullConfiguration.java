@@ -65,6 +65,21 @@ public class RagingBullConfiguration extends Configuration
 
     @Valid
     @NotNull
+    @JsonProperty("pusher")
+    private PusherConfiguration pusherConfiguration = new PusherConfiguration();
+
+    @Valid
+    @NotNull
+    @JsonProperty("mailChimp")
+    private MailChimpConfiguration mailChimpConfiguration = new MailChimpConfiguration();
+
+    @Valid
+    @NotNull
+    @JsonProperty("mandrillApp")
+    private MandrillAppConfiguration mandrillAppConfiguration = new MandrillAppConfiguration();
+
+    @Valid
+    @NotNull
     @JsonProperty("google")
     private GoogleConfiguration googleConfiguration = new GoogleConfiguration();
 
@@ -86,6 +101,10 @@ public class RagingBullConfiguration extends Configuration
     }
     public FacebookConfiguration getFacebookConfiguration() {
         return facebookConfiguration;
+    }
+
+    public PusherConfiguration getPusherConfiguration() {
+        return pusherConfiguration;
     }
 
     public ImagesConfiguration getImagesConfiguration() {

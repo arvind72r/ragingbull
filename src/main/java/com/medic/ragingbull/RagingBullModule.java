@@ -52,7 +52,7 @@ public class RagingBullModule extends AbstractModule {
 
         // Binding Independent classes
         bind(UserRoleGenerator.class).asEagerSingleton();
-        
+
         // Binding Database and DAO's
         bind(DBI.class).toInstance(database);
         bind(UsersDao.class).toInstance(database.onDemand(UsersDao.class));

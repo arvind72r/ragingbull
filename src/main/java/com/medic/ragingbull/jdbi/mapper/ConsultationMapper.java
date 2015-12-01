@@ -7,7 +7,6 @@
 package com.medic.ragingbull.jdbi.mapper;
 
 import com.medic.ragingbull.api.Consultation;
-import org.joda.time.DateTime;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 

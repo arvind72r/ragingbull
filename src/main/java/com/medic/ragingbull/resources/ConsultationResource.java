@@ -6,14 +6,15 @@
 
 package com.medic.ragingbull.resources;
 
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.api.Consultation;
+import com.medic.ragingbull.api.ConsultationResponse;
+import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.constants.SystemConstants;
+import com.medic.ragingbull.core.services.ConsultationService;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.core.services.ConsultationService;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
