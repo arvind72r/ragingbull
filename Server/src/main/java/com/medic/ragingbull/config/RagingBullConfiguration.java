@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2015
  *
- * NakedPenguin. All rights reserved.
+ * RagingBull. All rights reserved
  */
 
 package com.medic.ragingbull.config;
@@ -16,8 +16,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
-public class RagingBullConfiguration extends Configuration
-{
+public class RagingBullConfiguration extends Configuration {
     @Valid
     @JsonProperty
     boolean dbMigrateOnStartup;
@@ -58,25 +57,6 @@ public class RagingBullConfiguration extends Configuration
         return jersyClient;
     }
 
-    @Valid
-    @NotNull
-    @JsonProperty("twilio")
-    private TwilioConfiguration twilioConfiguration = new TwilioConfiguration();
-
-    @Valid
-    @NotNull
-    @JsonProperty("pusher")
-    private PusherConfiguration pusherConfiguration = new PusherConfiguration();
-
-    @Valid
-    @NotNull
-    @JsonProperty("mailChimp")
-    private MailChimpConfiguration mailChimpConfiguration = new MailChimpConfiguration();
-
-    @Valid
-    @NotNull
-    @JsonProperty("mandrillApp")
-    private MandrillAppConfiguration mandrillAppConfiguration = new MandrillAppConfiguration();
 
     @Valid
     @NotNull
@@ -90,21 +70,23 @@ public class RagingBullConfiguration extends Configuration
 
     @Valid
     @NotNull
+    @JsonProperty("notifications")
+    NotificationConfiguration notificationConfiguration = new NotificationConfiguration();
+    @Valid
+    @NotNull
     @JsonProperty("images")
     private ImagesConfiguration imagesConfiguration = new ImagesConfiguration();
 
     public GoogleConfiguration getGoogleConfiguration() {
         return googleConfiguration;
     }
-    public TwilioConfiguration getTwilioConfiguration() {
-        return twilioConfiguration;
-    }
+
     public FacebookConfiguration getFacebookConfiguration() {
         return facebookConfiguration;
     }
 
-    public PusherConfiguration getPusherConfiguration() {
-        return pusherConfiguration;
+    public NotificationConfiguration getNotificationConfiguration() {
+        return notificationConfiguration;
     }
 
     public ImagesConfiguration getImagesConfiguration() {

@@ -6,7 +6,7 @@
 
 package com.medic.ragingbull.core.notification.push;
 
-import com.medic.ragingbull.api.User;
+import com.google.inject.Inject;
 import com.medic.ragingbull.config.PusherConfiguration;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.notification.Notifiable;
@@ -19,14 +19,15 @@ public class PusherNotifier extends Notifiable {
 
     private final PusherConfiguration configuration;
     private final Pusher pusher;
+
+    @Inject
     public PusherNotifier(RagingBullConfiguration ragingBullConfiguration) {
-        this.configuration = ragingBullConfiguration.getPusherConfiguration();
+        this.configuration = ragingBullConfiguration.getNotificationConfiguration().getPusherConfiguration();
         pusher = new Pusher(configuration.getApplicationId(), configuration.getApplicationKey(), configuration.getApplicationSecret());
     }
 
-    public void notify(User user, String message) {
-        pusher.trigger(user.getPhone(), configuration.getUserChannel(), message);
-
-
+    public void notify(String id, NotificationEvent event, String message) {
+        String channelName = event.name() + id;
+        pusher.trigger(channelName, event.name(), message);
     }
 }

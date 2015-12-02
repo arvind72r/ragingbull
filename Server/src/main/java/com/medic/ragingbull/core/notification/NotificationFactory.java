@@ -7,17 +7,20 @@
 package com.medic.ragingbull.core.notification;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.mail.MandrillAppNotifier;
 import com.medic.ragingbull.core.notification.push.PusherNotifier;
 import com.medic.ragingbull.core.notification.sms.TwilioNotifier;
 import com.medic.ragingbull.exception.NotificationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Vamshi Molleti
  */
-public class NotificationFactory {
+public class NotificationFactory extends Notifiable{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationFactory.class);
 
     private MandrillAppNotifier mandrillAppNotifier;
     private PusherNotifier pusherNotifier;
@@ -30,33 +33,17 @@ public class NotificationFactory {
         this.twilioNotifier = twilioNotifier;
     }
 
-    public void notifyUser(User user, Notifiable.Mode mode, String message) throws NotificationException {
+    public void notifyUser(String id, Mode mode, NotificationEvent event, String message) throws NotificationException {
             switch (mode) {
                 case MAIL:
-                    mandrillAppNotifier.notify(user);
+                    mandrillAppNotifier.notify(id);
                     break;
                 case PUSH:
-                    pusherNotifier.notify(user, message);
+                    pusherNotifier.notify(id, event,  message);
                     break;
                 case SMS:
-                    twilioNotifier.notify(user, String.format(SystemConstants.SMS_REGISTRATION_TOKEN, message));
+                    twilioNotifier.notify(id, String.format(SystemConstants.SMS_REGISTRATION_TOKEN, message));
                     break;
         }
     }
-
-//    public void notifyUser(User user, Notifiable.Event event, String message) throws NotificationException {
-//        switch (mode) {
-//            case MAIL:
-//                mandrillAppNotifier.notify(user);
-//                break;
-//            case PUSH:
-//                pusherNotifier.notify(user, message);
-//                break;
-//            case SMS:
-//                twilioNotifier.notify(user, String.format(SystemConstants.SMS_REGISTRATION_TOKEN, message));
-//                break;
-//        }
-//    }
-
-
 }

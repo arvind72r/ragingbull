@@ -82,28 +82,52 @@ jerseyClient:
   chunkedEncodingEnabled: true
 
 # Notifications
-# SMS provider name
-twilio:
-  # Account Identification ID
-  accountId: ACab3e8e24ff89ac09f6a1e39a2104b893
-  token: 5e6f82b02b23a687de76a43a47c1a3b7
-  registeredPhoneNo: +14804188821
 
-pusher:
-  applicationId: 151818
-  applicationKey: 138f725bcfc3dd4201d1
-  applicationSecret: 9b07a3ea9f49be2ee402
-  userChannel: user_channel
+notifications:
 
-mailChimp:
-  url: https://usX.api.mailchimp.com/3.0/
-  applicationKey : 3eb0fe0d51e02041f14762000444e660-us12
+  notifierMap:
+    SIGN_UP: [SMS, MAIL]
+    RESEND_INVITE_CODE: [SMS]
+    NEWSLETTER: [PUSH, MAIL]
+    UPDATES: [PUSH]
+    EMERGENCY: [SMS, PUSH, MAIL]
+    USER_MEMBER_ADDED: [PUSH, MAIL]
+    USER_MEMBER_REMOVED: [PUSH, MAIL]
+    CONSULTATION_CREATED: [PUSH]
+    CONSULTATION_MODIFIED: [PUSH]
+    CONSULTATION_DELETED: [PUSH]
+    PRESCRIPTION_CREATED: [PUSH, MAIL]
+    DIAGNOSIS_CREATED: [PUSH]
+    DIAGNOSIS_DELETED: [PUSH]
+    ORDER_CREATED: [PUSH]
+    ORDER_ACCEPTED: [PUSH]
+    ORDER_DELIVERY_START: [PUSH, MAIL]
+    ORDER_DELIVERY_END: [PUSH]
+    ORDER_COMPLETE: [PUSH, MAIL]
 
-mandrillApp:
-  url:  https://mandrillapp.com/api/1.0/
-  applicationKey: UHZlwbsolEv6AP3c-wjJXw
+  # SMS notifier
+  twilio:
+    # Account Identification ID
+    accountId: ACab3e8e24ff89ac09f6a1e39a2104b893
+    token: 5e6f82b02b23a687de76a43a47c1a3b7
+    registeredPhoneNo: +14804188821
 
-  mailChimpKey: 3eb0fe0d51e02041f14762000444e660-us12
+  # Push notifier
+  pusher:
+    applicationId: 151818
+    applicationKey: 138f725bcfc3dd4201d1
+    applicationSecret: 9b07a3ea9f49be2ee402
+
+  # Marketing notifier
+  mailChimp:
+    url: https://usX.api.mailchimp.com/3.0/
+    applicationKey : 3eb0fe0d51e02041f14762000444e660-us12
+
+  # Mail notifier
+  mandrillApp:
+    url:  https://mandrillapp.com/api/1.0/
+    applicationKey: UHZlwbsolEv6AP3c-wjJXw
+    mailChimpKey: 3eb0fe0d51e02041f14762000444e660-us12
 
 
 #OAuth Providers

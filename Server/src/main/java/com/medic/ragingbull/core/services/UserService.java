@@ -10,7 +10,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
-import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.Notifiable;
@@ -22,7 +21,6 @@ import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.util.Time;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jetty.http.HttpStatus;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import org.skife.jdbi.v2.DBI;
@@ -78,7 +76,7 @@ public class UserService {
 
             // Generate AuthCode and notify user via SMS.
             Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
-            notificationFactory.notifyUser(user, Notifiable.Mode.SMS, authCode.toString());
+            notificationFactory.notifyUser(user.getPhone(), Notifiable.Mode.SMS, Notifiable.NotificationEvent.SIGN_UP, authCode.toString());
 
             String accessId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ACCESS);
             long expiry = Time.getMillisAfterXDays(1);
@@ -129,8 +127,7 @@ public class UserService {
 
     public List<User> getMembers(String userId) throws ResourceCreationException {
         try {
-            List<User> members = userDao.getUsersByParent(userId);
-            return members;
+            return userDao.getUsersByParent(userId);
         } catch (Exception e) {
             LOGGER.error(String.format("Error fetching members under user %s. Exception %s", userId, e));
             throw new ResourceCreationException(e.getMessage());
@@ -144,10 +141,10 @@ public class UserService {
             user.setPhone(session.getPhone());
             Access access = accessDao.getActiveByUserId(userId);
             if (access != null) {
-                notificationFactory.notifyUser(user, Notifiable.Mode.SMS, access.getCode());
+                notificationFactory.notifyUser(user.getPhone(), Notifiable.Mode.SMS, Notifiable.NotificationEvent.RESEND_INVITE_CODE, access.getCode());
             } else {
                 Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
-                notificationFactory.notifyUser(user, Notifiable.Mode.SMS, authCode.toString());
+                notificationFactory.notifyUser(user.getPhone(), Notifiable.Mode.SMS, Notifiable.NotificationEvent.RESEND_INVITE_CODE, authCode.toString());
 
                 String inviteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.INVITE);
                 long expiry = Time.getMillisAfterXDays(1);

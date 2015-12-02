@@ -27,10 +27,6 @@ public class PusherConfiguration extends Configuration{
     @JsonProperty
     private String applicationSecret;
 
-    @NotEmpty
-    @JsonProperty
-    private String userChannel;
-
     public String getApplicationId() {
         return applicationId;
     }
@@ -41,9 +37,5 @@ public class PusherConfiguration extends Configuration{
 
     public String getApplicationSecret() {
         return applicationSecret;
-    }
-
-    public String getUserChannel() {
-        return userChannel;
     }
 }

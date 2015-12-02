@@ -26,7 +26,7 @@ public class MandrillAppNotifier extends Notifiable {
         this.mailChimpConfiguration = mailChimpConfiguration;
     }
 
-    public void notify(User user) {
+    public void notify(String id) {
 
     }
 }
