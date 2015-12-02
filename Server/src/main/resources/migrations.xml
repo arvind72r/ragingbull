@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2015.
+  ~ Copyright (c) 2015
   ~
-  ~ RagingBull. All rights reserved.
+  ~ RagingBull. All rights reserved
   -->
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
@@ -11,6 +11,9 @@
         <createTable tableName="users">
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="parent_id" type="CHAR(128)" defaultValue="SELF">
+                <constraints nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(128)">
                 <constraints nullable="true"/>
@@ -50,6 +53,9 @@
         </createIndex>
         <createIndex indexName="idx_user_phone" tableName="users">
             <column name="phone"/>
+        </createIndex>
+        <createIndex indexName="idx_user_parent_idl" tableName="users">
+            <column name="parent_id"/>
         </createIndex>
 
         <comment>Creating session table</comment>

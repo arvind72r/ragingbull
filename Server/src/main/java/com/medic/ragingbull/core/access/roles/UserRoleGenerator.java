@@ -4,7 +4,7 @@
  * RagingBull. All rights reserved
  */
 
-package com.medic.ragingbull.core.access;
+package com.medic.ragingbull.core.access.roles;
 
 import java.util.List;
 

@@ -8,9 +8,12 @@ package com.medic.ragingbull.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
+import com.medic.ragingbull.api.Member;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.core.access.service.UserAccessService;
 import com.medic.ragingbull.core.services.UserService;
+import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import io.dropwizard.auth.Auth;
@@ -18,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,7 +36,7 @@ import java.util.Map;
 public class UserResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
-    private UserService userService;
+    private UserAccessService userAccessService;
 
     public enum Fields {
         name("name"), email("email"), password ("password");
@@ -47,18 +51,37 @@ public class UserResource {
         }
     }
     @Inject
-    public UserResource(UserService userService) {
-        this.userService = userService;
+    public UserResource(UserService userService, UserAccessService userAccessService) {
+        this.userAccessService = userAccessService;
     }
 
     @GET
     @Path("/{id}")
-    public User getUser(@Auth Session session, @PathParam("id") String userId, @QueryParam("hydrated")Optional<Boolean> hydrated) throws StorageException {
+    public Response getUser(@Auth Session session, @PathParam("id") String userId, @QueryParam("hydrated")Optional<Boolean> hydrated) throws StorageException, ResourceUpdateException {
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
-        User user = userService.getUser(session, userId, hydrated.or(Boolean.FALSE));
-        return user;
+        return userAccessService.getUser(session, userId, hydrated.or(Boolean.FALSE));
+    }
+
+    @POST
+    @Path("/{id}/member")
+    public Response addMember(@Auth Session session, @PathParam("id") String userId, @Valid Member member) throws ResourceCreationException, StorageException {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+
+        Response response = userAccessService.addMember(session, userId, member);
+        return response;
+    }
+
+    @GET
+    @Path("/{id}/member")
+    public Response getMembers(@Auth Session session, @PathParam("id") String userId) throws ResourceCreationException, StorageException {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.getMembers(session, userId);
     }
 
     @PUT
@@ -67,10 +90,6 @@ public class UserResource {
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
-
-        if (field == Fields.password) {
-            return userService.updatePassword(session, userId, data);
-        }
-        return userService.updateUser(session, userId, field.getValue(), data);
+        return userAccessService.update(session, userId, field.getValue(), data);
     }
 }

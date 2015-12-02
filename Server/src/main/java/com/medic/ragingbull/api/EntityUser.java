@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.medic.ragingbull.core.access.UserRoles;
+import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.NotEmpty;

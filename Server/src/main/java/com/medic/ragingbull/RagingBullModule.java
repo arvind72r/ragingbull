@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2015
  *
- * NakedPenguin. All rights reserved.
+ * RagingBull. All rights reserved
  */
 
 package com.medic.ragingbull;
 
 import com.google.inject.AbstractModule;
 import com.medic.ragingbull.config.RagingBullConfiguration;
-import com.medic.ragingbull.core.access.UserRoleGenerator;
+import com.medic.ragingbull.core.access.roles.UserRoleGenerator;
 import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.providers.Authorization;
 import com.medic.ragingbull.core.services.*;

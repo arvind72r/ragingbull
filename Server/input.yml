@@ -95,7 +95,7 @@ pusher:
   applicationSecret: 9b07a3ea9f49be2ee402
   userChannel: user_channel
 
-mailChimp
+mailChimp:
   url: https://usX.api.mailchimp.com/3.0/
   applicationKey : 3eb0fe0d51e02041f14762000444e660-us12
 

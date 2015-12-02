@@ -13,6 +13,8 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
+import java.util.List;
+
 /**
  * Created by Vamshi Molleti
  */
@@ -29,6 +31,17 @@ public interface UsersDao {
                    @Bind("inletType") String inletType,
                    @Bind("role") Long role,
                    @Bind("pictureUrl") String pictureUrl);
+
+    @SqlUpdate("INSERT  INTO users (id, parent_id, email, name, hash, phone, inlet_type, role) " +
+            "VALUES(:id, :parentId, :email, :name, :hash, :phone, :inletType, :role)")
+    int createMember(@Bind("id") String id,
+                     @Bind("parentId")String userId,
+                     @Bind("name")String name,
+                     @Bind("email")String email,
+                     @Bind("hash")String hashPass,
+                     @Bind("phone")String phone,
+                     @Bind("inletType")String inletType,
+                     @Bind("role")Long role);
 
     @SqlQuery("SELECT * FROM users where email = :email")
     User getByEmail(@Bind("email") String email);
@@ -78,4 +91,7 @@ public interface UsersDao {
 
     @SqlUpdate("UPDATE users SET role = :role where id = :id")
     int updateRoleById(@Bind("id") String id, @Bind("role") Long role);
+
+    @SqlQuery("SELECT * FROM users where parent_id = :id")
+    List<User> getUsersByParent(@Bind("id") String id);
 }

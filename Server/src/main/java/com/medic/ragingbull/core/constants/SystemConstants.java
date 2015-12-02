@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2015
  *
- * NakedPenguin. All rights reserved.
+ * RagingBull. All rights reserved
  */
 
 package com.medic.ragingbull.core.constants;
@@ -40,6 +40,7 @@ public interface SystemConstants {
     String SMS_REGISTRATION_TOKEN = "Ahoy from RagingBull!!! Enter %s on the sign up page to verify your account. This is a one time message.";
 
     // RANDOMS
+    String MEMBER_DEFAULT_PASSWORD = "new_password";
     Integer MAX_BOUND = 100000;
 
     // OAuthResources

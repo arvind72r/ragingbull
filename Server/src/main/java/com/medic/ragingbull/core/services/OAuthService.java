@@ -24,7 +24,7 @@ import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.config.FacebookConfiguration;
 import com.medic.ragingbull.config.GoogleConfiguration;
 import com.medic.ragingbull.config.RagingBullConfiguration;
-import com.medic.ragingbull.core.access.UserRoles;
+import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.InletType;
 import com.medic.ragingbull.core.constants.SystemConstants;
