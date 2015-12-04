@@ -62,6 +62,7 @@ logging:
       archivedFileCount: 7
       timeZone: UTC
 
+
 #httpclient settings
 httpClient:
   timeout: 500ms
@@ -127,7 +128,8 @@ notifications:
   mandrillApp:
     url:  https://mandrillapp.com/api/1.0/
     applicationKey: UHZlwbsolEv6AP3c-wjJXw
-    mailChimpKey: 3eb0fe0d51e02041f14762000444e660-us12
+    senderName: Molleti Vamshi
+    senderEmail: molletivamshi@gmail.com
 
 
 #OAuth Providers

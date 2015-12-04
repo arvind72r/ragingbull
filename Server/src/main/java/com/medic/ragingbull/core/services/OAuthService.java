@@ -128,7 +128,7 @@ public class OAuthService {
                 String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
                 String email = StringUtils.lowerCase(profile.getEmails().get(0).getValue());
 
-                int userCreated = userDao.createUser(userId, profile.getDisplayName(), email, null, null, InletType.GOOGLE.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), profile.getImage().getUrl());
+                int userCreated = userDao.createUser(userId, profile.getDisplayName(), email, null, null, InletType.GOOGLE.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), profile.getImage().getUrl(), user.getSex().name(), user.getDob().getMillis());
                 if (userCreated == 0) {
                     LOGGER.error(String.format("Error registering oauth user %s.", profile.getEmails().get(0).getValue()));
                     throw new ResourceCreationException("Error registering user. Please try again");
@@ -176,7 +176,7 @@ public class OAuthService {
                 String email = StringUtils.lowerCase(facebookEmail);
 
 
-                int userCreated = userDao.createUser(userId, name, email, null, null, InletType.FACEBOOK.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), pictureUrl);
+                int userCreated = userDao.createUser(userId, name, email, null, null, InletType.FACEBOOK.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), pictureUrl, user.getSex().name(), user.getDob().getMillis());
                 if (userCreated == 0) {
                     LOGGER.error(String.format("Error registering oauth user %s.", facebookEmail));
                     throw new ResourceCreationException("Error registering user. Please try again");

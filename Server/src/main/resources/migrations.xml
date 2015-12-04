@@ -36,6 +36,12 @@
             <column name="picture_url" type="VARCHAR(128)">
                 <constraints nullable="true"/>
             </column>
+            <column name="sex" type="VARCHAR(12)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
             <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="active" type="BOOLEAN" defaultValueBoolean="true"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">

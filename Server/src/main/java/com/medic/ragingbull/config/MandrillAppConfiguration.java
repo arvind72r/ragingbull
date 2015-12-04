@@ -25,7 +25,11 @@ public class MandrillAppConfiguration  extends Configuration{
 
     @NotEmpty
     @JsonProperty
-    private String mailChimpKey;
+    private String senderName;
+
+    @NotEmpty
+    @JsonProperty
+    private String senderEmail;
 
     public String getUrl() {
         return url;
@@ -35,7 +39,11 @@ public class MandrillAppConfiguration  extends Configuration{
         return applicationKey;
     }
 
-    public String getMailChimpKey() {
-        return mailChimpKey;
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public String getSenderEmail() {
+        return senderEmail;
     }
 }

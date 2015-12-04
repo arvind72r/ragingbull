@@ -7,6 +7,7 @@
 package com.medic.ragingbull.jdbi.mapper;
 
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.core.constants.SystemConstants;
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
@@ -28,10 +29,12 @@ public class UserMapper implements ResultSetMapper<User> {
                 r.getString("email"),
                 r.getString("phone"),
                 r.getString("inlet_type"),
-                r.getBoolean("active"),
-                r.getBoolean("verified"),
                 r.getString("picture_url"),
+                r.getBoolean("verified"),
+                r.getBoolean("active"),
                 r.getLong("role"),
+                SystemConstants.Sex.valueOf(r.getString("sex")),
+                new DateTime(r.getTimestamp("dob")),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));
 

@@ -8,9 +8,13 @@ package com.medic.ragingbull.core.notification.mail;
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.api.notification.Mail;
+import com.medic.ragingbull.api.notification.MailConfig;
+import com.medic.ragingbull.api.notification.MailDynamicContent;
 import com.medic.ragingbull.config.MailChimpConfiguration;
 import com.medic.ragingbull.config.MandrillAppConfiguration;
 import com.medic.ragingbull.core.notification.Notifiable;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Vamshi Molleti
@@ -26,7 +30,17 @@ public class MandrillAppNotifier extends Notifiable {
         this.mailChimpConfiguration = mailChimpConfiguration;
     }
 
-    public void notify(String id) {
+    public void notify(String id, NotificationEvent event, String message) {
+        if (event == NotificationEvent.SIGN_UP) {
+            notifySignUp(id, message);
+        }
 
+    }
+
+    private Boolean notifySignUp(String id, String message) {
+//        MailDynamicContent dynamicContent = new MailDynamicContent("userName", message);
+//        MailConfig config = new MailConfig("Welcome to RagingBull", )
+//        Mail mail = new Mail(mandrillAppConfiguration.getApplicationKey(), "sign_up", dynamicContent, );
+        return null;
     }
 }

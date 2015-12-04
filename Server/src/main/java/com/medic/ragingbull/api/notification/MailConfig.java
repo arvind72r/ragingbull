@@ -40,7 +40,7 @@ public class MailConfig {
 
     @JsonProperty
     @NotEmpty
-    private Boolean important;
+    private Boolean important = Boolean.FALSE;
 
     @JsonProperty
     @NotEmpty
@@ -61,6 +61,12 @@ public class MailConfig {
     @JsonProperty
     @NotEmpty
     private List<MailDynamicContent> globalMergeVars;
+
+    public MailConfig(String subject, String fromEmail, String fromName) {
+        this.subject = subject;
+        this.fromEmail = fromEmail;
+        this.fromName = fromName;
+    }
 
     public MailConfig(String subject, String fromEmail, String fromName, List<Map<String, String>> to, Map<String, String> headers, Boolean important, Boolean trackOpens, Boolean trackClicks, Boolean merge, String mergeLanguage, List<MailDynamicContent> globalMergeVars) {
         this.subject = subject;

@@ -28,7 +28,7 @@ public class Mail {
 
     @JsonProperty
     @NotEmpty
-    private String aync;
+    private Boolean aync = Boolean.FALSE;
 
     @JsonProperty
     @NotEmpty
@@ -39,10 +39,9 @@ public class Mail {
     private MailConfig message;
 
 
-    public Mail(String key, String templateName, String aync, List<MailDynamicContent> templateContent, MailConfig message) {
+    public Mail(String key, String templateName, List<MailDynamicContent> templateContent, MailConfig message) {
         this.key = key;
         this.templateName = templateName;
-        this.aync = aync;
         this.templateContent = templateContent;
         this.message = message;
     }

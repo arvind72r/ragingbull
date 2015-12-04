@@ -27,7 +27,7 @@ public interface SystemConstants {
         PASSWORD, INVITE
     }
 
-
+    enum Sex {MALE, FEMALE}
 
     DateTime EXPIRY_TIME = new DateTime().plus(Days.ONE);
 

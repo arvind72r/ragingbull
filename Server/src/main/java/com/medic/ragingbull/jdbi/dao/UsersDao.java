@@ -7,6 +7,7 @@
 package com.medic.ragingbull.jdbi.dao;
 
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.jdbi.mapper.BindTimeStamp;
 import com.medic.ragingbull.jdbi.mapper.UserMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
@@ -21,8 +22,8 @@ import java.util.List;
 @RegisterMapper(UserMapper.class)
 public interface UsersDao {
 
-    @SqlUpdate("INSERT  INTO users (id, email, name, hash, phone, inlet_type, role, picture_url) " +
-            "VALUES(:id, :email, :name, :hash, :phone, :inletType, :role, :pictureUrl)")
+    @SqlUpdate("INSERT  INTO users (id, email, name, hash, phone, inlet_type, role, picture_url, sex, dob) " +
+            "VALUES(:id, :email, :name, :hash, :phone, :inletType, :role, :pictureUrl,:sex, :dob)")
     int createUser(@Bind("id") String id,
                    @Bind("name") String name,
                    @Bind("email") String email,
@@ -30,7 +31,9 @@ public interface UsersDao {
                    @Bind("phone") String phone,
                    @Bind("inletType") String inletType,
                    @Bind("role") Long role,
-                   @Bind("pictureUrl") String pictureUrl);
+                   @Bind("pictureUrl") String pictureUrl,
+                   @Bind("sex") String sex,
+                   @BindTimeStamp("dob") long dob);
 
     @SqlUpdate("INSERT  INTO users (id, parent_id, email, name, hash, phone, inlet_type, role) " +
             "VALUES(:id, :parentId, :email, :name, :hash, :phone, :inletType, :role)")

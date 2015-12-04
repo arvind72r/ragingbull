@@ -67,7 +67,7 @@ public class UserService {
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
-            int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), user.getPictureUrl());
+            int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), user.getPictureUrl(), user.getSex().name(), user.getDob().getMillis());
 
             if (userCreated == 0) {
                 LOGGER.error(String.format("Error registering user %s. DB failed to save the record", user.getEmail()));
@@ -76,7 +76,7 @@ public class UserService {
 
             // Generate AuthCode and notify user via SMS.
             Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
-            notificationFactory.notifyUser(user.getPhone(), Notifiable.Mode.SMS, Notifiable.NotificationEvent.SIGN_UP, authCode.toString());
+            notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.SIGN_UP, authCode.toString());
 
             String accessId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ACCESS);
             long expiry = Time.getMillisAfterXDays(1);
@@ -141,10 +141,10 @@ public class UserService {
             user.setPhone(session.getPhone());
             Access access = accessDao.getActiveByUserId(userId);
             if (access != null) {
-                notificationFactory.notifyUser(user.getPhone(), Notifiable.Mode.SMS, Notifiable.NotificationEvent.RESEND_INVITE_CODE, access.getCode());
+                notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE, access.getCode());
             } else {
                 Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
-                notificationFactory.notifyUser(user.getPhone(), Notifiable.Mode.SMS, Notifiable.NotificationEvent.RESEND_INVITE_CODE, authCode.toString());
+                notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE, authCode.toString());
 
                 String inviteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.INVITE);
                 long expiry = Time.getMillisAfterXDays(1);
@@ -251,7 +251,7 @@ public class UserService {
                 }
             }
             return user;
-        } catch(StorageException e) {
+        } catch (StorageException e) {
             throw e;
         } catch (Exception e) {
             LOGGER.error(String.format("Error fetching details for user %s. Exception %s", session.getUserEmail(), e));
@@ -304,5 +304,4 @@ public class UserService {
             throw new ResourceUpdateException(e.getMessage());
         }
     }
-
 }

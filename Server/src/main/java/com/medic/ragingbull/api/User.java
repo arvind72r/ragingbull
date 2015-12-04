@@ -10,11 +10,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Vamshi Molleti
@@ -82,6 +85,14 @@ public class User {
     @JsonIgnore
     private Long role;
 
+    @NotNull(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    @JsonProperty
+    private SystemConstants.Sex sex;
+
+    @NotNull(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    @JsonProperty
+    private DateTime dob;
+
     @JsonIgnore
     private DateTime updatedAt;
 
@@ -106,23 +117,31 @@ public class User {
         this.pharmacist = pharmacist;
     }
 
-    /**
-     * Constructor to be used by DAO Mapper.
-     */
-    public User(String id, String name, String hash, String email, String phone, String inletType, Boolean active, Boolean verified, String pictureUrl, Long role, DateTime updatedAt, DateTime createdAt) {
+    public User(String id, String name, String hash, String email, String phone, String inletType, String pictureUrl, Boolean verified, Boolean active, Long role, SystemConstants.Sex sex, DateTime dob, DateTime updatedAt, DateTime createdAt) {
         this.id = id;
         this.name = name;
         this.hash = hash;
         this.email = email;
         this.phone = phone;
         this.inletType = inletType;
-        this.active = active;
-        this.verified = verified;
         this.pictureUrl = pictureUrl;
+        this.verified = verified;
+        this.active = active;
         this.role = role;
+        this.sex = sex;
+        this.dob = dob;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
     }
+
+    /**
+     * Constructor to be used by DAO Mapper.
+     */
+
+
+
+
+
 
 
     public String getId() {
@@ -207,5 +226,13 @@ public class User {
 
     public DateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public SystemConstants.Sex getSex() {
+        return sex;
+    }
+
+    public DateTime getDob() {
+        return dob;
     }
 }
