@@ -29,9 +29,13 @@ import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.skife.jdbi.v2.DBI;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import java.math.BigInteger;
+import java.util.EnumSet;
 
 /**
  * Created by Vamshi Molleti
@@ -74,14 +78,14 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         final RagingBullModule newSendItAPIModule = new RagingBullModule(configuration, environment, jdbi);
         injector = createInjector(newSendItAPIModule);
 
-//        FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
-//        filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-//        filter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, configuration.getJavascriptAllowedOrigins());    // allowed origins comma separated
-//        filter.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,Range,X-File-Size,X-File-Path,X-File-Name,X-File-Offset,X-Resumable-Identifier,X-Correlation-Id");
-//        filter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,PUT,POST,DELETE,OPTIONS");
-//        filter.setInitParameter(CrossOriginFilter.PREFLIGHT_MAX_AGE_PARAM, "5184000"); // 2 month
-//        filter.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
-//        filter.setInitParameter(CrossOriginFilter.EXPOSED_HEADERS_PARAM, "Location,Content-Disposition,Content-Length,Content-Range,ETag");
+        FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+        filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+        filter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
+        filter.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
+        filter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,PUT,POST,DELETE,OPTIONS");
+        filter.setInitParameter(CrossOriginFilter.PREFLIGHT_MAX_AGE_PARAM, "5184000"); // 2 month
+        filter.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
+        filter.setInitParameter(CrossOriginFilter.EXPOSED_HEADERS_PARAM, "Location,Content-Disposition,Content-Length,Content-Range");
 
         // Handle the mappers
         SimpleModule toStringModule = new SimpleModule();
