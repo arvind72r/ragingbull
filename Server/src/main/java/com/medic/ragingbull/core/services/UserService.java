@@ -109,7 +109,7 @@ public class UserService {
                 member.setPhone(memberId.substring(0, 5) + session.getPhone());
             }
 
-            int memberCreated = userDao.createMember(memberId, userId, member.getName(), member.getEmail(), hashPass, member.getPhone(), "SELF", UserRoles.Role.NATIVE_MEMBER.getRoleBit());
+            int memberCreated = userDao.createMember(memberId, userId, member.getName(), member.getEmail(), hashPass, member.getPhone(), "SELF", UserRoles.Role.NATIVE_MEMBER.getRoleBit(), member.getSex().name(), member.getDob().getMillis());
 
             if (memberCreated == 0) {
                 LOGGER.error(String.format("Error creating member under user %s.", session.getUserEmail()));

@@ -58,7 +58,7 @@ public class AuthResource {
 
     @Path("/reset")
     @POST
-    public Response getResetLink(@QueryParam("userEmail") @Valid @Email String userEmail) throws StorageException {
+    public Response getResetLink(@QueryParam("id") @Valid @Email String userEmail) throws StorageException {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Resetting password link for user with email %s", userEmail);
         }

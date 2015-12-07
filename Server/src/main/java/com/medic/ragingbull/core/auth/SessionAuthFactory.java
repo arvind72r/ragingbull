@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
  */
 public class SessionAuthFactory<T> extends AuthFactory<String, Session> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionAuthFactory.class);
-    public final static String SESSION_COOKIE_NAME = "sessionId";
+    public final static String SESSION_COOKIE_NAME = "Auth-Token";
 
     @Context
     private HttpServletRequest request;

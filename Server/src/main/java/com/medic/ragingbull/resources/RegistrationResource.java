@@ -37,13 +37,13 @@ public class RegistrationResource {
     private UserAccessService userAccessService;
 
     @Inject
-    public RegistrationResource(UserService userService, UserAccessService userAccessService) {
+    public RegistrationResource(UserAccessService userAccessService) {
         this.userAccessService = userAccessService;
     }
 
     @GET
     @Path("/{id}")
-    public Response resendInviteAuthCode(@Auth Session session, @PathParam("id")  String userId) throws StorageException, NotificationException, ResourceCreationException {
+    public Response resendInviteAuthCode(@Auth Session session, @PathParam("id") String userId) throws StorageException, NotificationException, ResourceCreationException {
         if (StringUtils.equals(userId, "me")) {
             userId = session.getUserId();
         }
@@ -53,7 +53,7 @@ public class RegistrationResource {
 
     @POST
     public RegistrationResponse registerUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException {
-        RegistrationResponse response =  userAccessService.register(user);
+        RegistrationResponse response = userAccessService.register(user);
         return response;
     }
 

@@ -35,8 +35,8 @@ public interface UsersDao {
                    @Bind("sex") String sex,
                    @BindTimeStamp("dob") long dob);
 
-    @SqlUpdate("INSERT  INTO users (id, parent_id, email, name, hash, phone, inlet_type, role) " +
-            "VALUES(:id, :parentId, :email, :name, :hash, :phone, :inletType, :role)")
+    @SqlUpdate("INSERT  INTO users (id, parent_id, email, name, hash, phone, inlet_type, role, sex, dob) " +
+            "VALUES(:id, :parentId, :email, :name, :hash, :phone, :inletType, :role, :sex, :dob)")
     int createMember(@Bind("id") String id,
                      @Bind("parentId")String userId,
                      @Bind("name")String name,
@@ -44,7 +44,9 @@ public interface UsersDao {
                      @Bind("hash")String hashPass,
                      @Bind("phone")String phone,
                      @Bind("inletType")String inletType,
-                     @Bind("role")Long role);
+                     @Bind("role")Long role,
+                     @Bind("sex") String sex,
+                     @BindTimeStamp("dob") long dob);
 
     @SqlQuery("SELECT * FROM users where email = :email")
     User getByEmail(@Bind("email") String email);
