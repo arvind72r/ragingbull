@@ -13,6 +13,7 @@ import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,13 +41,13 @@ public class Consultation {
     private String creatorId;
 
     @JsonProperty
-    private List<String> symptoms;
+    private List<String> symptoms = new ArrayList<>();
 
     @JsonProperty
-    private List<String> diagnosisNotes;
+    private List<String> diagnosisNotes = new ArrayList<>();
 
     @JsonProperty
-    private List<String> userNotes;
+    private List<String> userNotes = new ArrayList<>();
 
     @JsonProperty
     private Boolean active = Boolean.TRUE;

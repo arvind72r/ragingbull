@@ -36,8 +36,8 @@ public class UserAccessService {
         this.userService = userService;
     }
 
-    public RegistrationResponse register(User user) throws NotificationException, StorageException, ResourceCreationException {
-        RegistrationResponse response = userService.register(user);
+    public Response register(User user) throws NotificationException, StorageException, ResourceCreationException {
+        Response response = userService.register(user);
         return response;
     }
 
@@ -102,5 +102,9 @@ public class UserAccessService {
         }
 
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_USER_READ_CODE).build();
+    }
+
+    public Response getUserDashBoard(Session session, String userId) {
+        return null;
     }
 }

@@ -31,6 +31,17 @@ public class Session {
         this.expiry = expiry;
     }
 
+    public Session(String token, String userEmail, String userId, String phone, Long role, Boolean isUserValid, DateTime createdAt, DateTime expiry) {
+        this.token = token;
+        this.userEmail = userEmail;
+        this.userId = userId;
+        this.phone = phone;
+        this.role = role;
+        this.isUserValid = isUserValid;
+        this.createdAt = createdAt;
+        this.expiry = expiry;
+    }
+
     public void setIsUserValid(Boolean isUserValid) {
         this.isUserValid = isUserValid;
     }

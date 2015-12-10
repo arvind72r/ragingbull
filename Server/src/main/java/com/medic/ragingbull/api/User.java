@@ -71,7 +71,7 @@ public class User {
     private String pictureUrl;
 
     @JsonProperty
-    private Boolean verified;
+    private Boolean verified = Boolean.FALSE;
 
     @JsonProperty
     private Boolean active;
@@ -234,5 +234,9 @@ public class User {
 
     public DateTime getDob() {
         return dob;
+    }
+
+    public void setRole(Long role) {
+        this.role = role;
     }
 }

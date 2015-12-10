@@ -69,7 +69,9 @@ public class ConsultationService {
                 consultationNotes.add(symptomNote);
             }
 
-            int consultationCreated = consultationDao.createConsultation(consultationId, locationId, consultation.getPractitionerId(), consultation.getUserId(), consultation.getCreatorId());
+            String creatorId = consultation.getCreatorId() != null ? consultation.getCreatorId() : session.getUserId();
+
+            int consultationCreated = consultationDao.createConsultation(consultationId, locationId, consultation.getPractitionerId(), consultation.getUserId(), creatorId);
 
             if (consultationCreated == 0) {
                 LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));

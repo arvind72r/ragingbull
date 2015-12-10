@@ -64,6 +64,15 @@ public class UserResource {
         return userAccessService.getUser(session, userId, hydrated.or(Boolean.FALSE));
     }
 
+    @GET
+    @Path("/{id}/dashboard")
+    public Response getUser(@Auth Session session, @PathParam("id") String userId) throws StorageException, ResourceUpdateException {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.getUserDashBoard(session, userId);
+    }
+
     @POST
     @Path("/{id}/member")
     public Response addMember(@Auth Session session, @PathParam("id") String userId, @Valid Member member) throws ResourceCreationException, StorageException {

@@ -28,6 +28,7 @@ import org.skife.jdbi.v2.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class UserService {
         this.pharmacistDao = pharmacistDao;
     }
 
-    public RegistrationResponse register(User user) throws StorageException, ResourceCreationException, NotificationException {
+    public Response register(User user) throws StorageException, ResourceCreationException, NotificationException {
         try {
             user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
 
@@ -78,6 +79,7 @@ public class UserService {
             Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
             notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.SIGN_UP, authCode.toString());
 
+            // Auth code is valid for a day
             String accessId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ACCESS);
             long expiry = Time.getMillisAfterXDays(1);
 
@@ -87,7 +89,11 @@ public class UserService {
                 LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
                 throw new StorageException("Error creating invite. Please try again");
             }
-            return new RegistrationResponse(user.getId(), email, accessId, expiry);
+
+            user.setRole(UserRoles.Role.NATIVE_USER.getRoleBit());
+
+            Session session = getSession(user);
+            return Response.ok().entity(session).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
         } catch (StorageException re) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), re));
             throw re;
@@ -217,10 +223,9 @@ public class UserService {
         }
 
         String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
-        DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(1));
+        DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(365));
         DateTime createdAt = new DateTime();
-        Session loggedInUserSession = new Session(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry, createdAt);
-        loggedInUserSession.setIsUserValid(user.getVerified());
+        Session loggedInUserSession = new Session(sessionId, user.getId(), user.getPhone(), user.getEmail(), user.getRole(), user.getVerified(), expiry, createdAt);
 
         int sessionCreated = sessionsDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());
         if (sessionCreated == 0) {

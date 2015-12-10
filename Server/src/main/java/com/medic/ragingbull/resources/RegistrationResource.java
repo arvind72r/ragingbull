@@ -52,8 +52,8 @@ public class RegistrationResource {
     }
 
     @POST
-    public RegistrationResponse registerUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException {
-        RegistrationResponse response = userAccessService.register(user);
+    public Response registerUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException {
+        Response response = userAccessService.register(user);
         return response;
     }
 

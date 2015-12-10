@@ -53,7 +53,7 @@ public class ConsultationResource {
     }
 
     @POST
-    public ConsultationResponse addConsultation(@Auth Session session, @PathParam("locationId") String locationId,  @Valid Consultation consultation) throws StorageException, ResourceCreationException {
+    public ConsultationResponse addConsultation(@Auth Session session, @PathParam("id") String locationId,  @Valid Consultation consultation) throws StorageException, ResourceCreationException {
         ConsultationResponse response = consultationService.createConsultation(session, locationId, consultation);
         return response;
     }
