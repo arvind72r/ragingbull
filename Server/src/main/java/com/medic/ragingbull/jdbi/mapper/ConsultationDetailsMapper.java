@@ -17,9 +17,10 @@ import java.sql.SQLException;
 /**
  * Created by Vamshi Molleti
  */
-public class ConsultationMapper implements ResultSetMapper<Consultation> {
+public class ConsultationDetailsMapper implements ResultSetMapper<Consultation> {
+
     @Override
-    public Consultation map(int i, ResultSet r, StatementContext statementContext) throws SQLException {
+    public Consultation map(int index, ResultSet r, StatementContext ctx) throws SQLException {
         return new Consultation(
                 r.getString("id"),
                 r.getString("user_id"),
@@ -27,6 +28,10 @@ public class ConsultationMapper implements ResultSetMapper<Consultation> {
                 r.getString("location_id"),
                 r.getString("creator_id"),
                 r.getBoolean("active"),
+                r.getString("userName"),
+                String.valueOf(new DateTime().getYear() - new DateTime(r.getTimestamp("userDob")).getYear()),
+                r.getString("userPhone"),
+                r.getString("practitionerName"),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));
     }

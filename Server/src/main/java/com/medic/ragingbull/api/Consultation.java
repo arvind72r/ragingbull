@@ -44,7 +44,7 @@ public class Consultation {
     private List<String> symptoms = new ArrayList<>();
 
     @JsonProperty
-    private List<String> diagnosisNotes = new ArrayList<>();
+    private List<String> diagnosis = new ArrayList<>();
 
     @JsonProperty
     private List<String> userNotes = new ArrayList<>();
@@ -52,32 +52,41 @@ public class Consultation {
     @JsonProperty
     private Boolean active = Boolean.TRUE;
 
+    private String userName;
+
+    private String userAge;
+
+    private String userPhone;
+
+    private String practitionerName;
+
+
     private DateTime createdAt;
     private DateTime updatedAt;
 
     public Consultation () {};
 
-    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, List<String> symptoms, List<String> diagnosisNotes, List<String> userNotes, Boolean active) {
+    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, Boolean active, String userName, String userAge, String userPhone, String practitionerName, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
         this.creatorId = creatorId;
-        this.symptoms = symptoms;
-        this.diagnosisNotes = diagnosisNotes;
-        this.userNotes = userNotes;
         this.active = active;
+        this.userName = userName;
+        this.userAge = userAge;
+        this.userPhone = userPhone;
+        this.practitionerName = practitionerName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, List<String> symptoms, List<String> diagnosisNotes, List<String> userNotes, Boolean active, DateTime createdAt, DateTime updatedAt) {
+    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, Boolean active, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
         this.creatorId = creatorId;
-        this.symptoms = symptoms;
-        this.diagnosisNotes = diagnosisNotes;
-        this.userNotes = userNotes;
         this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -107,8 +116,8 @@ public class Consultation {
         return symptoms;
     }
 
-    public List<String> getDiagnosisNotes() {
-        return diagnosisNotes;
+    public List<String> getDiagnosis() {
+        return diagnosis;
     }
 
     public List<String> getUserNotes() {
@@ -125,5 +134,21 @@ public class Consultation {
 
     public DateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getUserAge() {
+        return userAge;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public String getPractitionerName() {
+        return practitionerName;
     }
 }

@@ -7,10 +7,7 @@
 package com.medic.ragingbull.core.access.service;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Member;
-import com.medic.ragingbull.api.RegistrationResponse;
-import com.medic.ragingbull.api.Session;
-import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.services.UserService;
@@ -105,6 +102,7 @@ public class UserAccessService {
     }
 
     public Response getUserDashBoard(Session session, String userId) {
-        return null;
+        DashBoard dashBoard = userService.getDashBoard(session, userId);
+        return Response.ok().entity(dashBoard).build();
     }
 }

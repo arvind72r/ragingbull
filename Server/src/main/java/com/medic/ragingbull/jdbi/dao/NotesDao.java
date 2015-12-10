@@ -8,10 +8,7 @@ package com.medic.ragingbull.jdbi.dao;
 
 import com.medic.ragingbull.api.Notes;
 import com.medic.ragingbull.jdbi.mapper.NotesMapper;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.BindBean;
-import org.skife.jdbi.v2.sqlobject.SqlBatch;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 import java.util.List;
@@ -34,4 +31,7 @@ public interface NotesDao {
 
     @SqlUpdate("UPDATE NOTES SET active = false where id = :id and entityId = :entityId")
     int deleteNotes(@Bind("id") String id, @Bind("entityId") String entityId);
+
+    @SqlQuery("SELECT * FROM NOTES where entity_id = :entityId")
+    List<Notes> getNotes(@Bind("entityId") String entityId);
 }

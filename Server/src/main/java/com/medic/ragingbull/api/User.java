@@ -93,6 +93,9 @@ public class User {
     @JsonProperty
     private DateTime dob;
 
+    @JsonProperty
+    private Integer age = 0;
+
     @JsonIgnore
     private DateTime updatedAt;
 
@@ -130,19 +133,10 @@ public class User {
         this.role = role;
         this.sex = sex;
         this.dob = dob;
+        this.age = new DateTime().getYear() - dob.getYear();
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
     }
-
-    /**
-     * Constructor to be used by DAO Mapper.
-     */
-
-
-
-
-
-
 
     public String getId() {
         return id;
@@ -238,5 +232,9 @@ public class User {
 
     public void setRole(Long role) {
         this.role = role;
+    }
+
+    public Integer getAge() {
+        return age;
     }
 }

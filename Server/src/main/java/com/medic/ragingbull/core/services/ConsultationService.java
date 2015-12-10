@@ -57,7 +57,7 @@ public class ConsultationService {
                 consultationNotes.add(symptomNote);
             }
 
-            for (String symptom : consultation.getDiagnosisNotes()) {
+            for (String symptom : consultation.getDiagnosis()) {
                 String noteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
                 Notes symptomNote = new Notes(noteId, consultationId, SystemConstants.NotesTypes.DIAGNOSIS, symptom);
                 consultationNotes.add(symptomNote);
@@ -78,14 +78,18 @@ public class ConsultationService {
                 throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
             }
 
-            int notesCreated = notesDao.createAll(consultationNotes);
+            int notesCreated = 1;
+            for (Notes notes : consultationNotes) {
+                notesCreated = notesDao.create(notes.getId(), notes.getEntityId(), notes.getEntityType().name(), notes.getContent());
+            }
+            //int notesCreated = notesDao.createAll(consultationNotes);
 
             if (notesCreated == 0) {
                 LOGGER.error(String.format("Error creating consultation notes with email %s", session.getUserEmail()));
                 throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
             }
 
-            ConsultationResponse response = new ConsultationResponse(consultationId, consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosisNotes(), consultation.getUserNotes(), consultation.getActive());
+            ConsultationResponse response = new ConsultationResponse(consultationId, consultation.getPractitionerId(), locationId, consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive());
             response.setStatus(HttpStatus.SC_OK);
             return response;
         } catch (ResourceCreationException re) {
@@ -100,14 +104,27 @@ public class ConsultationService {
 
     public ConsultationResponse getConsultation(Session session, String locationId, String consultationId) throws StorageException {
         try {
-            Consultation consultation = consultationDao.getConsultation(consultationId);
+
+            Consultation consultation = consultationDao.getConsultationDetails(consultationId);
+
+            List<Notes> notes = notesDao.getNotes(consultationId);
+
+            for (Notes note : notes) {
+                if (note.getEntityType() == SystemConstants.NotesTypes.SYMPTOMS) {
+                    consultation.getSymptoms().add(note.getContent());
+                } else if (note.getEntityType() == SystemConstants.NotesTypes.DIAGNOSIS) {
+                    consultation.getDiagnosis().add(note.getContent());
+                } else if (note.getEntityType() == SystemConstants.NotesTypes.USER) {
+                    consultation.getUserNotes().add(note.getContent());
+                }
+            }
 
             if (consultation == null) {
                 ConsultationResponse response = new ConsultationResponse();
-                response.setStatus(HttpStatus.SC_OK);
+                response.setStatus(HttpStatus.SC_BAD_REQUEST);
                 return response;
             }
-            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosisNotes(), consultation.getUserNotes(), consultation.getActive());
+            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive(), consultation.getUserName(), consultation.getUserAge(), consultation.getUserPhone(), consultation.getPractitionerName());
         } catch(Exception e) {
             LOGGER.error(String.format("Error getting consultation with email %s. Exception: %s", session.getUserEmail(), e));
             throw new StorageException(String.format("Error getting consultation with email %s", session.getUserEmail()));

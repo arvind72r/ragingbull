@@ -48,10 +48,11 @@ public class UserService {
     private final SessionsDao sessionsDao;
     private final PractitionerDao practitionerDao;
     private final PharmacistDao pharmacistDao;
+    private final ConsultationDao consultationDao;
     private final NotificationFactory notificationFactory;
 
     @Inject
-    public UserService(DBI database, NotificationFactory notificationFactory, UsersDao userDao, AccessDao accessDao, SessionsDao sessionsDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao) {
+    public UserService(DBI database, NotificationFactory notificationFactory, UsersDao userDao, AccessDao accessDao, SessionsDao sessionsDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao, ConsultationDao consultationDao) {
         this.database = database;
         this.notificationFactory = notificationFactory;
         this.userDao = userDao;
@@ -59,6 +60,7 @@ public class UserService {
         this.sessionsDao = sessionsDao;
         this.practitionerDao = practitionerDao;
         this.pharmacistDao = pharmacistDao;
+        this.consultationDao =  consultationDao;
     }
 
     public Response register(User user) throws StorageException, ResourceCreationException, NotificationException {
@@ -67,6 +69,8 @@ public class UserService {
 
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+
+            DateTime date = new DateTime();
 
             int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), user.getPictureUrl(), user.getSex().name(), user.getDob().getMillis());
 
@@ -225,7 +229,7 @@ public class UserService {
         String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
         DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(365));
         DateTime createdAt = new DateTime();
-        Session loggedInUserSession = new Session(sessionId, user.getId(), user.getPhone(), user.getEmail(), user.getRole(), user.getVerified(), expiry, createdAt);
+        Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), user.getPhone(), user.getRole(), user.getVerified(), expiry, createdAt);
 
         int sessionCreated = sessionsDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());
         if (sessionCreated == 0) {
@@ -308,5 +312,36 @@ public class UserService {
             LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), e));
             throw new ResourceUpdateException(e.getMessage());
         }
+    }
+
+    public DashBoard getDashBoard(Session session, String userId) {
+
+        DashBoard dash = new DashBoard();
+        if (session.getUserRole() == UserRoles.Role.NATIVE_USER) {
+            // User
+            // Dashboard will return current consultations
+            List<Consultation> currentConsultations = consultationDao.getActiveConsultations(userId);
+
+            dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(currentConsultations);
+
+            // Dashboard will return past consultations
+            List<Consultation> pastConsultations = consultationDao.getPastConsultations(userId);
+
+            dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(pastConsultations);
+        }
+
+        if (session.getUserRole() == UserRoles.Role.NATIVE_PRACTITIONER) {
+            // Doctor
+            // Dashboard will current consultations
+            List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations(userId);
+
+            dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(currentPractitionerConsultations);
+        }
+
+        // For pharmacist
+
+        // Current orders
+
+        return dash;
     }
 }

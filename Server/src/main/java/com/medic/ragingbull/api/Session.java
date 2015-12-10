@@ -6,6 +6,8 @@
 
 package com.medic.ragingbull.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.medic.ragingbull.core.access.roles.UserRoles;
 import org.joda.time.DateTime;
 
 /**
@@ -21,6 +23,9 @@ public class Session {
     private Boolean isUserValid;
     private DateTime createdAt;
     private DateTime expiry;
+
+    @JsonIgnore
+    private UserRoles.Role userRole;
 
     public Session(String token, String userId, String userEmail, Long role, DateTime createdAt, DateTime expiry) {
         this.token = token;
@@ -80,5 +85,13 @@ public class Session {
 
     public DateTime getExpiry() {
         return expiry;
+    }
+
+    public UserRoles.Role getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRoles.Role userRole) {
+        this.userRole = userRole;
     }
 }
