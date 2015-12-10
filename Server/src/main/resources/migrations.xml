@@ -580,6 +580,12 @@
             <column name="allergies" type="TEXT">
                 <constraints nullable="true"/>
             </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <createIndex indexName="idx_prescription_drug_consultation_id" tableName="prescription">
             <column name="consultation_id"/>

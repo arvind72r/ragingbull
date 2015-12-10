@@ -31,7 +31,7 @@ public class PrescriptionService {
         this.drugsDao = drugsDao;
     }
 
-    public PrescriptionResponse getPrescription(Session session, String practitionerId, String locationId, String consultId, String prescriptionId) {
+    public PrescriptionResponse getPrescription(Session session, String prescriptionId) {
 
         Prescription prescription = prescriptionDao.getPrescription(prescriptionId);
 

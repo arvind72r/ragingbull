@@ -7,8 +7,11 @@
 package com.medic.ragingbull.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.medic.ragingbull.core.access.roles.UserRoleGenerator;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 
 /**
  * Created by Vamshi Molleti
@@ -32,6 +35,7 @@ public class Session {
         this.userEmail = userEmail;
         this.userId = userId;
         this.role = role;
+        this.userRole = UserRoleGenerator.generateRole(this.role);
         this.createdAt = createdAt;
         this.expiry = expiry;
     }
@@ -42,6 +46,7 @@ public class Session {
         this.userId = userId;
         this.phone = phone;
         this.role = role;
+        this.userRole = UserRoleGenerator.generateRole(this.role);
         this.isUserValid = isUserValid;
         this.createdAt = createdAt;
         this.expiry = expiry;
@@ -88,10 +93,11 @@ public class Session {
     }
 
     public UserRoles.Role getUserRole() {
-        return userRole;
-    }
+        if (userRole == null) {
+            for (UserRoles.Role role : UserRoles.Role.values()) {
 
-    public void setUserRole(UserRoles.Role userRole) {
-        this.userRole = userRole;
+            }
+        }
+        return userRole;
     }
 }

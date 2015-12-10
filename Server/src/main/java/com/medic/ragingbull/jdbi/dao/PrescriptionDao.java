@@ -20,7 +20,7 @@ public interface PrescriptionDao {
     @SqlQuery("SELECT * FROM prescription where id = :id")
     Prescription getPrescription(String prescriptionId);
 
-    @SqlUpdate("INSERT INTO prescription (id, consultation_id, practitionerId, user_id ) " +
+    @SqlUpdate("INSERT INTO prescription (id, consultation_id, practitioner_id, user_id ) " +
             "VALUES(:id, :consultationId, :practitionerId, :userId)")
     int createPrescription(@Bind("id") String id,
                            @Bind("consultationId") String consultationId,

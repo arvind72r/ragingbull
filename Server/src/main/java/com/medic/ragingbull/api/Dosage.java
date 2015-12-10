@@ -11,11 +11,11 @@ package com.medic.ragingbull.api;
  */
 public class Dosage {
 
-    public enum Frequency{
+    public enum Regularity {
         MORNING(512), AFTERNOON(64), EVENING(8), NIGHT(1);
         private int bitValue;
 
-        Frequency(int i) {
+        Regularity(int i) {
             this.bitValue = i;
         }
 
@@ -23,4 +23,6 @@ public class Dosage {
             return bitValue;
         }
     }
+
+
 }

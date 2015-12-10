@@ -82,7 +82,6 @@ public class ConsultationService {
             for (Notes notes : consultationNotes) {
                 notesCreated = notesDao.create(notes.getId(), notes.getEntityId(), notes.getEntityType().name(), notes.getContent());
             }
-            //int notesCreated = notesDao.createAll(consultationNotes);
 
             if (notesCreated == 0) {
                 LOGGER.error(String.format("Error creating consultation notes with email %s", session.getUserEmail()));
@@ -102,7 +101,7 @@ public class ConsultationService {
         }
     }
 
-    public ConsultationResponse getConsultation(Session session, String locationId, String consultationId) throws StorageException {
+    public ConsultationResponse getConsultation(Session session, String consultationId) throws StorageException {
         try {
 
             Consultation consultation = consultationDao.getConsultationDetails(consultationId);
@@ -139,9 +138,9 @@ public class ConsultationService {
         return null;
     }
 
-    public Response deleteConsultation(Session session, String locationId, String consultationId) throws StorageException, ResourceUpdateException {
+    public Response deleteConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
         try {
-            int consultationDeleted = consultationDao.deleteConsultation(consultationId, locationId);
+            int consultationDeleted = consultationDao.deleteConsultation(consultationId);
             if (consultationDeleted == 0) {
                 LOGGER.error(String.format("Error deleting consultation with email %s", session.getUserEmail()));
                 throw new ResourceUpdateException(String.format("Error creating consultation with email %s", session.getUserEmail()));
@@ -158,7 +157,7 @@ public class ConsultationService {
         }
     }
 
-    public Response createNotes(Session session, String locationId, String consultationId, SystemConstants.NotesTypes type, String content) throws ResourceCreationException, StorageException {
+    public Response createNotes(Session session, String consultationId, SystemConstants.NotesTypes type, String content) throws ResourceCreationException, StorageException {
 
         try {
             String notesId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
@@ -179,7 +178,7 @@ public class ConsultationService {
         }
     }
 
-    public Response deleteNote(Session session, String locationId, String consultationId, String noteId) throws ResourceUpdateException, StorageException {
+    public Response deleteNote(Session session, String consultationId, String noteId) throws ResourceUpdateException, StorageException {
         try {
             int noteDeleted = notesDao.deleteNotes(consultationId, noteId);
 

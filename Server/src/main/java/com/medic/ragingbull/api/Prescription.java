@@ -14,6 +14,7 @@ import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class Prescription {
     @Size(  max = ValidationConstants.DRUGS_MAX,
             min = ValidationConstants.DRUGS_MIN,
             message = ValidationConstants.DRUGS_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.DRUGS_MSG_EMPTY)
+    @NotNull(message = ValidationConstants.DRUGS_MSG_EMPTY)
     @JsonProperty
     private List<Drug> drugs;
 
@@ -55,6 +56,14 @@ public class Prescription {
 
     @JsonIgnore
     private DateTime updatedAt;
+
+    public Prescription() {};
+
+    public Prescription(String userId, List<String> notes, List<Drug> drugs) {
+        this.userId = userId;
+        this.notes = notes;
+        this.drugs = drugs;
+    }
 
     public Prescription(String id, String consultationId, String practitionerId, String userId, List<String> notes, List<Drug> drugs) {
         this.id = id;

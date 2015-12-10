@@ -23,7 +23,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by Vamshi Molleti
  */
-@Path("/consultation/{consultationId}/prescription")
+@Path("/prescription")
 @Produces(MediaType.APPLICATION_JSON)
 public class PrescriptionResource {
 
@@ -38,21 +38,17 @@ public class PrescriptionResource {
 
     @GET
     @Path("/{prescriptionId}")
-    public PrescriptionResponse getPrescription(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @PathParam("consultId") String consultId, @PathParam("prescriptionId") String prescriptionId) throws StorageException {
-        PrescriptionResponse response = prescriptionService.getPrescription(session, practitionerId, locationId, consultId, prescriptionId);
+    public PrescriptionResponse getPrescription(@Auth Session session, @PathParam("prescriptionId") String prescriptionId) throws StorageException {
+        PrescriptionResponse response = prescriptionService.getPrescription(session, prescriptionId);
         return response;
     }
 
-    @POST
-    public PrescriptionResponse createPrescription(@Auth Session session, @PathParam("consultationId") String consultId, @Valid Prescription prescription) throws StorageException {
-        PrescriptionResponse response = prescriptionService.createPrescription(session, consultId, prescription);
-        return response;
-    }
+
 
     @DELETE
     @Path("/{prescriptionId}")
-    public PrescriptionResponse deletePrescription(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @PathParam("consultId") String consultId, @PathParam("prescriptionId") String prescriptionId) throws StorageException {
-        PrescriptionResponse response = prescriptionService.getPrescription(session, practitionerId, locationId, consultId, prescriptionId);
+    public PrescriptionResponse deletePrescription(@Auth Session session, @PathParam("prescriptionId") String prescriptionId) throws StorageException {
+        PrescriptionResponse response = prescriptionService.getPrescription(session, prescriptionId);
         return response;
     }
 

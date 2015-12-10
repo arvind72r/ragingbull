@@ -13,11 +13,14 @@ import java.util.List;
  */
 public class UserRoleGenerator {
 
-    public Long generateRole (Long currentRole , UserRoles.Permissions... permissions) {
-        for (UserRoles.Permissions permission : permissions) {
-            currentRole = currentRole | permission.getBitValue();
+    public static UserRoles.Role generateRole (Long currentRole) {
+        UserRoles.Role generatedRole = null;
+        for (UserRoles.Role role : UserRoles.Role.values()) {
+            if ( role.getRoleBit() >= currentRole && (role.getRoleBit() & currentRole) == role.getRoleBit()) {
+                generatedRole = role;
+            }
         }
-        return currentRole;
+        return generatedRole;
     }
 
     public Long generateRole (Long currentRole , List<UserRoles.Permissions> permissions) {
