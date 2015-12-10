@@ -12,14 +12,14 @@ package com.medic.ragingbull.api;
 public class Dosage {
 
     public enum Regularity {
-        MORNING(512), AFTERNOON(64), EVENING(8), NIGHT(1);
-        private int bitValue;
+        MORNING(512l), AFTERNOON(64l), EVENING(8l), NIGHT(1l);
+        private Long bitValue;
 
-        Regularity(int i) {
+        Regularity(Long i) {
             this.bitValue = i;
         }
 
-        public int getBitValue() {
+        public Long getBitValue() {
             return bitValue;
         }
     }

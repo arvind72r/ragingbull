@@ -38,10 +38,7 @@ public class Prescription {
     @JsonProperty
     private String userId;
 
-    @JsonProperty
-    private List<String> notes;
-
-    @Size(  max = ValidationConstants.DRUGS_MAX,
+    @Size(max = ValidationConstants.DRUGS_MAX,
             min = ValidationConstants.DRUGS_MIN,
             message = ValidationConstants.DRUGS_MSG_SIZE)
     @NotNull(message = ValidationConstants.DRUGS_MSG_EMPTY)
@@ -49,7 +46,7 @@ public class Prescription {
     private List<Drug> drugs;
 
     @JsonProperty
-    private Boolean active;
+    private Boolean active = Boolean.TRUE;
 
     @JsonIgnore
     private DateTime createdAt;
@@ -59,27 +56,21 @@ public class Prescription {
 
     public Prescription() {};
 
-    public Prescription(String userId, List<String> notes, List<Drug> drugs) {
-        this.userId = userId;
-        this.notes = notes;
-        this.drugs = drugs;
-    }
-
-    public Prescription(String id, String consultationId, String practitionerId, String userId, List<String> notes, List<Drug> drugs) {
+    public Prescription(String id, String consultationId, String practitionerId, String userId, Boolean active, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.consultationId = consultationId;
         this.practitionerId = practitionerId;
         this.userId = userId;
-        this.notes = notes;
-        this.drugs = drugs;
+        this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public Prescription(String id, String consultationId, String practitionerId, String userId, List<String> notes, List<Drug> drugs, Boolean active, DateTime createdAt, DateTime updatedAt) {
+    public Prescription(String id, String consultationId, String practitionerId, String userId, List<Drug> drugs, Boolean active, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.consultationId = consultationId;
         this.practitionerId = practitionerId;
         this.userId = userId;
-        this.notes = notes;
         this.drugs = drugs;
         this.active = active;
         this.createdAt = createdAt;
@@ -100,10 +91,6 @@ public class Prescription {
 
     public String getUserId() {
         return userId;
-    }
-
-    public List<String> getNotes() {
-        return notes;
     }
 
     public List<Drug> getDrugs() {

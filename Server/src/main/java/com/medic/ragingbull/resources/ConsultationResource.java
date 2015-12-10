@@ -12,6 +12,7 @@ import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.services.ConsultationService;
 import com.medic.ragingbull.core.services.PrescriptionService;
 import com.medic.ragingbull.exception.ResourceCreationException;
+import com.medic.ragingbull.exception.ResourceFetchException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import io.dropwizard.auth.Auth;
@@ -76,14 +77,14 @@ public class ConsultationResource {
 
     @GET
     @Path("/{consultationId}/prescription/{prescriptionId}")
-    public PrescriptionResponse getPrescription(@Auth Session session, @PathParam("consultationId") String consultationId, @PathParam("prescriptionId") String prescriptionId) throws StorageException {
+    public PrescriptionResponse getPrescription(@Auth Session session, @PathParam("consultationId") String consultationId, @PathParam("prescriptionId") String prescriptionId) throws StorageException, ResourceFetchException {
         PrescriptionResponse response = prescriptionService.getPrescription(session, prescriptionId);
         return response;
     }
 
     @POST
     @Path("/{consultationId}/prescription")
-    public PrescriptionResponse createPrescription(@Auth Session session, @PathParam("consultationId") String consultId, @Valid Prescription prescription) throws StorageException {
+    public PrescriptionResponse createPrescription(@Auth Session session, @PathParam("consultationId") String consultId, @Valid Prescription prescription) throws StorageException, ResourceCreationException {
         PrescriptionResponse response = prescriptionService.createPrescription(session, consultId, prescription);
         return response;
     }

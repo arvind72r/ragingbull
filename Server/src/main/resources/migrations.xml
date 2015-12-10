@@ -522,6 +522,9 @@
             <column name="practitioner_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
+            <column name="prescription_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
             <column name="user_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>

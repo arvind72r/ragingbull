@@ -31,7 +31,7 @@ public class DrugsMapper implements ResultSetMapper<Drug> {
                 r.getString("manufacturer"),
                 r.getInt("quantity"),
                 r.getString("allergies"),
-                r.getInt("frequency"),
+                r.getLong("frequency"),
                 r.getBoolean("active"),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));

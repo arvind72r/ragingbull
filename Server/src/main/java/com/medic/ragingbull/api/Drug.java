@@ -37,6 +37,9 @@ public class Drug {
     private String practitionerId;
 
     @JsonProperty
+    private String prescriptionId;
+
+    @JsonProperty
     private String userId;
 
     @Length(min = ValidationConstants.NAME_MIN,
@@ -59,13 +62,6 @@ public class Drug {
     @JsonProperty
     private Integer quantity;
 
-    @Size(  max = ValidationConstants.DRUG_FREQUENCY_MAX,
-            min = ValidationConstants.DRUG_FREQUENCY_MIN,
-            message = ValidationConstants.DRUG_FREQUENCY_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.DRUG_FREQUENCY_MSG_EMPTY)
-    @JsonProperty
-    private List<Dosage.Regularity> regularity;
-
     @Length(min = ValidationConstants.DRUG_ALLERGY_MIN,
             max = ValidationConstants.DRUG_ALLERGY_MAX,
             message = ValidationConstants.DRUG_ALLERGY_MSG_SIZE)
@@ -74,7 +70,15 @@ public class Drug {
     private String allergies;
 
     @JsonIgnore
-    private Integer frequency = 0;
+    private Long frequency = 0L;
+
+    @Size(  max = ValidationConstants.DRUG_FREQUENCY_MAX,
+            min = ValidationConstants.DRUG_FREQUENCY_MIN,
+            message = ValidationConstants.DRUG_FREQUENCY_MSG_SIZE)
+    @NotEmpty(message = ValidationConstants.DRUG_FREQUENCY_MSG_EMPTY)
+    @JsonProperty
+    private List<Dosage.Regularity> regularity;
+
 
     @JsonProperty
     private Boolean active;
@@ -87,7 +91,7 @@ public class Drug {
 
     public Drug() {};
 
-    public Drug(String id, String consultationId, String practitionerId, String userId, String name, String manufacturer, Integer quantity, String allergies, Integer frequency, Boolean active, DateTime createdAt, DateTime updatedAt) {
+    public Drug(String id, String consultationId, String practitionerId, String userId, String name, String manufacturer, Integer quantity, String allergies, Long frequency, Boolean active, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.consultationId = consultationId;
         this.practitionerId = practitionerId;
@@ -176,12 +180,20 @@ public class Drug {
         this.userId = userId;
     }
 
-    public Integer getFrequency() {
+    public Long getFrequency() {
         if (frequency == 0) {
             for(Dosage.Regularity regularity1 : this.regularity) {
                 frequency = frequency | regularity1.getBitValue();
             }
         }
         return frequency;
+    }
+
+    public String getPrescriptionId() {
+        return prescriptionId;
+    }
+
+    public void setPrescriptionId(String prescriptionId) {
+        this.prescriptionId = prescriptionId;
     }
 }

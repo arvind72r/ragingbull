@@ -9,8 +9,8 @@ package com.medic.ragingbull.jdbi.dao;
 import com.medic.ragingbull.api.Drug;
 import com.medic.ragingbull.jdbi.mapper.BindDrug;
 import com.medic.ragingbull.jdbi.mapper.DrugsMapper;
-import org.skife.jdbi.v2.sqlobject.BindBean;
-import org.skife.jdbi.v2.sqlobject.SqlBatch;
+import org.hibernate.annotations.SQLUpdate;
+import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 import java.util.List;
@@ -21,7 +21,27 @@ import java.util.List;
 @RegisterMapper(DrugsMapper.class)
 public interface DrugsDao {
 
-    @SqlBatch("INSERT INTO PRESCRIPTION_DRUG (id, consultation_id, user_id, practitioner_id, name, manufacturer, quantity, frequency, allergies) " +
-            "VALUES (:id, :consultationId, :practitionerId, :userId, :name, :manufacturer, :quantity, :frequency, :allergies)")
-    int createAll(@BindDrug("drug") List<Drug> drugs);
+    @SqlBatch("INSERT INTO PRESCRIPTION_DRUG (id, consultation_id, user_id, practitioner_id, prescription_id, name, manufacturer, quantity, frequency, allergies) " +
+            "VALUES (:id, :consultationId, :userId, :practitionerId, :prescriptionId, :name, :manufacturer, :quantity, :frequency, :allergies)")
+    int[] createAll(@BindDrug List<Drug> drugs);
+
+    @SqlQuery("SELECT * FROM PRESCRIPTION_DRUG where prescription_id = :prescriptionId")
+    List<Drug> getByPrescriptionId(@Bind("prescriptionId") String prescriptionId);
+
+    @SqlUpdate("INSERT INTO PRESCRIPTION_DRUG (id, consultation_id, user_id, practitioner_id, prescription_id, name, manufacturer, quantity, frequency, allergies) " +
+            "VALUES (:id, :consultationId, :userId, :practitionerId, :prescriptionId, :name, :manufacturer, :quantity, :frequency, :allergies)")
+    int add(@BindDrug Drug drug);
+
+    @SqlUpdate("INSERT INTO PRESCRIPTION_DRUG (id, consultation_id, user_id, practitioner_id, prescription_id, name, manufacturer, quantity, frequency, allergies) " +
+            "VALUES (:id, :consultationId, :userId, :practitionerId, :prescriptionId, :name, :manufacturer, :quantity, :frequency, :allergies)")
+    int add(@Bind("id") String drugId,
+            @Bind("consultationId") String consultationId,
+            @Bind("userId") String userId,
+            @Bind("practitionerId") String practitionerId,
+            @Bind("prescriptionId") String prescriptionId,
+            @Bind("name") String name,
+            @Bind("manufacturer") String manufacturer,
+            @Bind("quantity") Integer quantity,
+            @Bind("frequency") Long frequency,
+            @Bind("allergies") String allergies);
 }

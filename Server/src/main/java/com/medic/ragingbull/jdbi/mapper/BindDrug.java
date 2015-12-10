@@ -21,9 +21,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
 public @interface BindDrug {
-
-    String value();
-
     public static class EnumBinderFactory implements BinderFactory {
         public Binder build(Annotation annotation) {
             return new Binder<BindDrug, Drug>() {
@@ -31,6 +28,7 @@ public @interface BindDrug {
                     q.bind("id", arg.getId());
                     q.bind("consultationId", arg.getConsultationId());
                     q.bind("practitionerId", arg.getPractitionerId());
+                    q.bind("prescriptionId", arg.getPrescriptionId());
                     q.bind("userId", arg.getUserId());
                     q.bind("name", arg.getName());
                     q.bind("manufacturer", arg.getManufacturer());
