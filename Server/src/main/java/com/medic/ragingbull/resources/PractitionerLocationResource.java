@@ -64,7 +64,7 @@ public class PractitionerLocationResource {
 
     @PUT
     @Path("/{locationId}/users")
-    public Response addUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, List<EntityUser> entityUsers) throws StorageException, ResourceCreationException {
+    public Response addUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @Valid List<EntityUser> entityUsers) throws StorageException, ResourceCreationException {
         Response response = practitionerLocationService.addUsers(session, practitionerId, locationId, entityUsers);
         return response;
     }

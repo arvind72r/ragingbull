@@ -13,6 +13,8 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
+import java.util.List;
+
 /**
  * Created by Vamshi Molleti
  */

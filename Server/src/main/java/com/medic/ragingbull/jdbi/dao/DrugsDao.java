@@ -44,4 +44,7 @@ public interface DrugsDao {
             @Bind("quantity") Integer quantity,
             @Bind("frequency") Long frequency,
             @Bind("allergies") String allergies);
+
+    @SqlUpdate("UPDATE PRESCRIPTION_DRUG SET active = false WHERE id = :id AND prescription_id = :prescriptionId")
+    int removeDrug(@Bind("id") String id, @Bind("prescriptionId") String prescriptionId);
 }

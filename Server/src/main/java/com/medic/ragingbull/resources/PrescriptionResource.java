@@ -8,7 +8,6 @@ package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.Drug;
-import com.medic.ragingbull.api.Prescription;
 import com.medic.ragingbull.api.PrescriptionResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.services.PrescriptionService;
@@ -55,10 +54,10 @@ public class PrescriptionResource {
         return response;
     }
 
-    @POST
+    @DELETE
     @Path("/{prescriptionId}/drug/{drugId}")
-    public PrescriptionResponse deleteDrug(@Auth Session session, @PathParam("prescriptionId") String prescriptionId, @PathParam("drugId") String drugId) throws StorageException, ResourceFetchException {
-        PrescriptionResponse response = prescriptionService.deleteDrug(session, prescriptionId, drugId);
+    public Response deleteDrug(@Auth Session session, @PathParam("prescriptionId") String prescriptionId, @PathParam("drugId") String drugId) throws StorageException, ResourceFetchException, ResourceCreationException {
+        Response response = prescriptionService.deleteDrug(session, prescriptionId, drugId);
         return response;
     }
 
@@ -68,5 +67,4 @@ public class PrescriptionResource {
         Response response = prescriptionService.deletePrescription(session, prescriptionId);
         return response;
     }
-
 }

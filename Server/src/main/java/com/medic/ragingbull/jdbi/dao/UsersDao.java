@@ -91,7 +91,7 @@ public interface UsersDao {
     @SqlQuery("SELECT id FROM users where id = :id")
     String getId(@Bind("id") String id);
 
-    @SqlQuery("SELECT id, role FROM users where id = :id")
+    @SqlQuery("SELECT * FROM users where id = :id")
     User getRoleById(@Bind("id") String id);
 
     @SqlUpdate("UPDATE users SET role = :role where id = :id")

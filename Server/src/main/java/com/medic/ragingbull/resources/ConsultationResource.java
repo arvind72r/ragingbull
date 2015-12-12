@@ -88,4 +88,11 @@ public class ConsultationResource {
         PrescriptionResponse response = prescriptionService.createPrescription(session, consultId, prescription);
         return response;
     }
+
+    @POST
+    @Path("/{consultationId}/lock")
+    public Response lockConsultation(@Auth Session session,  @PathParam("consultationId") String consultationId) throws StorageException, ResourceCreationException, ResourceUpdateException {
+        Response response = consultationService.lockConsultation(session, consultationId);
+        return response;
+    }
 }

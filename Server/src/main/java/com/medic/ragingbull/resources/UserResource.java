@@ -51,7 +51,7 @@ public class UserResource {
         }
     }
     @Inject
-    public UserResource(UserService userService, UserAccessService userAccessService) {
+    public UserResource(UserAccessService userAccessService) {
         this.userAccessService = userAccessService;
     }
 

@@ -522,9 +522,6 @@
             <column name="practitioner_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="prescription_id" type="CHAR(128)">
-                <constraints nullable="false"/>
-            </column>
             <column name="user_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
@@ -563,6 +560,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="practitioner_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prescription_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
             <column name="active" type="BOOLEAN" defaultValueBoolean="true">
@@ -609,6 +609,80 @@
                 <constraints nullable="false"/>
             </column>
             <column name="path" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <comment>Creating a order table</comment>
+        <createTable tableName="order">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"></constraints>
+            </column>
+            <column name="location_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prescription_id" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="net" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tax" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <comment>Creating a order cart table</comment>
+        <createTable tableName="order_cart">
+            <column name="order_id"  type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id"  type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid" type="BOOLEAN" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">

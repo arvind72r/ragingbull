@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,14 +106,18 @@ public class PractitionerLocationService {
             }
 
             String entityId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ENTITY_USER);
-            List<UserRoles.Permissions> permissions = entityUser.getPermissions();
-            Long userRole = userRoleGenerator.generateRole(user.getRole(), permissions);
+            List<UserRoles.Permissions> permissionsList = new ArrayList<>();
+            permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_ADD);
+            permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY);
+            permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_DELETE);
+
+            Long userRole = userRoleGenerator.generateRole(user.getRole(), permissionsList);
             entityUser.setId(entityId);
             entityUser.setCreatorId(session.getUserId());
             entityUser.setEntityId(locationId);
-            entityUser.setEntity(SystemConstants.Entities.PHARMACY_LOCATION);
+            entityUser.setEntity(SystemConstants.Entities.PRACTITIONER_LOCATION);
 
-            int entityCreated = entityUsersDao.create(entityId, entityUser.getUserId(), session.getUserId(), locationId, SystemConstants.Entities.PHARMACY_LOCATION.name());
+            int entityCreated = entityUsersDao.create(entityId, entityUser.getUserId(), session.getUserId(), locationId, entityUser.getEntity().name());
 
             if (entityCreated == 0) {
                 LOGGER.error(String.format("Error creating an admin users by user with email %s, locationId: %s", session.getUserEmail(), practitionerId));
@@ -127,8 +132,6 @@ public class PractitionerLocationService {
             }
             return Response.ok().build();
         }
-
-
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 

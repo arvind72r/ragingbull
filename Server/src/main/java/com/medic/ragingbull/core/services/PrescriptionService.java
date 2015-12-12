@@ -129,7 +129,27 @@ public class PrescriptionService {
         }
     }
 
-    public PrescriptionResponse deleteDrug(Session session, String prescriptionId, String drugId) {
+    public Response deleteDrug(Session session, String prescriptionId, String drugId) throws ResourceCreationException, StorageException {
+        try {
+            int drugRemoved = drugsDao.removeDrug(prescriptionId, drugId);
+            if (drugRemoved == 0) {
+                LOGGER.error(String.format("Error removing drug for prescription: %s. drug: %s. by user: %s.", prescriptionId, drugId, session.getUserEmail()));
+                throw new StorageException("Error adding drug for prescription. Please try again");
+            }
+            return Response.ok().build();
+        } catch (StorageException e) {
+            LOGGER.error(String.format("Error removing drug for prescription: %s. drug: %s. by user: %s.", prescriptionId, drugId, session.getUserEmail()));
+            throw e;
+        } catch(Exception e) {
+            LOGGER.error(String.format("Error removing drug for prescription: %s. drug: %s. by user: %s. Exception %s", prescriptionId, drugId, session.getUserEmail(), e));
+            throw new ResourceCreationException(e.getMessage());
+        }
+
+    }
+
+    public Response lockPrescription(Session session, String prescriptionId) {
+
+
         return null;
     }
 }

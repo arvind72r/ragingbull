@@ -8,11 +8,18 @@ package com.medic.ragingbull.jdbi.dao;
 
 import com.google.common.collect.ImmutableList;
 import com.medic.ragingbull.api.EntityAdmin;
+import com.medic.ragingbull.api.EntityUser;
+import com.medic.ragingbull.api.Practitioner;
 import com.medic.ragingbull.jdbi.mapper.EntityUsersMapper;
+import com.medic.ragingbull.jdbi.mapper.Mapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vamshi Molleti
@@ -33,4 +40,10 @@ public interface EntityUsersDao {
 
     @SqlQuery("SELECT * FROM entity_users where entity_id = :entityId and user_id = :userId")
     EntityAdmin getUser(@Bind("entityId") String entityId, @Bind("userId") String userId);
+
+    @RegisterMapper(Mapper.class)
+    @SqlQuery("SELECT usr.name, eu.user_id, pl.location, pl.id  FROM USERS usr, PRACTITIONER pr, " +
+            "PRACTITIONER_LOCATION pl, ENTITY_USERS eu " +
+            "WHERE usr.id = pr.user_id AND pr.user_id = eu.user_id AND pl.id = eu.entity_id AND eu.entity = :entity")
+    List<Map<String, Object>> getAllByType(@Bind("entity") String entity);
 }

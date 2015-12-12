@@ -18,7 +18,9 @@ import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.ConsultationDao;
 import com.medic.ragingbull.jdbi.dao.NotesDao;
+import com.medic.ragingbull.jdbi.dao.TransactionalDao;
 import org.apache.http.HttpStatus;
+import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,8 @@ public class ConsultationService {
     private ConsultationDao consultationDao;
 
     private NotesDao notesDao;
+
+    private TransactionalDao transactionalDao;
 
     @Inject
     public ConsultationService(ConsultationDao consultationDao, NotesDao notesDao) {
@@ -184,20 +188,41 @@ public class ConsultationService {
 
             if (noteDeleted == 0) {
                 LOGGER.error(String.format("Error deleting notes notes with email %s", session.getUserEmail()));
-                throw new ResourceUpdateException(String.format("Error creating notes with email %s", session.getUserEmail()));
+                throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
             }
 
             return Response.ok().build();
         }
-        catch (ResourceUpdateException re) {
+        catch (StorageException re) {
             LOGGER.error(String.format("Error deleting notes with email %s. Exception: %s", session.getUserEmail(), re));
             throw re;
         }
         catch(Exception e) {
             LOGGER.error(String.format("Error deleting notes with email %s. Exception: %s", session.getUserEmail(), e));
-            throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
+            throw new ResourceUpdateException(String.format("Error creating notes with email %s", session.getUserEmail()));
         }
     }
 
 
+    public Response lockConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
+
+        try {
+            // Lock Consultation, Prescription, Notes
+            boolean success = transactionalDao.lockConsultation(session.getUserId(), consultationId);
+
+            if (!success) {
+                LOGGER.error(String.format("Error locking consultation: %s. User: %s", consultationId, session.getUserEmail()));
+                throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
+            }
+            return Response.ok().build();
+        }
+        catch (StorageException e) {
+            LOGGER.error(String.format("Error locking consultation with consultationId: %s, email %s. Exception: %s", consultationId, session.getUserEmail(), e));
+            throw e;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error locking consultation with consultationId: %s, email %s. Exception: %s", consultationId, session.getUserEmail(), e));
+            throw new ResourceUpdateException(String.format("Error locking consultation"));
+        }
+    }
 }

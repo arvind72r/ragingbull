@@ -272,7 +272,7 @@ public class UserService {
     public Boolean updateUser(Session session, String userId, String field, Map<String, String> data) throws ResourceUpdateException, StorageException {
         try {
             Handle h = database.open();
-            int update = h.update("UPDATE USER set " + field + " = ?  where id = ?", data.get("value"), userId);
+            int update = h.update("UPDATE USERS set " + field + " = ?  where id = ?", data.get("value"), userId);
             h.close();
             if (update == 0) {
                 LOGGER.error(String.format("Error updating field %s for user %s.", field, session.getUserEmail()));

@@ -23,6 +23,8 @@ public class UserRoleGenerator {
         return generatedRole;
     }
 
+
+
     public Long generateRole (Long currentRole , List<UserRoles.Permissions> permissions) {
         for (UserRoles.Permissions permission : permissions) {
             currentRole = currentRole | permission.getBitValue();
