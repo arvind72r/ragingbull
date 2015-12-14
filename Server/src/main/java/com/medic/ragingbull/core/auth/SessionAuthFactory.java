@@ -15,7 +15,6 @@ import io.dropwizard.auth.Authenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -28,7 +27,7 @@ import javax.ws.rs.core.Response;
  */
 public class SessionAuthFactory<T> extends AuthFactory<String, Session> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionAuthFactory.class);
-    public final static String SESSION_COOKIE_NAME = "Auth-Token";
+    public final static String AUTH_HEADER_NAME = "Auth-Token";
 
     @Context
     private HttpServletRequest request;
@@ -84,30 +83,22 @@ public class SessionAuthFactory<T> extends AuthFactory<String, Session> {
         }
 
         String sessionHeader = request.getHeader(javax.ws.rs.core.HttpHeaders.AUTHORIZATION);
-        String sessionCookie = null;
 
-        final Cookie[] cookies = request.getCookies();
+        String sessionAuthHeader = request.getHeader(AUTH_HEADER_NAME);
 
-        if (cookies != null) {
-            for (final Cookie cookie : cookies) {
-                final String name = cookie.getName();
-                if (name != null && name.equals(SESSION_COOKIE_NAME)) {
-                    sessionCookie = cookie.getValue();
-                }
-            }
-        }
-        final boolean sessionHeaderValid = Strings.isNullOrEmpty(sessionHeader) == false && !sessionHeader.toLowerCase().equals("false");
-        final boolean sessionCookieValid = Strings.isNullOrEmpty(sessionCookie) == false && !sessionCookie.toLowerCase().equals("false");
 
-        if (sessionHeader != null || sessionCookie != null) {
+        final boolean sessionHeaderValid = !Strings.isNullOrEmpty(sessionHeader)&& !sessionHeader.toLowerCase().equals("false");
+        final boolean sessionAuthValid = !Strings.isNullOrEmpty(sessionAuthHeader)&& !sessionAuthHeader.toLowerCase().equals("false");
+
+        if (sessionHeader != null || sessionAuthHeader != null) {
             try {
 
                 //warn if both are valid and not equal
-                if (sessionCookieValid && sessionHeaderValid && !sessionCookie.equals(sessionHeader))
+                if (sessionAuthValid && sessionHeaderValid && !sessionAuthHeader.equals(sessionHeader))
                     LOGGER.warn("Session for header and cookie were both valid but set to different values!");
 
                 // Use the header first, then the cookie
-                final String sessionId = sessionHeaderValid?sessionHeader:sessionCookie;
+                final String sessionId = sessionHeaderValid?sessionHeader:sessionAuthHeader;
 
                 final Optional<Session> session = authenticator().authenticate(sessionId);
 

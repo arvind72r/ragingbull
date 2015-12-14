@@ -42,7 +42,7 @@ public interface EntityUsersDao {
     EntityAdmin getUser(@Bind("entityId") String entityId, @Bind("userId") String userId);
 
     @RegisterMapper(Mapper.class)
-    @SqlQuery("SELECT usr.name, eu.user_id, pl.location, pl.id  FROM USERS usr, PRACTITIONER pr, " +
+    @SqlQuery("SELECT usr.name, pr.id as practitionerId, eu.user_id, pl.location, pl.id as locationId FROM USERS usr, PRACTITIONER pr, " +
             "PRACTITIONER_LOCATION pl, ENTITY_USERS eu " +
             "WHERE usr.id = pr.user_id AND pr.user_id = eu.user_id AND pl.id = eu.entity_id AND eu.entity = :entity")
     List<Map<String, Object>> getAllByType(@Bind("entity") String entity);

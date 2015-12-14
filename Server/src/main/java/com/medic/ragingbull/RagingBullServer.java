@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import com.google.inject.Module;
+import com.google.inject.name.Names;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.config.DbMigrateOnStartupBundle;
 import com.medic.ragingbull.config.RagingBullConfiguration;
@@ -114,6 +116,14 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         environment.jersey().register(injector.getInstance(ImageResource.class));
         environment.jersey().register(injector.getInstance(ConsultationResource.class));
     }
+    public <S> S getService(Class<S> serviceClass) {
+        return injector.getInstance(serviceClass);
+    }
+
+    public <S> S getService(Class<S> serviceClass, String name) {
+        return injector.getInstance(Key.get(serviceClass, Names.named(name)));
+    }
+
 
 
 }

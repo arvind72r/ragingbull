@@ -102,22 +102,27 @@ public class User {
     @JsonIgnore
     private DateTime createdAt;
 
-    public User() {
-        // For Deserialization
+    public User() { // For Deserialization
     }
 
-    /**
-     * Constructor for the JSON Mapper for request
-     */
-    public User(String name, String password, String email, String phone, String inletType, String pictureUrl, Practitioner practitioner, Pharmacist pharmacist) {
+//    public User(String name, String password, String email, String phone, String inletType, String pictureUrl) {
+//        this.name = name;
+//        this.password = password;
+//        this.email = email;
+//        this.phone = phone;
+//        this.inletType = inletType;
+//        this.pictureUrl = pictureUrl;
+//    }
+
+    public User(String name, String password, String email, String phone, String inletType, String pictureUrl, SystemConstants.Sex sex, DateTime dob) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.inletType = inletType;
         this.pictureUrl = pictureUrl;
-        this.practitioner = practitioner;
-        this.pharmacist = pharmacist;
+        this.sex = sex;
+        this.dob = dob;
     }
 
     public User(String id, String name, String hash, String email, String phone, String inletType, String pictureUrl, Boolean verified, Boolean active, Long role, SystemConstants.Sex sex, DateTime dob, DateTime updatedAt, DateTime createdAt) {
@@ -137,6 +142,8 @@ public class User {
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
     }
+
+
 
     public String getId() {
         return id;

@@ -32,6 +32,7 @@ import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.jdbi.dao.OAuthDao;
 import com.medic.ragingbull.jdbi.dao.UsersDao;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,13 +129,13 @@ public class OAuthService {
                 String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
                 String email = StringUtils.lowerCase(profile.getEmails().get(0).getValue());
 
-                int userCreated = userDao.createUser(userId, profile.getDisplayName(), email, null, null, InletType.GOOGLE.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), profile.getImage().getUrl(), user.getSex().name(), user.getDob().getMillis());
+                int userCreated = userDao.createUser(userId, profile.getDisplayName(), email, null, null, InletType.GOOGLE.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), profile.getImage().getUrl(), SystemConstants.Sex.valueOf(profile.getGender()).name(), new DateTime(profile.getBirthday()).getMillis());
                 if (userCreated == 0) {
                     LOGGER.error(String.format("Error registering oauth user %s.", profile.getEmails().get(0).getValue()));
                     throw new ResourceCreationException("Error registering user. Please try again");
                 }
 
-                user = new User(profile.getDisplayName(), null, profile.getEmails().get(0).getValue(), null, InletType.GOOGLE.getInletType(), profile.getImage().getUrl(), null, null);
+                user = new User(profile.getDisplayName(), null, profile.getEmails().get(0).getValue(), null, InletType.GOOGLE.getInletType(), profile.getImage().getUrl(), SystemConstants.Sex.valueOf(profile.getGender()), new DateTime(profile.getBirthday()));
                 user.setId(userId);
             }
 
@@ -159,7 +160,7 @@ public class OAuthService {
             tokenUrlBuilder.append(SystemConstants.FACEBOOK_GRAPH_API_URL + "me");
             WebTarget target = httpClient.target(tokenUrlBuilder.toString());
             target = target.queryParam("access_token", accessToken);
-            target = target.queryParam("fields", "id,name,email,cover");
+            target = target.queryParam("fields", "id,name,email,cover,gender,age_range");
             Response response = target.request().buildGet().invoke();
             Map<String, Object> profileMap = response.readEntity(Map.class);
             Map<String, Object> cover = (Map<String, Object>) profileMap.get("cover");
@@ -167,6 +168,9 @@ public class OAuthService {
             String name = (String) profileMap.get("name");
             String facebookEmail = (String) profileMap.get("email");
             String pictureUrl = (String) cover.get("source");
+            String gender = (String) profileMap.get("gender");
+            Map<String, Object> ageRange = (Map<String, Object>) profileMap.get("age_range");
+            Integer age = (Integer) ageRange.get("min");
 
             User user = userDao.getByEmail(facebookEmail);
 
@@ -181,7 +185,7 @@ public class OAuthService {
                     LOGGER.error(String.format("Error registering oauth user %s.", facebookEmail));
                     throw new ResourceCreationException("Error registering user. Please try again");
                 }
-                user = new User(name, null, email, null, InletType.FACEBOOK.getInletType(), pictureUrl, null, null);
+                user = new User(name, null, email, null, InletType.FACEBOOK.getInletType(), pictureUrl, SystemConstants.Sex.valueOf(gender), new DateTime().minusYears(age));
                 user.setId(userId);
             }
 

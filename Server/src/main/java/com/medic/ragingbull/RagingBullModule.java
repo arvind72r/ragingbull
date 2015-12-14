@@ -9,6 +9,7 @@ package com.medic.ragingbull;
 import com.google.inject.AbstractModule;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.access.roles.UserRoleGenerator;
+import com.medic.ragingbull.core.access.service.UserAccessService;
 import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.providers.Authorization;
 import com.medic.ragingbull.core.services.*;
@@ -81,6 +82,9 @@ public class RagingBullModule extends AbstractModule {
         bind(ImageService.class).asEagerSingleton();
         bind(ConsultationService.class).asEagerSingleton();
         bind(PrescriptionService.class).asEagerSingleton();
+
+        //Access Service
+        bind(UserAccessService.class).asEagerSingleton();
 
         // Registering providers
         bind(Authorization.class).asEagerSingleton();
