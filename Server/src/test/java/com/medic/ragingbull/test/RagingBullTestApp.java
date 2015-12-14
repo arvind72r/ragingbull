@@ -13,19 +13,20 @@ import com.medic.ragingbull.RagingBullServer;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.access.service.UserAccessService;
 import com.medic.ragingbull.core.services.*;
-import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.hibernate.annotations.SourceType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
+
+import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 
 /**
  * Created by Vamshi Molleti
  */
 public abstract class RagingBullTestApp {
 
-    public static DropwizardAppRule<RagingBullConfiguration> RULE;//  = new DropwizardAppRule<>(RagingBullServer.class, "/Users/vamshi/RagingBull/Server/input.yml");
+    @ClassRule
+    public static DropwizardAppRule<RagingBullConfiguration> RULE = new DropwizardAppRule<>(RagingBullServer.class, resourceFilePath("test-config.yml"));;
 
     protected RagingBullServer app;
 
@@ -45,25 +46,21 @@ public abstract class RagingBullTestApp {
     protected ConsultationService consultationService;
     protected PrescriptionService prescriptionService;
 
+
+
     // Mappers
     protected ObjectMapper objectMapper;
 
-    @ClassRule
-    public static DropwizardAppRule classSetup() {
-
-        RULE = new DropwizardAppRule<>(RagingBullServer.class, ResourceHelpers.resourceFilePath("test-config.yml"));
-
-        return RULE;
-    }
-
     @Before
-    public void setupBaseApp() throws Exception {
+    public void setupBaseApp() {
 
         app = RULE.getApplication();
 
-        app.run(new String[0]);
+
         //Configuration
         configuration = app.getService(RagingBullConfiguration.class);
+
+
         // Access service
 
         userAccessService = app.getService(UserAccessService.class);
@@ -88,6 +85,5 @@ public abstract class RagingBullTestApp {
 
     @After
     public void cleanup() {
-
     }
 }
