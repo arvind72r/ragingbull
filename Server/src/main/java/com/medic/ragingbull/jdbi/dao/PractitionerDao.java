@@ -21,6 +21,7 @@ import java.util.List;
 @RegisterMapper(PractitionerMapper.class)
 public interface PractitionerDao {
 
+
     @SqlUpdate("INSERT INTO practitioner (id, user_id, description, primary_contact, secondary_contact, primary_id, " +
             "secondary_id, registration_id, registration_authority, license) VALUES(:id, :userId, " +
             ":description, :primaryContact, :secondaryContact, :primaryId, :secondaryId, :registrationId, " +

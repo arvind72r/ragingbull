@@ -70,6 +70,7 @@ public class RagingBullModule extends AbstractModule {
         bind(NotesDao.class).toInstance(database.onDemand(NotesDao.class));
         bind(DrugsDao.class).toInstance(database.onDemand(DrugsDao.class));
         bind(PrescriptionDao.class).toInstance(database.onDemand(PrescriptionDao.class));
+        bind(TransactionalDao.class).toInstance(database.onDemand(TransactionalDao.class));
 
 
         // Binding Services

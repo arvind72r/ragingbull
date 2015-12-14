@@ -8,6 +8,7 @@ package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
@@ -15,6 +16,7 @@ import com.medic.ragingbull.exception.ResourceFetchException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.EntityUsersDao;
 import com.medic.ragingbull.jdbi.dao.PractitionerDao;
+import com.medic.ragingbull.jdbi.dao.TransactionalDao;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -30,13 +32,15 @@ public class PractitionerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PractitionerService.class);
 
-    private PractitionerDao practitionerDao;
+    private final PractitionerDao practitionerDao;
     private final EntityUsersDao entityUsersDao;
+    private final TransactionalDao transactionalDao;
 
     @Inject
-    public PractitionerService(EntityUsersDao entityUsersDao, PractitionerDao practitionerDao) {
+    public PractitionerService(EntityUsersDao entityUsersDao, PractitionerDao practitionerDao, TransactionalDao transactionalDao) {
         this.entityUsersDao = entityUsersDao;
         this.practitionerDao = practitionerDao;
+        this.transactionalDao = transactionalDao;
     }
 
 
@@ -46,9 +50,9 @@ public class PractitionerService {
         try {
             String practitionerId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.PRACTITIONER);
 
-            int practitionerCreated = practitionerDao.createPractitioner(practitionerId, session.getUserId(), practitioner.getDescription(), practitioner.getPrimaryContact(), practitioner.getSecondaryContact(), practitioner.getPrimaryId(), practitioner.getSecondaryId(), practitioner.getRegistrationId(), practitioner.getRegistrationAuthority(), practitioner.getLicense());
+            boolean practitionerCreated = transactionalDao.createPractitioner(session.getUserId(),UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit(), practitionerId, practitioner.getDescription(), practitioner.getPrimaryContact(), practitioner.getSecondaryContact(), practitioner.getPrimaryId(), practitioner.getSecondaryId(), practitioner.getRegistrationId(), practitioner.getRegistrationAuthority(), practitioner.getLicense());
 
-            if (practitionerCreated == 0) {
+            if (!practitionerCreated) {
                 LOGGER.error(String.format("Error creating a practitioner with email %s", session.getUserEmail()));
                 throw new ResourceCreationException(String.format("Error creating a practitioner with email %s", session.getUserEmail()));
             }

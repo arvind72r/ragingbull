@@ -250,7 +250,7 @@ public class UserService {
             }
 
             if (hydrated) {
-                if ((user.getRole() & UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) == UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) {
+                if ((user.getRole() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) {
                     Practitioner practitioner = practitionerDao.getByUserId(userId);
                     user.setPractitioner(practitioner);
                 }
