@@ -9,7 +9,7 @@ package com.medic.ragingbull.exception;
 /**
  * Created by Vamshi Molleti
  */
-public class NotificationException extends Exception{
+public class NotificationException extends RagingBullBaseException{
     public NotificationException(Exception e) {
         super(e);
     }

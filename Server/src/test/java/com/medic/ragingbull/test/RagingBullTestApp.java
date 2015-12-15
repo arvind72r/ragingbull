@@ -18,6 +18,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 
 /**
@@ -25,8 +29,7 @@ import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
  */
 public abstract class RagingBullTestApp {
 
-    @ClassRule
-    public static DropwizardAppRule<RagingBullConfiguration> RULE = new DropwizardAppRule<>(RagingBullServer.class, resourceFilePath("test-config.yml"));;
+    public static DropwizardAppRule<RagingBullConfiguration> RULE;
 
     protected RagingBullServer app;
 
@@ -46,10 +49,16 @@ public abstract class RagingBullTestApp {
     protected ConsultationService consultationService;
     protected PrescriptionService prescriptionService;
 
-
-
     // Mappers
     protected ObjectMapper objectMapper;
+
+    @ClassRule
+    public static DropwizardAppRule classSetup() {
+
+        RULE  = new DropwizardAppRule<>(RagingBullServer.class, resourceFilePath("test-config.yml"));;
+
+        return RULE;
+    }
 
     @Before
     public void setupBaseApp() {
@@ -84,6 +93,8 @@ public abstract class RagingBullTestApp {
     }
 
     @After
-    public void cleanup() {
+    public void cleanup() throws IOException {
+        // Remove the temp database created.
+        Files.deleteIfExists(Paths.get("ragingbull_test.mv.db"));
     }
 }

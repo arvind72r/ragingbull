@@ -9,5 +9,5 @@ package com.medic.ragingbull.test.service;
 /**
  * Created by Vamshi Molleti
  */
-public class UserService {
+public class UserServiceTest {
 }

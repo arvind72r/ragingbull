@@ -105,15 +105,6 @@ public class User {
     public User() { // For Deserialization
     }
 
-//    public User(String name, String password, String email, String phone, String inletType, String pictureUrl) {
-//        this.name = name;
-//        this.password = password;
-//        this.email = email;
-//        this.phone = phone;
-//        this.inletType = inletType;
-//        this.pictureUrl = pictureUrl;
-//    }
-
     public User(String name, String password, String email, String phone, String inletType, String pictureUrl, SystemConstants.Sex sex, DateTime dob) {
         this.name = name;
         this.password = password;

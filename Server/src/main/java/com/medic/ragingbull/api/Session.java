@@ -30,6 +30,8 @@ public class Session {
     @JsonIgnore
     private UserRoles.Role userRole;
 
+    public Session() {}
+
     public Session(String token, String userId, String userEmail, Long role, DateTime createdAt, DateTime expiry) {
         this.token = token;
         this.userEmail = userEmail;

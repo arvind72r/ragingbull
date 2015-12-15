@@ -98,7 +98,7 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         // Registering Authenticator
         ChainedAuthFactory<Session> chainedFactory = new ChainedAuthFactory<>(
                 new BasicAuthFactory<>(new UserAuthenticator(injector.getInstance(UserService.class)), "", Session.class),
-                new SessionAuthFactory<Session>(new SessionAuthenticator())
+                new SessionAuthFactory<Session>(new SessionAuthenticator(injector.getInstance(UserService.class)))
         );
 
         environment.jersey().register(AuthFactory.binder(chainedFactory));

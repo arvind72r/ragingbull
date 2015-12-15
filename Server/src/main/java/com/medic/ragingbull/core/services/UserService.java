@@ -144,7 +144,7 @@ public class UserService {
         }
     }
 
-    public Boolean resendInviteAuthCode(Session session, String userId) throws StorageException, NotificationException, ResourceCreationException {
+    public String resendInviteAuthCode(Session session, String userId) throws StorageException, NotificationException, ResourceCreationException {
         try {
             User user = new User();
             user.setEmail(session.getUserEmail());
@@ -152,6 +152,7 @@ public class UserService {
             Access access = accessDao.getActiveByUserId(userId);
             if (access != null) {
                 notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE, access.getCode());
+                return access.getCode();
             } else {
                 Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
                 notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE, authCode.toString());
@@ -164,8 +165,8 @@ public class UserService {
                     LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
                     throw new StorageException("Error creating invite. Please try again");
                 }
+                return authCode.toString();
             }
-            return true;
         } catch (StorageException re) {
             LOGGER.error(String.format("Error creating invite entry for the  user %s. Exception %s", session.getUserEmail(), re));
             throw re;
@@ -176,8 +177,6 @@ public class UserService {
             LOGGER.error(String.format("Error registering user %s. Exception %s", session.getUserEmail(), e));
             throw new ResourceCreationException(e.getMessage());
         }
-
-
     }
 
     public Boolean approveInvite(final String authCode) throws StorageException, ResourceUpdateException {
@@ -215,6 +214,11 @@ public class UserService {
 
         }
         return null;
+    }
+
+    public Session getSession(String sessionId) {
+        Session session = sessionsDao.getSession(sessionId);
+        return session;
     }
 
     public Session getSession(User user) throws ResourceCreationException {

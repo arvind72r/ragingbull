@@ -41,7 +41,6 @@
         <mockito-core.version>1.9.5</mockito-core.version>
         <junit.version>4.11</junit.version>
         <mock-jedis.version>0.4.0</mock-jedis.version>
-        <testng.version>6.8.8</testng.version>
         <smartunit.version>0.8.0</smartunit.version>
         <cxf.version>2.7.16</cxf.version>
 
@@ -53,9 +52,8 @@
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <maven-surefire-plugin.excludedGroups></maven-surefire-plugin.excludedGroups>
         <maven-surefire-plugin.groups></maven-surefire-plugin.groups>
-        <maven-surefire-plugin.include>**/*Test.java</maven-surefire-plugin.include>
+        <maven-surefire-plugin.include>**Test.java</maven-surefire-plugin.include>
         <maven-surefire-plugin.junitArtifactName>junit:junit</maven-surefire-plugin.junitArtifactName>
-        <maven-surefire-plugin.testNGArtifactName>none:none</maven-surefire-plugin.testNGArtifactName>
     </properties>
 
     <dependencies>
@@ -299,12 +297,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -434,7 +426,6 @@
                         </property>
                     </properties>
                     <junitArtifactName>${maven-surefire-plugin.junitArtifactName}</junitArtifactName>
-                    <testNGArtifactName>${maven-surefire-plugin.testNGArtifactName}</testNGArtifactName>
                 </configuration>
                 <executions>
                     <execution>

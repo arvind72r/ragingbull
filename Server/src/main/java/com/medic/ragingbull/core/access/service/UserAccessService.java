@@ -42,7 +42,8 @@ public class UserAccessService {
         if (!StringUtils.equals(session.getUserId(), userId)) {
             return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_USER_RESOURCE_CODE).build();
         }
-        return  userService.resendInviteAuthCode(session, userId)? Response.ok().build(): Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        userService.resendInviteAuthCode(session, userId);
+        return Response.ok().build();
     }
 
     public Response addMember(Session session, String userId, Member user) throws ResourceCreationException, StorageException {

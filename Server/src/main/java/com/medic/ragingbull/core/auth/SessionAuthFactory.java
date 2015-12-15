@@ -22,8 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * User: Mike Kurdziel
- * Date: 4/19/14
+ * Created by Vamshi Molleti
  */
 public class SessionAuthFactory<T> extends AuthFactory<String, Session> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionAuthFactory.class);
@@ -31,7 +30,7 @@ public class SessionAuthFactory<T> extends AuthFactory<String, Session> {
 
     @Context
     private HttpServletRequest request;
-    private final boolean required = false;
+    private boolean required = false;
 
 
     /**
@@ -53,7 +52,7 @@ public class SessionAuthFactory<T> extends AuthFactory<String, Session> {
                               final Authenticator<String, Session> authenticator) {
         super(authenticator);
 
-        //this.required = required;
+        this.required = required;
     }
 
 

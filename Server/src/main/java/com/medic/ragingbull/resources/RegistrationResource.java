@@ -7,11 +7,9 @@
 package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.RegistrationResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.core.access.service.UserAccessService;
-import com.medic.ragingbull.core.services.UserService;
 import com.medic.ragingbull.exception.NotificationException;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceUpdateException;

@@ -9,7 +9,7 @@ package com.medic.ragingbull.exception;
 /**
  * Created by Vamshi Molleti
  */
-public class ResourceUpdateException extends Exception{
+public class ResourceUpdateException extends RagingBullBaseException{
     public ResourceUpdateException(String message) {
         super(message);
     }

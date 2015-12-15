@@ -98,7 +98,7 @@ notifications:
 
   notifierMap:
     SIGN_UP: []
-    RESEND_INVITE_CODE: [SMS]
+    RESEND_INVITE_CODE: []
     NEWSLETTER: [PUSH, MAIL]
     UPDATES: [PUSH]
     EMERGENCY: [SMS, PUSH, MAIL]

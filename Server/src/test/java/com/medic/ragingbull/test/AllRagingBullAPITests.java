@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by Vamshi Molleti
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses(RegistrationResourceTest.class)
+//@RunWith(Suite.class)
+//@Suite.SuiteClasses(RegistrationResourceTest.class)
 public class AllRagingBullAPITests {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(AllRagingBullAPITests.class);

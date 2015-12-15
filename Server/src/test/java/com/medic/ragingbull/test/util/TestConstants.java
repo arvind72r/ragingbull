@@ -32,4 +32,8 @@ public interface TestConstants {
     String BASE_URL = "http://localhost:8080";
 
     String USER_REGISTRATION_URL = BASE_URL + "/register";
+    String USER_RESEND_AUTH_CODE = BASE_URL + "/register/%s";
+    String USER_AUTH_CODE_APPROVE = BASE_URL + "/register/%s/approve";
+
+    String USER_GET_DETAILS_SELF = BASE_URL + "/user/me";
 }
