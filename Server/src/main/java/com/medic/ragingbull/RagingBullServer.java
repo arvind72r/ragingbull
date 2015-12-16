@@ -20,6 +20,7 @@ import com.medic.ragingbull.core.auth.SessionAuthFactory;
 import com.medic.ragingbull.core.auth.SessionAuthenticator;
 import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.services.UserService;
+import com.medic.ragingbull.exception.RagingBullExceptionMapper;
 import com.medic.ragingbull.resources.*;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthFactory;
@@ -83,7 +84,7 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
         filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
         filter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
-        filter.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
+        filter.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "Content-Type,Authorization,Content-Length,Accept,Origin,Auth-Token");
         filter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,PUT,POST,DELETE,OPTIONS");
         filter.setInitParameter(CrossOriginFilter.PREFLIGHT_MAX_AGE_PARAM, "5184000"); // 2 month
         filter.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
@@ -102,6 +103,9 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         );
 
         environment.jersey().register(AuthFactory.binder(chainedFactory));
+
+        // Register Exception Mapper
+        environment.jersey().register(injector.getInstance(RagingBullExceptionMapper.class));
 
         //Registering Resources
         environment.jersey().register(injector.getInstance(HelloRagingBull.class));

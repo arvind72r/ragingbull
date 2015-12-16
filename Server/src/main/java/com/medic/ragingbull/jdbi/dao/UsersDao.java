@@ -9,6 +9,7 @@ package com.medic.ragingbull.jdbi.dao;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.jdbi.mapper.BindTimeStamp;
 import com.medic.ragingbull.jdbi.mapper.UserMapper;
+import org.h2.jdbc.JdbcSQLException;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -33,7 +34,7 @@ public interface UsersDao {
                    @Bind("role") Long role,
                    @Bind("pictureUrl") String pictureUrl,
                    @Bind("sex") String sex,
-                   @BindTimeStamp("dob") long dob);
+                   @BindTimeStamp("dob") long dob) throws JdbcSQLException;
 
     @SqlUpdate("INSERT  INTO users (id, parent_id, email, name, hash, phone, inlet_type, role, sex, dob) " +
             "VALUES(:id, :parentId, :email, :name, :hash, :phone, :inletType, :role, :sex, :dob)")

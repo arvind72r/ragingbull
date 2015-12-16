@@ -54,6 +54,7 @@ public class Member {
     private DateTime dob;
 
     public Member() {};
+
     public Member(String id, String name, String email, String phone, SystemConstants.Sex sex, DateTime dob) {
         this.id = id;
         this.name = name;

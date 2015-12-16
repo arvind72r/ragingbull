@@ -9,6 +9,8 @@ package com.medic.ragingbull.test.util;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import org.joda.time.DateTime;
 
+import java.util.Random;
+
 /**
  * Created by Vamshi Molleti
  */
@@ -21,7 +23,7 @@ public interface TestConstants {
     String TEST_USER_NAME_TEMPLATE = "Test%d User";
     String TEST_USER_PICTURE_URL = "testUserPictureUrl";
     String TEST_USER_PASSWORD = "111111";
-    String TEST_USER_PHONE = "9999999999";
+    //String TEST_USER_PHONE = String.valueOf(new Random(1111111111l).nextInt());
     String TEST_USER_INLET_TYPE = "SELF";
     SystemConstants.Sex TEST_USER_SEX = SystemConstants.Sex.MALE;
     DateTime TEST_USER_DOB_MAJOR = new DateTime().minusYears(19);

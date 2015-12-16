@@ -95,6 +95,6 @@ public abstract class RagingBullTestApp {
     @After
     public void cleanup() throws IOException {
         // Remove the temp database created.
-        Files.deleteIfExists(Paths.get("ragingbull_test.mv.db"));
+        //Files.deleteIfExists(Paths.get("ragingbull_test.mv.db"));
     }
 }

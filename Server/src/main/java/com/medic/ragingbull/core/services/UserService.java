@@ -14,17 +14,16 @@ import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.Notifiable;
 import com.medic.ragingbull.core.notification.NotificationFactory;
-import com.medic.ragingbull.exception.NotificationException;
-import com.medic.ragingbull.exception.ResourceCreationException;
-import com.medic.ragingbull.exception.ResourceUpdateException;
-import com.medic.ragingbull.exception.StorageException;
+import com.medic.ragingbull.exception.*;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.util.Time;
 import org.apache.commons.lang3.StringUtils;
+import org.h2.jdbc.JdbcSQLException;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
+import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,14 +62,18 @@ public class UserService {
         this.consultationDao =  consultationDao;
     }
 
-    public Response register(User user) throws StorageException, ResourceCreationException, NotificationException {
+    public Response register(User user) throws StorageException, ResourceCreationException, NotificationException, DuplicateEntityException {
         try {
             user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
+
+            if (StringUtils.isBlank(user.getEmail())) {
+                user.setEmail(user.getPhone()+"@noemail.com");
+            }
 
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
-            DateTime date = new DateTime();
+
 
             int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), user.getPictureUrl(), user.getSex().name(), user.getDob().getMillis());
 
@@ -98,6 +101,10 @@ public class UserService {
 
             Session session = getSession(user);
             return Response.ok().entity(session).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
+
+        } catch (UnableToExecuteStatementException re) {
+            LOGGER.error(String.format("User already exists with email %s. Exception %s", user.getEmail(), re));
+            throw new DuplicateEntityException("User already exists");
         } catch (StorageException re) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), re));
             throw re;

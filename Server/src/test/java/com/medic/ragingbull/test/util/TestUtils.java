@@ -41,4 +41,16 @@ public class TestUtils {
         Assert.assertTrue(user.getVerified());
 
     }
+
+    public static void assertConflict(Response response) {
+        Assert.assertEquals(Response.Status.CONFLICT.getStatusCode(), response.getStatus());
+    }
+
+    public static void assertMissingMandatory(Response response) {
+        Assert.assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
+    }
+
+    public static void assertUnProcessableEntity(Response response) {
+        Assert.assertEquals(422, response.getStatus());
+    }
 }

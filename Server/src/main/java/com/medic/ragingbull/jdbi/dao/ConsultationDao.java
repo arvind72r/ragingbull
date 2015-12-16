@@ -50,8 +50,8 @@ public interface ConsultationDao  {
     @SqlQuery("SELECT * FROM consultation where user_id = :userId and active = false")
     List<Consultation> getPastConsultations(@Bind("userId") String userId);
 
-    @SqlQuery("SELECT * FROM consultation where practitioner_id = :practitionerId and active = true")
-    List<Consultation> getActivePractitionerConsultations(@Bind("practitionerId") String practitionerId);
+    @SqlQuery("SELECT * FROM consultation cs, practitioner pr where cs.practitioner_id = pr.id AND pr.user_id = :userId AND cs.active = true")
+    List<Consultation> getActivePractitionerConsultations(@Bind("userId") String userId);
 
     @SqlQuery("SELECT * FROM consultation where practitioner_id = :practitionerId and active = false")
     List<Consultation> getPastPractitionerConsultations(@Bind("practitionerId") String practitionerId);

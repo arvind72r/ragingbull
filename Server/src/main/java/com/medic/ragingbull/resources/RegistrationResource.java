@@ -10,10 +10,7 @@ import com.google.inject.Inject;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.core.access.service.UserAccessService;
-import com.medic.ragingbull.exception.NotificationException;
-import com.medic.ragingbull.exception.ResourceCreationException;
-import com.medic.ragingbull.exception.ResourceUpdateException;
-import com.medic.ragingbull.exception.StorageException;
+import com.medic.ragingbull.exception.*;
 import io.dropwizard.auth.Auth;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -50,7 +47,7 @@ public class RegistrationResource {
     }
 
     @POST
-    public Response registerUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException {
+    public Response registerUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException, DuplicateEntityException {
         Response response = userAccessService.register(user);
         return response;
     }

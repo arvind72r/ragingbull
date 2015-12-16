@@ -6,28 +6,96 @@
 
 package com.medic.ragingbull.test.generator;
 
-import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
-import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.test.util.TestConstants;
-import org.junit.Assert;
 
 /**
  * Created by Vamshi Molleti
  */
 public class TestUser {
 
-    private static int userCount = 0;
-
-    public static User generateUser() {
-        User testUser = new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, userCount),
+    static long phoneNumber = 1111111111l;
+    public static User generateUser(int i) {
+        phoneNumber++;
+        return new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, i),
                 TestConstants.TEST_USER_PASSWORD,
-                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, userCount),
-                TestConstants.TEST_USER_PHONE,
+                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, i),
+                String.valueOf(phoneNumber),
                 TestConstants.TEST_USER_INLET_TYPE,
                 TestConstants.TEST_USER_PICTURE_URL,
                 TestConstants.TEST_USER_SEX,
                 TestConstants.TEST_USER_DOB_MAJOR);
-        return testUser;
+    }
+
+    public static User generateUserMissingName(int i) {
+        phoneNumber++;
+        return new User(null,
+                TestConstants.TEST_USER_PASSWORD,
+                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, i),
+                String.valueOf(phoneNumber),
+                TestConstants.TEST_USER_INLET_TYPE,
+                TestConstants.TEST_USER_PICTURE_URL,
+                TestConstants.TEST_USER_SEX,
+                TestConstants.TEST_USER_DOB_MAJOR);
+    }
+
+    public static User generateUserMissingPassword(int i) {
+        phoneNumber++;
+        return new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, i),
+                null,
+                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, i),
+                String.valueOf(phoneNumber),
+                TestConstants.TEST_USER_INLET_TYPE,
+                TestConstants.TEST_USER_PICTURE_URL,
+                TestConstants.TEST_USER_SEX,
+                TestConstants.TEST_USER_DOB_MAJOR);
+    }
+
+    public static User generateUserMissingPhone(int i) {
+        phoneNumber++;
+        return new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, i),
+                TestConstants.TEST_USER_PASSWORD,
+                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, i),
+                null,
+                TestConstants.TEST_USER_INLET_TYPE,
+                TestConstants.TEST_USER_PICTURE_URL,
+                TestConstants.TEST_USER_SEX,
+                TestConstants.TEST_USER_DOB_MAJOR);
+    }
+
+    public static User generateUserDOB(int i) {
+        phoneNumber++;
+        return new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, i),
+                TestConstants.TEST_USER_PASSWORD,
+                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, i),
+                String.valueOf(phoneNumber),
+                TestConstants.TEST_USER_INLET_TYPE,
+                TestConstants.TEST_USER_PICTURE_URL,
+                TestConstants.TEST_USER_SEX,
+                null);
+    }
+
+    public static User generateUserSex(int i) {
+        phoneNumber++;
+        return new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, i),
+                TestConstants.TEST_USER_PASSWORD,
+                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, i),
+                String.valueOf(phoneNumber),
+                TestConstants.TEST_USER_INLET_TYPE,
+                TestConstants.TEST_USER_PICTURE_URL,
+                null,
+                TestConstants.TEST_USER_DOB_MAJOR);
+    }
+
+    public static User generateUserMissingMail(int i) {
+        phoneNumber++;
+        return new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, i),
+                TestConstants.TEST_USER_PASSWORD,
+                null,
+                String.valueOf(phoneNumber),
+                TestConstants.TEST_USER_INLET_TYPE,
+                TestConstants.TEST_USER_PICTURE_URL,
+                TestConstants.TEST_USER_SEX,
+                TestConstants.TEST_USER_DOB_MAJOR);
     }
 }

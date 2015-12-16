@@ -11,10 +11,7 @@ import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.services.UserService;
-import com.medic.ragingbull.exception.NotificationException;
-import com.medic.ragingbull.exception.ResourceCreationException;
-import com.medic.ragingbull.exception.ResourceUpdateException;
-import com.medic.ragingbull.exception.StorageException;
+import com.medic.ragingbull.exception.*;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ws.rs.core.Response;
@@ -33,7 +30,7 @@ public class UserAccessService {
         this.userService = userService;
     }
 
-    public Response register(User user) throws NotificationException, StorageException, ResourceCreationException {
+    public Response register(User user) throws NotificationException, StorageException, ResourceCreationException, DuplicateEntityException {
         Response response = userService.register(user);
         return response;
     }
