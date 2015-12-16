@@ -77,6 +77,11 @@ public class RagingBullConfiguration extends Configuration {
     @JsonProperty("images")
     private ImagesConfiguration imagesConfiguration = new ImagesConfiguration();
 
+    @Valid
+    @NotNull
+    @JsonProperty("task")
+    private TaskConfiguration taskConfiguration = new TaskConfiguration();
+
     public GoogleConfiguration getGoogleConfiguration() {
         return googleConfiguration;
     }
@@ -91,5 +96,9 @@ public class RagingBullConfiguration extends Configuration {
 
     public ImagesConfiguration getImagesConfiguration() {
         return imagesConfiguration;
+    }
+
+    public TaskConfiguration getTaskConfiguration() {
+        return taskConfiguration;
     }
 }

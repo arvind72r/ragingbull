@@ -10,10 +10,12 @@ import com.google.inject.Inject;
 import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
+import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.services.UserService;
 import com.medic.ragingbull.exception.*;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,8 @@ public class UserAccessService {
     }
 
     public Response register(User user) throws NotificationException, StorageException, ResourceCreationException, DuplicateEntityException {
-        Response response = userService.register(user);
-        return response;
+        Session session = userService.register(user);
+        return Response.ok().entity(session).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
     }
 
     public Response resendInviteAuthCode(Session session, String userId) throws NotificationException, StorageException, ResourceCreationException {
@@ -66,7 +68,7 @@ public class UserAccessService {
     }
 
     public Response approveInvite(String authCode) throws ResourceUpdateException, StorageException {
-        return  userService.approveInvite(authCode)? Response.ok().build(): Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        return  userService.approveInvite(authCode)? Response.ok().build(): Response.status(Response.Status.CONFLICT).build();
     }
 
     public Response update(Session session, String userId, String field, Map<String, String> data) throws StorageException, ResourceUpdateException {

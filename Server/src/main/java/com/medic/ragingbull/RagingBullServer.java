@@ -22,6 +22,7 @@ import com.medic.ragingbull.core.auth.UserAuthenticator;
 import com.medic.ragingbull.core.services.UserService;
 import com.medic.ragingbull.exception.RagingBullExceptionMapper;
 import com.medic.ragingbull.resources.*;
+import com.medic.ragingbull.task.GenerateSampleDataTask;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthFactory;
 import io.dropwizard.auth.ChainedAuthFactory;
@@ -119,6 +120,11 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         environment.jersey().register(injector.getInstance(PractitionerLocationResource.class));
         environment.jersey().register(injector.getInstance(ImageResource.class));
         environment.jersey().register(injector.getInstance(ConsultationResource.class));
+
+        environment.admin().addTask(injector.getInstance(GenerateSampleDataTask.class));
+        if (configuration.getTaskConfiguration().getEnabled()) {
+
+        }
     }
     public <S> S getService(Class<S> serviceClass) {
         return injector.getInstance(serviceClass);

@@ -53,4 +53,8 @@ public class TestUtils {
     public static void assertUnProcessableEntity(Response response) {
         Assert.assertEquals(422, response.getStatus());
     }
+
+    public static void assertEquals(String expected, String actual) {
+        Assert.assertEquals(expected, actual);
+    }
 }

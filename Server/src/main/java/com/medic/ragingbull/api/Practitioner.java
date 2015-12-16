@@ -20,6 +20,16 @@ public class Practitioner extends Entity {
     public Practitioner() {
     }
 
+    public Practitioner(String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license) {
+        this.description = description;
+        this.primaryContact = primaryContact;
+        this.secondaryContact = secondaryContact;
+        this.primaryId = primaryId;
+        this.secondaryId = secondaryId;
+        this.registrationId = registrationId;
+        this.registrationAuthority = registrationAuthority;
+        this.license = license;
+    }
     public Practitioner(String id, String userId, String description, String primaryContact, String secondaryContact, String primaryId, String secondaryId, String registrationId, String registrationAuthority, String license) {
         this.id = id;
         this.userId = userId;

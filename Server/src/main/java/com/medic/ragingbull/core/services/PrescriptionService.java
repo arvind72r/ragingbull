@@ -114,7 +114,7 @@ public class PrescriptionService {
             Prescription prescription = prescriptionDao.getPrescription(prescriptionId);
             String drugId = Ids.generateId(com.medic.ragingbull.core.constants.Ids.Type.DRUG);
 
-            int drugAdded = drugsDao.add(drugId, prescription.getConsultationId(), prescription.getUserId(), prescription.getPractitionerId(), prescriptionId, drug.getName(), drug.getManufacturer(), drug.getQuantity(), drug.getFrequency(), drug.getAllergies());
+            int drugAdded = drugsDao.add(drugId, prescription.getConsultationId(), prescription.getUserId(), prescription.getPractitionerId(), prescriptionId, drug.getName(), drug.getFrequency(), drug.getSchedule().getBitValue(), drug.getDose(), drug.getUnit(), drug.getDays());
             if (drugAdded == 0) {
                 LOGGER.error(String.format("Error adding drug for prescription: %s. by user: %s.", prescriptionId, session.getUserEmail()));
                 throw new StorageException("Error adding drug for prescription. Please try again");

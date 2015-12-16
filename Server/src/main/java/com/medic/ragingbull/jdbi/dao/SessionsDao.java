@@ -39,6 +39,6 @@ public interface SessionsDao {
     @SqlQuery("SELECT * FROM SESSIONS where user_email = :user_email")
     public List<Session> getActiveSessionsPerUserEmail(@Bind("user_email") String userEmail);
 
-    @SqlUpdate("UPDATE SESSIONS set active = false where id = :token")
+    @SqlUpdate("DELETE FROM SESSIONS where id = :token")
     public int logoutUser(@Bind("token") String token);
 }

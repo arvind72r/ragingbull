@@ -90,6 +90,9 @@ public class RegistrationResourceTest extends RagingBullTestApp{
 
         Response userApproveResponse = ClientUtil.postRequestWithAuth(session.getToken(), TestConstants.USER_AUTH_CODE_APPROVE, Optional.absent(), Optional.absent(), authCode);
         TestUtils.assertValidResponse(userApproveResponse);
+
+        Response userApproveResponseInvalidAuth = ClientUtil.postRequestWithAuth(session.getToken(), TestConstants.USER_AUTH_CODE_APPROVE, Optional.absent(), Optional.absent(), "0000");
+        TestUtils.assertConflict(userApproveResponseInvalidAuth);
     }
 
     @Test

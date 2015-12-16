@@ -31,10 +31,11 @@ public @interface BindDrug {
                     q.bind("prescriptionId", arg.getPrescriptionId());
                     q.bind("userId", arg.getUserId());
                     q.bind("name", arg.getName());
-                    q.bind("manufacturer", arg.getManufacturer());
-                    q.bind("quantity", arg.getQuantity());
                     q.bind("frequency", arg.getFrequency());
-                    q.bind("allergies", arg.getAllergies());
+                    q.bind("schedule", arg.getSchedule().getBitValue());
+                    q.bind("dose", arg.getFrequency());
+                    q.bind("unit", arg.getUnit());
+                    q.bind("days", arg.getDays());
                 }
             };
         }

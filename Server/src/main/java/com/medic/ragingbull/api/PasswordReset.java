@@ -35,14 +35,7 @@ public class PasswordReset {
     @JsonIgnoreProperties
     private DateTime updatedAt;
 
-    public PasswordReset(String id, String email, Boolean active, DateTime expiry, DateTime createdAt, DateTime updatedAt) {
-        this.id = id;
-        this.email = email;
-        this.active = active;
-        this.expiry = expiry;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+    public PasswordReset() {}
 
     public PasswordReset(String id, String email, DateTime expiry) {
         this.id = id;

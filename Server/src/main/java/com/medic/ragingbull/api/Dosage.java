@@ -11,15 +11,15 @@ package com.medic.ragingbull.api;
  */
 public class Dosage {
 
-    public enum Regularity {
-        MORNING(512l), AFTERNOON(64l), EVENING(8l), NIGHT(1l);
-        private Long bitValue;
+    public enum Schedule {
+        MORNING(512), AFTERNOON(64), EVENING(8), NIGHT(1);
+        private Integer bitValue;
 
-        Regularity(Long i) {
+        Schedule(Integer i) {
             this.bitValue = i;
         }
 
-        public Long getBitValue() {
+        public Integer getBitValue() {
             return bitValue;
         }
     }

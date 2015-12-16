@@ -29,9 +29,7 @@ public class PractitionerLocation extends EntityLocation{
 
     public PractitionerLocation() {}
 
-    public PractitionerLocation(String entityId, String userId, String name, String description, LocationSpeciality speciality, String location, String primaryContact, String secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer workingHours, Integer workingDays, Boolean isVerified, Boolean isActive, String licenseDoc, DateTime createdAt, DateTime updatedAt) {
-        this.entityId = entityId;
-        this.userId = userId;
+    public PractitionerLocation(String name, String description, LocationSpeciality speciality, String location, String primaryContact, String secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer workingHours, Integer workingDays, String licenseDoc) {
         this.name = name;
         this.description = description;
         this.speciality = speciality;
@@ -49,11 +47,7 @@ public class PractitionerLocation extends EntityLocation{
         this.latitude = latitude;
         this.workingHours = workingHours;
         this.workingDays = workingDays;
-        this.isVerified = isVerified;
-        this.isActive = isActive;
         this.license = licenseDoc;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public PractitionerLocation(String id, String entityId, String userId, String name, String description, LocationSpeciality speciality, String location, String primaryContact, String secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer workingHours, Integer workingDays, Boolean isVerified, Boolean isActive, String licenseDoc, DateTime createdAt, DateTime updatedAt) {

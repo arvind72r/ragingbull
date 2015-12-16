@@ -49,36 +49,25 @@ public class Drug {
     @JsonProperty
     private String name;
 
-    @Length(min = ValidationConstants.MANUFACTURER_NAME_MIN,
-            max = ValidationConstants.MANUFACTURER_NAME_MAX,
-            message = ValidationConstants.MANUFACTURER_NAME_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.MANUFACTURER_NAME_MSG_EMPTY)
+    @NotNull(message = ValidationConstants.MANDATORY_PARAM_MISSING)
     @JsonProperty
-    private String manufacturer;
+    private Integer frequency = 0;
 
-
-    @Min(ValidationConstants.DRUG_QUANTITY_MIN)
-    @NotNull(message = ValidationConstants.DRUG_QUANTITY_MSG_EMPTY)
-    @JsonProperty
-    private Integer quantity;
-
-    @Length(min = ValidationConstants.DRUG_ALLERGY_MIN,
-            max = ValidationConstants.DRUG_ALLERGY_MAX,
-            message = ValidationConstants.DRUG_ALLERGY_MSG_SIZE)
-    @NotEmpty(message = ValidationConstants.DRUG_ALLERGY_MSG_EMPTY)
-    @JsonProperty
-    private String allergies;
-
-    @JsonIgnore
-    private Long frequency = 0L;
-
-    @Size(  max = ValidationConstants.DRUG_FREQUENCY_MAX,
-            min = ValidationConstants.DRUG_FREQUENCY_MIN,
-            message = ValidationConstants.DRUG_FREQUENCY_MSG_SIZE)
     @NotEmpty(message = ValidationConstants.DRUG_FREQUENCY_MSG_EMPTY)
     @JsonProperty
-    private List<Dosage.Regularity> regularity;
+    private Dosage.Schedule schedule;
 
+    @NotNull(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    @JsonProperty
+    private Integer dose;
+
+    @NotEmpty(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    @JsonProperty
+    private String unit;
+
+    @NotNull(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    @JsonProperty
+    private Integer days;
 
     @JsonProperty
     private Boolean active;
@@ -91,77 +80,21 @@ public class Drug {
 
     public Drug() {};
 
-    public Drug(String id, String consultationId, String practitionerId, String userId, String name, String manufacturer, Integer quantity, String allergies, Long frequency, Boolean active, DateTime createdAt, DateTime updatedAt) {
+    public Drug(String id, String consultationId, String practitionerId, String prescriptionId, String userId, String name, Integer frequency, Dosage.Schedule schedule, Integer dose, String unit, Integer days, Boolean active, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.consultationId = consultationId;
         this.practitionerId = practitionerId;
+        this.prescriptionId = prescriptionId;
         this.userId = userId;
         this.name = name;
-        this.manufacturer = manufacturer;
-        this.quantity = quantity;
-        this.allergies = allergies;
         this.frequency = frequency;
-        this.regularity = new ArrayList<>();
-        for (Dosage.Regularity regularity : Dosage.Regularity.values()) {
-            if ((frequency & regularity.getBitValue()) == regularity.getBitValue()) {
-                this.regularity.add(regularity);
-            }
-        }
+        this.schedule = schedule;
+        this.dose = dose;
+        this.unit = unit;
+        this.days = days;
         this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getConsultationId() {
-        return consultationId;
-    }
-
-    public String getPractitionerId() {
-        return practitionerId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public List<Dosage.Regularity> getRegularity() {
-        return regularity;
-    }
-
-    public void setRegularity(List<Dosage.Regularity> regularity) {
-        this.regularity = regularity;
-    }
-
-    public String getAllergies() {
-        return allergies;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public DateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public DateTime getUpdatedAt() {
-        return updatedAt;
     }
 
     public void setId(String id) {
@@ -176,24 +109,68 @@ public class Drug {
         this.practitionerId = practitionerId;
     }
 
+    public void setPrescriptionId(String prescriptionId) {
+        this.prescriptionId = prescriptionId;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public Long getFrequency() {
-        if (frequency == 0) {
-            for(Dosage.Regularity regularity1 : this.regularity) {
-                frequency = frequency | regularity1.getBitValue();
-            }
-        }
-        return frequency;
+    public String getId() {
+        return id;
+    }
+
+    public String getConsultationId() {
+        return consultationId;
+    }
+
+    public String getPractitionerId() {
+        return practitionerId;
     }
 
     public String getPrescriptionId() {
         return prescriptionId;
     }
 
-    public void setPrescriptionId(String prescriptionId) {
-        this.prescriptionId = prescriptionId;
+    public String getUserId() {
+        return userId;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getFrequency() {
+        return frequency;
+    }
+
+    public Dosage.Schedule getSchedule() {
+        return schedule;
+    }
+
+    public Integer getDose() {
+        return dose;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public DateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
 }

@@ -62,7 +62,7 @@ public class UserService {
         this.consultationDao =  consultationDao;
     }
 
-    public Response register(User user) throws StorageException, ResourceCreationException, NotificationException, DuplicateEntityException {
+    public Session register(User user) throws StorageException, ResourceCreationException, NotificationException, DuplicateEntityException {
         try {
             user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
 
@@ -100,7 +100,7 @@ public class UserService {
             user.setRole(UserRoles.Role.NATIVE_USER.getRoleBit());
 
             Session session = getSession(user);
-            return Response.ok().entity(session).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
+            return session;
 
         } catch (UnableToExecuteStatementException re) {
             LOGGER.error(String.format("User already exists with email %s. Exception %s", user.getEmail(), re));

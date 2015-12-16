@@ -19,6 +19,7 @@ public interface TestConstants {
     String INPUT_YML = "test-config.yml";
 
     String HEADER_AUTH = "Auth-Token";
+    String HEADER_BASIC_AUTH = "Authorization";
     String TEST_USER_EMAIL_TEMPLATE = "user%d@email.com";
     String TEST_USER_NAME_TEMPLATE = "Test%d User";
     String TEST_USER_PICTURE_URL = "testUserPictureUrl";
@@ -36,6 +37,11 @@ public interface TestConstants {
     String USER_REGISTRATION_URL = BASE_URL + "/register";
     String USER_RESEND_AUTH_CODE = BASE_URL + "/register/%s";
     String USER_AUTH_CODE_APPROVE = BASE_URL + "/register/%s/approve";
+
+    String USER_LOGIN = BASE_URL + "/auth/login";
+    String USER_LOGOUT = BASE_URL + "/auth/logout";
+    String USER_RESET = BASE_URL + "/auth/reset";
+    String USER_RESET_PASSWORD = BASE_URL + "/auth/reset/%s";
 
     String USER_GET_DETAILS_SELF = BASE_URL + "/user/me";
 }

@@ -11,11 +11,14 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.google.common.base.Optional;
+import com.medic.ragingbull.api.User;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.DatatypeConverter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,14 +47,17 @@ public class ClientUtil {
         return getWebResource(of(authToken), url, queryParam, DEFAULT_TYPE, pathParams).post(Entity.entity(postData, MediaType.APPLICATION_JSON));
     }
 
-    public static Response getRequest(String url, Optional<MultivaluedMap<String,String>> queryParams, Object... pathParams) {
-        return getWebResource(Optional.absent(), url, queryParams, DEFAULT_TYPE, pathParams).get();
-    }
-
     public static Response getRequestWithAuth(String authToken, String url, Optional<MultivaluedMap<String,String>> queryParams, Object... pathParams) {
         return getWebResource(of(authToken), url, queryParams, DEFAULT_TYPE, pathParams).get();
     }
 
+    public static Response postRequestBasicAuth(String userName, String password, String url,  Optional<MultivaluedMap<String,String>> queryParam, Object postData, Object... pathParams) {
+        return getWebResourceBasicAuth(of(userName), of(password), url, queryParam, DEFAULT_TYPE, pathParams).post(Entity.entity(postData, MediaType.APPLICATION_JSON));
+    }
+
+    public static Response postRequestBasicAuthFormData(String userName, String password, String url, Optional<MultivaluedMap<String,String>> queryParams, Optional<MultivaluedMap<String, String>> formParams, Object... pathParams) {
+        return getWebResourceBasicAuth(of(userName), of(password), url, queryParams, of(MediaType.APPLICATION_FORM_URLENCODED_TYPE), pathParams).accept(MediaType.MEDIA_TYPE_WILDCARD).post(Entity.entity(formParams.get(), MediaType.APPLICATION_FORM_URLENCODED));
+    }
 
     private static Client getClient() {
         Client client = ClientBuilder.newClient();
@@ -69,6 +75,42 @@ public class ClientUtil {
         client.register(jacksonProvider);
 
         return client;
+    }
+
+    private static Invocation.Builder getWebResourceBasicAuth(Optional<String> userName, Optional<String> password,
+                                                     String url,
+                                                     Optional<MultivaluedMap<String, String>> queryParams,
+                                                     Optional<MediaType> mediaType,
+                                                     Object... pathParams) {
+        final Client client = getClient();
+
+        WebTarget target = client.target(
+                buildUrl(url, pathParams));
+
+        if (queryParams.isPresent()) {
+            for (final String queryKey : queryParams.get().keySet()) {
+                List<String> values = queryParams.get().get(queryKey);
+                for (final String value : values) {
+                    target = target.queryParam(queryKey, value);
+                }
+            }
+        }
+        final MediaType type = mediaType.isPresent() ? mediaType.get() : MediaType.APPLICATION_JSON_TYPE;
+
+        Invocation.Builder builder = target.request(type);
+
+
+        if (userName.isPresent() && password.isPresent()) {
+            String encoding = null;
+            try {
+                encoding = DatatypeConverter.printBase64Binary((userName.get() + ":" + password.get()).getBytes("UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            builder.header(TestConstants.HEADER_BASIC_AUTH, "Basic "+encoding);
+        }
+
+        return builder;
     }
 
     private static Invocation.Builder getWebResource(Optional<String> authToken,
@@ -100,4 +142,7 @@ public class ClientUtil {
 
         return builder;
     }
+
+
+
 }

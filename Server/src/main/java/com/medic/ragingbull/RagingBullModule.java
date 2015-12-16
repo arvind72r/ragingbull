@@ -15,6 +15,7 @@ import com.medic.ragingbull.core.providers.Authorization;
 import com.medic.ragingbull.core.services.*;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.resources.*;
+import com.medic.ragingbull.task.GenerateSampleDataTask;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Environment;
 import org.skife.jdbi.v2.DBI;
@@ -54,6 +55,8 @@ public class RagingBullModule extends AbstractModule {
         // Binding Independent classes
         bind(UserRoleGenerator.class).asEagerSingleton();
 
+        // Binding Tasks
+        bind(GenerateSampleDataTask.class).asEagerSingleton();
         // Binding Database and DAO's
         bind(DBI.class).toInstance(database);
         bind(UsersDao.class).toInstance(database.onDemand(UsersDao.class));
