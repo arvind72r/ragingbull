@@ -53,6 +53,13 @@ public class RegistrationResource {
     }
 
     @POST
+    @Path("/oauth")
+    public Response registerOAuthUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException, DuplicateEntityException {
+        Response response = userAccessService.registerOAuth(user);
+        return response;
+    }
+
+    @POST
     @Path("/{id}/approve")
     public Response approveRegisteredUser(@PathParam("id") final String authCode) throws StorageException, ResourceUpdateException {
         Response response = userAccessService.approveInvite(authCode);

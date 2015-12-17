@@ -37,6 +37,11 @@ public class UserAccessService {
         return Response.ok().entity(session).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
     }
 
+    public Response registerOAuth(User user) throws ResourceCreationException, StorageException {
+        Session session = userService.registerOAuth(user);
+        return Response.ok().entity(session).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
+    }
+
     public Response resendInviteAuthCode(Session session, String userId) throws NotificationException, StorageException, ResourceCreationException {
         if (!StringUtils.equals(session.getUserId(), userId)) {
             return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_USER_RESOURCE_CODE).build();
@@ -105,4 +110,6 @@ public class UserAccessService {
         DashBoard dashBoard = userService.getDashBoard(session, userId);
         return Response.ok().entity(dashBoard).build();
     }
+
+
 }

@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.Ids;
+import com.medic.ragingbull.core.constants.InletType;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.Notifiable;
 import com.medic.ragingbull.core.notification.NotificationFactory;
@@ -113,6 +114,36 @@ public class UserService {
             throw re;
         } catch (final Exception e) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), e));
+            throw new ResourceCreationException(e.getMessage());
+        }
+    }
+
+    public Session registerOAuth(User oauthUser) throws ResourceCreationException, StorageException {
+        try {
+            // Check if user is present already
+            User user = userDao.getByEmail(oauthUser.getEmail());
+
+            if (user == null) {
+                // User not present in our system
+                String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
+                String email = StringUtils.lowerCase(oauthUser.getEmail());
+
+                int userCreated = userDao.createUser(userId, oauthUser.getName(), email, null, null, oauthUser.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), oauthUser.getPictureUrl(), oauthUser.getSex().name(), oauthUser.getDob().getMillis());
+                if (userCreated == 0) {
+                    LOGGER.error(String.format("Error registering oauth user %s.", oauthUser.getEmail()));
+                    throw new StorageException("Error registering user. Please try again");
+                }
+                oauthUser.setId(userId);
+                user = oauthUser;
+            }
+            Session session = getSession(user);
+            return session;
+        }
+        catch (StorageException re) {
+            throw re;
+        }
+        catch(Exception e) {
+            LOGGER.error(String.format("Error creating oauth under user %s. Exception %s", oauthUser.getEmail(), e));
             throw new ResourceCreationException(e.getMessage());
         }
     }
@@ -355,4 +386,6 @@ public class UserService {
 
         return dash;
     }
+
+
 }
