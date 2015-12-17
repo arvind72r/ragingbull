@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.config.MemberTaskConfiguration;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.config.UserTaskConfiguration;
 import com.medic.ragingbull.core.access.roles.UserRoles;
@@ -50,7 +51,9 @@ public class GenerateSampleDataTask extends Task {
     @Override
     public void execute(ImmutableMultimap<String, String> immutableMultimap, PrintWriter printWriter) throws Exception {
         UserTaskConfiguration userConfig = configuration.getTaskConfiguration().getUserTaskConfiguration();
+        MemberTaskConfiguration memberConfig = configuration.getTaskConfiguration().getMemberTaskConfiguration();
 
+        int memberCount = memberConfig.getCount();
         int practitionerCount = configuration.getTaskConfiguration().getPractitionerTaskConfiguration().getCount();
         int practitionerLocationCount = configuration.getTaskConfiguration().getPractitionerLocationTaskConfiguration().getCount();
         int pharmacistCount = configuration.getTaskConfiguration().getPharmacistTaskConfiguration().getCount();
@@ -68,6 +71,17 @@ public class GenerateSampleDataTask extends Task {
 
             // Add user to DB
             Session session = userService.register(user);
+
+            // Create 5 members for each user
+            for (int count = 0; count < memberCount; count++) {
+                Member member = new Member(
+                        String.format(String.format(memberConfig.getPrefix(), String.valueOf(userCount + ""+ count))),
+                        String.format(memberConfig.getEmailDomain(), String.valueOf(userCount + ""+ count)),
+                        String.valueOf(memberConfig.getPhonePrefix() + new Random().nextInt(99999999)),
+                        SystemConstants.Sex.MALE,
+                        new DateTime().minusYears(19));
+                userService.addMember(session, session.getUserId(), member);
+            }
 
             // Make first n users as practitioners
             if (practitionerCount > 0 ) {

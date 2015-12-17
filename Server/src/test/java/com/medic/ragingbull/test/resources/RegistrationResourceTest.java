@@ -49,6 +49,23 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
+    public void testDuplicateOAuthUserRegistration() throws RagingBullBaseException {
+
+        // Create user
+        User user  = TestUser.generateOAuthUser(0);
+        Response response = ClientUtil.postRequest(TestConstants.OAUTH_USER_REGISTRATION_URL, Optional.absent(), user);
+        Session session = response.readEntity(Session.class);
+        TestUtils.validateSession(session);
+        TestUtils.assertTrue(session.getIsUserValid(), Boolean.FALSE);
+
+        Response duplicateResponse = ClientUtil.postRequest(TestConstants.OAUTH_USER_REGISTRATION_URL, Optional.absent(), user);
+        Session duplicateSession = duplicateResponse.readEntity(Session.class);
+        TestUtils.assertTrue(duplicateSession.getIsUserValid(), Boolean.FALSE);
+        TestUtils.assertEquals(session.getUserId(), duplicateSession.getUserId());
+
+    }
+
+    @Test
     public void testDuplicateUserRegistration() {
         // Create user
         User user  = TestUser.generateUser(2);

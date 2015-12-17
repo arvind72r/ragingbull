@@ -28,6 +28,11 @@ public class TaskConfiguration extends Configuration{
 
     @Valid
     @NotNull
+    @JsonProperty("member")
+    MemberTaskConfiguration memberTaskConfiguration = new MemberTaskConfiguration();
+
+    @Valid
+    @NotNull
     @JsonProperty("practitioner")
     PractitionerTaskConfiguration practitionerTaskConfiguration = new PractitionerTaskConfiguration();
 
@@ -57,6 +62,10 @@ public class TaskConfiguration extends Configuration{
 
     public UserTaskConfiguration getUserTaskConfiguration() {
         return userTaskConfiguration;
+    }
+
+    public MemberTaskConfiguration getMemberTaskConfiguration() {
+        return memberTaskConfiguration;
     }
 
     public PractitionerTaskConfiguration getPractitionerTaskConfiguration() {

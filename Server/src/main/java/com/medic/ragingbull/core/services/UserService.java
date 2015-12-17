@@ -18,6 +18,7 @@ import com.medic.ragingbull.core.notification.NotificationFactory;
 import com.medic.ragingbull.exception.*;
 import com.medic.ragingbull.jdbi.dao.*;
 import com.medic.ragingbull.util.Time;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.jdbc.JdbcSQLException;
 import org.joda.time.DateTime;
@@ -84,7 +85,7 @@ public class UserService {
             }
 
             // Generate AuthCode and notify user via SMS.
-            Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
+            Integer authCode = RandomUtils.nextInt(0, SystemConstants.MAX_BOUND);
             notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.SIGN_UP, authCode.toString());
 
             // Auth code is valid for a day

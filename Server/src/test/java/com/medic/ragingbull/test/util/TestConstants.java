@@ -31,6 +31,11 @@ public interface TestConstants {
     DateTime TEST_USER_DOB_MAJOR = new DateTime().minusYears(19);
     DateTime TEST_USER_DOB_MINOR = new DateTime().minusYears(15);
 
+    // Member
+    String TEST_MEMBER_NAME_TEMPLATE = "Test%d Member";
+    String TEST_MEMBER_EMAIL_TEMPLATE = "member%d@email.com";
+    SystemConstants.Sex TEST_MEMBER_SEX = SystemConstants.Sex.MALE;
+    DateTime TEST_MEMBER_DOB_MAJOR = new DateTime().minusYears(19);
 
     // URLS
     String BASE_URL = "http://localhost:8080";
@@ -45,5 +50,7 @@ public interface TestConstants {
     String USER_RESET = BASE_URL + "/auth/reset";
     String USER_RESET_PASSWORD = BASE_URL + "/auth/reset/%s";
 
-    String USER_GET_DETAILS_SELF = BASE_URL + "/user/me";
+    String USER_GET_DETAILS = BASE_URL + "/user/%s";
+    String USER_ADD_MEMBER = BASE_URL + "/user/%s/member";
+    String USER_UPDATE_DETAILS = BASE_URL + "/user/%s/modify/%s";
 }

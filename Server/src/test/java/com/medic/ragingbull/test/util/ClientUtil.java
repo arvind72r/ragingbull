@@ -47,8 +47,16 @@ public class ClientUtil {
         return getWebResource(of(authToken), url, queryParam, DEFAULT_TYPE, pathParams).post(Entity.entity(postData, MediaType.APPLICATION_JSON));
     }
 
+    public static Response putRequestWithAuth(String authToken, String url, Optional<MultivaluedMap<String,String>> queryParams, Object postData, Object... pathParams) {
+        return getWebResource(of(authToken), url, queryParams, DEFAULT_TYPE, pathParams).put(Entity.entity(postData, MediaType.APPLICATION_JSON));
+    }
+
     public static Response getRequestWithAuth(String authToken, String url, Optional<MultivaluedMap<String,String>> queryParams, Object... pathParams) {
         return getWebResource(of(authToken), url, queryParams, DEFAULT_TYPE, pathParams).get();
+    }
+
+    public static Response getRequestWithBasicAuth(String userName, String password, String url, Optional<MultivaluedMap<String,String>> queryParams, Object... pathParams) {
+        return getWebResourceBasicAuth(of(userName), of(password), url, queryParams, DEFAULT_TYPE, pathParams).get();
     }
 
     public static Response postRequestBasicAuth(String userName, String password, String url,  Optional<MultivaluedMap<String,String>> queryParam, Object postData, Object... pathParams) {

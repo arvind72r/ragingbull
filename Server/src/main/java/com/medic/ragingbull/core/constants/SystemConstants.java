@@ -39,7 +39,7 @@ public interface SystemConstants {
 
     // RANDOMS
     String MEMBER_DEFAULT_PASSWORD = "new_password";
-    Integer MAX_BOUND = 100000;
+    Integer MAX_BOUND = 999999999;
 
     // OAuthResources
     String FACEBOOK_GRAPH_API_URL = "https://graph.facebook.com/v2.5/";

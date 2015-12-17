@@ -105,6 +105,15 @@ task:
     sex: MALE
     dob: Major
 
+  member:
+    count: 5
+    prefix: generatedMember%s
+    emailDomain: generatedMember%s@email.com
+    phonePrefix: 44
+    password: 111111
+    sex: MALE
+    dob: Major
+
   practitioner:
     count: 10
 

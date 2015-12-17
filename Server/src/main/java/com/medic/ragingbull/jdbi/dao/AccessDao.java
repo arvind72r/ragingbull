@@ -41,4 +41,7 @@ public interface AccessDao {
 
     @SqlQuery("SELECT * FROM access where code = :code")
     Access getByCode(@Bind("code") String code);
+
+    @SqlUpdate("DELETE FROM access")
+    int cleanseAll();
 }

@@ -100,4 +100,8 @@ public interface UsersDao {
 
     @SqlQuery("SELECT * FROM users where parent_id = :id")
     List<User> getUsersByParent(@Bind("id") String id);
+
+    @SqlUpdate("DELETE FROM USERS")
+    int cleanseAll();
+
 }

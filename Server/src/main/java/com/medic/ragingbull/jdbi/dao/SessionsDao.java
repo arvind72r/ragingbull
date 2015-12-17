@@ -41,4 +41,7 @@ public interface SessionsDao {
 
     @SqlUpdate("DELETE FROM SESSIONS where id = :token")
     public int logoutUser(@Bind("token") String token);
+
+    @SqlUpdate("DELETE FROM SESSIONS")
+    int cleanseAll();
 }

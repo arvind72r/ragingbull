@@ -113,13 +113,14 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         environment.jersey().register(injector.getInstance(RegistrationResource.class));
         environment.jersey().register(injector.getInstance(AuthResource.class));
         environment.jersey().register(injector.getInstance(UserResource.class));
-        environment.jersey().register(injector.getInstance(OAuthResource.class));
         environment.jersey().register(injector.getInstance(PractitionerResource.class));
         environment.jersey().register(injector.getInstance(PharmacistResource.class));
         environment.jersey().register(injector.getInstance(PharmacyLocationResource.class));
         environment.jersey().register(injector.getInstance(PractitionerLocationResource.class));
         environment.jersey().register(injector.getInstance(ImageResource.class));
         environment.jersey().register(injector.getInstance(ConsultationResource.class));
+
+        //environment.jersey().register(injector.getInstance(OAuthResource.class));
 
         environment.admin().addTask(injector.getInstance(GenerateSampleDataTask.class));
         if (configuration.getTaskConfiguration().getEnabled()) {

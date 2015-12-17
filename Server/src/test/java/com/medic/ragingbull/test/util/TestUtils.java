@@ -20,8 +20,8 @@ import javax.ws.rs.core.Response;
 public class TestUtils {
 
 
-    public static void assertValidResponse(Response resendInviteCode) {
-        Assert.assertEquals(Response.Status.OK.getStatusCode(), resendInviteCode.getStatus());
+    public static void assertValidResponse(Response response) {
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     public static void validateSession(Session session) {
@@ -61,5 +61,11 @@ public class TestUtils {
     public static void assertTrue(Boolean expected, Boolean actual) {
         Assert.assertTrue((expected == actual));
 
+    }
+
+    public static void assertEquals(Session session, User user) {
+        Assert.assertEquals(session.getUserId(), user.getId());
+        Assert.assertEquals(session.getUserEmail(), user.getEmail());
+        Assert.assertEquals(session.getPhone(), user.getPhone());
     }
 }

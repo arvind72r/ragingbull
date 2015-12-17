@@ -55,6 +55,14 @@ public class Member {
 
     public Member() {};
 
+    public Member(String name, String email, String phone, SystemConstants.Sex sex, DateTime dob) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.sex = sex;
+        this.dob = dob;
+    }
+
     public Member(String id, String name, String email, String phone, SystemConstants.Sex sex, DateTime dob) {
         this.id = id;
         this.name = name;
