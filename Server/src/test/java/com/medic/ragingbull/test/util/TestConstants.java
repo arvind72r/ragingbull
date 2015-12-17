@@ -26,6 +26,7 @@ public interface TestConstants {
     String TEST_USER_PASSWORD = "111111";
     //String TEST_USER_PHONE = String.valueOf(new Random(1111111111l).nextInt());
     String TEST_USER_INLET_TYPE = "SELF";
+    String TEST_OAUTH_USER_INLET_TYPE = "SELF";
     SystemConstants.Sex TEST_USER_SEX = SystemConstants.Sex.MALE;
     DateTime TEST_USER_DOB_MAJOR = new DateTime().minusYears(19);
     DateTime TEST_USER_DOB_MINOR = new DateTime().minusYears(15);
@@ -35,6 +36,7 @@ public interface TestConstants {
     String BASE_URL = "http://localhost:8080";
 
     String USER_REGISTRATION_URL = BASE_URL + "/register";
+    String OAUTH_USER_REGISTRATION_URL = BASE_URL + "/register/oauth";
     String USER_RESEND_AUTH_CODE = BASE_URL + "/register/%s";
     String USER_AUTH_CODE_APPROVE = BASE_URL + "/register/%s/approve";
 

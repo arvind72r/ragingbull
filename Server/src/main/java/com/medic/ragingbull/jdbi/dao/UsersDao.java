@@ -34,7 +34,7 @@ public interface UsersDao {
                    @Bind("role") Long role,
                    @Bind("pictureUrl") String pictureUrl,
                    @Bind("sex") String sex,
-                   @BindTimeStamp("dob") long dob) throws JdbcSQLException;
+                   @BindTimeStamp("dob") Long dob) throws JdbcSQLException;
 
     @SqlUpdate("INSERT  INTO users (id, parent_id, email, name, hash, phone, inlet_type, role, sex, dob) " +
             "VALUES(:id, :parentId, :email, :name, :hash, :phone, :inletType, :role, :sex, :dob)")

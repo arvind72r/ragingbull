@@ -57,4 +57,9 @@ public class TestUtils {
     public static void assertEquals(String expected, String actual) {
         Assert.assertEquals(expected, actual);
     }
+
+    public static void assertTrue(Boolean expected, Boolean actual) {
+        Assert.assertTrue((expected == actual));
+
+    }
 }

@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
 public class RegistrationResourceTest extends RagingBullTestApp{
 
     @Test
-    public void test1UserRegistration() throws RagingBullBaseException {
+    public void testUserRegistration() throws RagingBullBaseException {
 
         // Create user
         User user  = TestUser.generateUser(1);
@@ -38,7 +38,18 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test2DuplicateUserRegistration() {
+    public void testOAuthUserRegistration() throws RagingBullBaseException {
+
+        // Create user
+        User user  = TestUser.generateOAuthUser(0);
+        Response response = ClientUtil.postRequest(TestConstants.OAUTH_USER_REGISTRATION_URL, Optional.absent(), user);
+        Session session = response.readEntity(Session.class);
+        TestUtils.validateSession(session);
+        TestUtils.assertTrue(session.getIsUserValid(), Boolean.FALSE);
+    }
+
+    @Test
+    public void testDuplicateUserRegistration() {
         // Create user
         User user  = TestUser.generateUser(2);
         Response response = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), user);
@@ -51,7 +62,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test3ResendInviteCode() {
+    public void testResendInviteCode() {
         // Create user
         User user  = TestUser.generateUser(3);
         Response response = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), user);
@@ -65,7 +76,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test4ResendInviteCodeMe() {
+    public void testResendInviteCodeMe() {
         // Create user
         User user  = TestUser.generateUser(4);
         Response response = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), user);
@@ -79,7 +90,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test5ApproveUser() throws RagingBullBaseException{
+    public void testApproveUser() throws RagingBullBaseException{
         // Create user
         User user  = TestUser.generateUser(5);
         Response response = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), user);
@@ -96,7 +107,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test6UserRegistrationMissingName() {
+    public void testUserRegistrationMissingName() {
         // Create user with missing name
         User missingName = TestUser.generateUserMissingName(6);
         Response missingNameResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), missingName);
@@ -104,7 +115,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test7UserRegistrationMissingPassword() {
+    public void testUserRegistrationMissingPassword() {
         // Create user with missing password
         User missingPassword = TestUser.generateUserMissingPassword(7);
         Response missingPasswordResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), missingPassword);
@@ -112,7 +123,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test8UserRegistrationMissingEmail() {
+    public void testUserRegistrationMissingEmail() {
         // Create user with missing email,
         User missingEmail = TestUser.generateUserMissingMail(8);
         Response missingEmailResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), missingEmail);
@@ -120,7 +131,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test9UserRegistrationMissingPhone() {
+    public void testUserRegistrationMissingPhone() {
         // Create user with missing phone
         User missingPhone = TestUser.generateUserMissingPhone(9);
         Response missingPhoneResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), missingPhone);
@@ -128,7 +139,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test99UserRegistrationMissingDOB() {
+    public void testUserRegistrationMissingDOB() {
         // Create user with missing DOB
         User missingDOB = TestUser.generateUserDOB(10);
         Response missingDOBResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), missingDOB);
@@ -136,7 +147,7 @@ public class RegistrationResourceTest extends RagingBullTestApp{
     }
 
     @Test
-    public void test999UserRegistrationMissingSex() {
+    public void testUserRegistrationMissingSex() {
         // Create user with missing sex
         User missingSex = TestUser.generateUserSex(11);
         Response missingSexResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), missingSex);

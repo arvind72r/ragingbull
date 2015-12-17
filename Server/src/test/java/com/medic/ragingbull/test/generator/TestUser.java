@@ -98,4 +98,15 @@ public class TestUser {
                 TestConstants.TEST_USER_SEX,
                 TestConstants.TEST_USER_DOB_MAJOR);
     }
+
+    public static User generateOAuthUser(int i) {
+        return new User(String.format(TestConstants.TEST_USER_NAME_TEMPLATE, i),
+                TestConstants.TEST_USER_PASSWORD,
+                String.format(TestConstants.TEST_USER_EMAIL_TEMPLATE, i),
+                String.valueOf(phoneNumber),
+                TestConstants.TEST_OAUTH_USER_INLET_TYPE,
+                TestConstants.TEST_USER_PICTURE_URL,
+                TestConstants.TEST_USER_SEX,
+                TestConstants.TEST_USER_DOB_MAJOR);
+    }
 }

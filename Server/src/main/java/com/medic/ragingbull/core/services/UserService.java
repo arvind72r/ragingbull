@@ -128,12 +128,13 @@ public class UserService {
                 String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
                 String email = StringUtils.lowerCase(oauthUser.getEmail());
 
-                int userCreated = userDao.createUser(userId, oauthUser.getName(), email, null, null, oauthUser.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), oauthUser.getPictureUrl(), oauthUser.getSex().name(), oauthUser.getDob().getMillis());
+                int userCreated = userDao.createUser(userId, oauthUser.getName(), email, null, null, oauthUser.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), oauthUser.getPictureUrl(), oauthUser.getSex().name(), null);
                 if (userCreated == 0) {
                     LOGGER.error(String.format("Error registering oauth user %s.", oauthUser.getEmail()));
                     throw new StorageException("Error registering user. Please try again");
                 }
                 oauthUser.setId(userId);
+                oauthUser.setRole(UserRoles.Role.NATIVE_USER.getRoleBit());
                 user = oauthUser;
             }
             Session session = getSession(user);

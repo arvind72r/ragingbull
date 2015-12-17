@@ -40,7 +40,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="dob" type="DATETIME">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="active" type="BOOLEAN" defaultValueBoolean="true"/>

@@ -92,8 +92,36 @@ jerseyClient:
   gzipEnabledForRequests: true
   chunkedEncodingEnabled: true
 
-# Notifications
+#Tasks
+task:
+  enabled: true
 
+  user:
+    count: 100
+    prefix: generatedUser%d
+    emailDomain: generatedUser%d@email.com
+    phonePrefix: 22
+    password: 111111
+    sex: MALE
+    dob: Major
+
+  practitioner:
+    count: 10
+
+  practitionerLocations:
+    count: 3
+
+  pharmacist:
+    count: 4
+
+  pharmacies:
+    count: 2
+
+  consultations:
+    count: 10
+
+
+# Notifications
 notifications:
 
   notifierMap:
