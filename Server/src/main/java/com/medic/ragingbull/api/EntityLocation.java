@@ -84,7 +84,6 @@ public class EntityLocation {
     @JsonProperty
     public String state;
 
-
     @JsonProperty
     public Long zip;
 

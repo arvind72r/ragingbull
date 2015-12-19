@@ -24,8 +24,8 @@ public class PractitionerLocationMapper implements ResultSetMapper<PractitionerL
     public PractitionerLocation map(int i, ResultSet r, StatementContext statementContext) throws SQLException {
         return new PractitionerLocation(
                 r.getString("id"),
-                r.getString("user_id"),
                 r.getString("practitioner_id"),
+                r.getString("user_id"),
                 r.getString("name"),
                 r.getString("description"),
                 LocationSpeciality.valueOf(r.getString("speciality")),

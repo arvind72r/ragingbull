@@ -40,6 +40,8 @@ public class PractitionerLocationResponse extends AbstractResponse{
     private Boolean isVerified;
     private Boolean isActive;
 
+    public PractitionerLocationResponse() {}
+
     public PractitionerLocationResponse(String id, String userId, String practitionerId, String name, String description, String speciality, String location, String primaryContact, String secondaryContact, String address1, String address2, String city, String state, Long zip, String country, String landmark, Float longitude, Float latitude, Integer workingHours, Integer workingDays, String license, Boolean isVerified, Boolean isActive) {
         this.id = id;
         this.userId = userId;
@@ -156,5 +158,27 @@ public class PractitionerLocationResponse extends AbstractResponse{
 
     public Boolean getIsActive() {
         return isActive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PractitionerLocationResponse response = (PractitionerLocationResponse) o;
+
+        if (!id.equals(response.id)) return false;
+        if (!userId.equals(response.userId)) return false;
+        if (!practitionerId.equals(response.practitionerId)) return false;
+        return true;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + userId.hashCode();
+        result = 31 * result + practitionerId.hashCode();
+        return result;
     }
 }

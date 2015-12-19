@@ -15,10 +15,7 @@ import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
-import com.medic.ragingbull.jdbi.dao.EntityUsersDao;
-import com.medic.ragingbull.jdbi.dao.PractitionerDao;
-import com.medic.ragingbull.jdbi.dao.PractitionerLocationDao;
-import com.medic.ragingbull.jdbi.dao.UsersDao;
+import com.medic.ragingbull.jdbi.dao.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -41,17 +38,19 @@ public class PractitionerLocationService {
     private final PractitionerDao practitionerDao;
     private final PractitionerLocationDao practitionerLocationDao;
     private final EntityUsersDao entityUsersDao;
+    private final TransactionalDao transactionalDao;
 
     @Inject
-    public PractitionerLocationService(UsersDao usersDao, EntityUsersDao entityUsersDao, PractitionerLocationDao practitionerLocationDao, PractitionerDao practitionerDao, UserRoleGenerator userRoleGenerator) {
+    public PractitionerLocationService(UsersDao usersDao, EntityUsersDao entityUsersDao, PractitionerLocationDao practitionerLocationDao, PractitionerDao practitionerDao, UserRoleGenerator userRoleGenerator, TransactionalDao transactionalDao) {
         this.usersDao = usersDao;
         this.userRoleGenerator = userRoleGenerator;
         this.entityUsersDao = entityUsersDao;
         this.practitionerLocationDao = practitionerLocationDao;
         this.practitionerDao = practitionerDao;
+        this.transactionalDao = transactionalDao;
     }
 
-    public PractitionerLocationResponse getPractitioner(Session session, String practitionerId, String practitionerLocationId) throws StorageException {
+    public PractitionerLocationResponse getPractitionerLocation(Session session, String practitionerId, String practitionerLocationId) throws StorageException {
         try {
             PractitionerLocation practitionerLocation = practitionerLocationDao.getPractitionerLocation(practitionerLocationId);
             PractitionerLocationResponse response = new PractitionerLocationResponse(practitionerLocation.getId(), practitionerLocation.getUserId(), practitionerLocation.getEntityId(), practitionerLocation.getName(), practitionerLocation.getDescription(), practitionerLocation.getSpeciality().toString(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(), practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation.getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(), practitionerLocation.getLicense(), practitionerLocation.getIsVerified(), practitionerLocation.getIsActive());
@@ -78,15 +77,21 @@ public class PractitionerLocationService {
             }
 
             String practitionerLocationId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.PRACTITIONER_LOCATION);
+            boolean practitionerLocationCreated = transactionalDao.
+            createPractitionerLocation(userId, UserRoles.Role.NATIVE_PRACTITIONER_LOCATION.getRoleBit(), practitionerLocationId, practitionerId,
+                    practitionerLocation.getName(), practitionerLocation.getDescription(), practitionerLocation.getSpeciality().toString(),
+                    practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(),
+                    practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation
+                            .getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(),
+                    practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(),
+                    practitionerLocation.getWorkingDays(), practitionerLocation.getLicense());
 
-            int practitionerLocationCreated = practitionerLocationDao.createPractitionerLocation(practitionerLocationId, userId, practitionerId, practitionerLocation.getName(), practitionerLocation.getDescription(), practitionerLocation.getSpeciality().toString(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(), practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation.getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(), practitionerLocation.getLicense());
-
-            if (practitionerLocationCreated == 0) {
+            if (!practitionerLocationCreated) {
                 LOGGER.error(String.format("Error creating a practitioner location with email %s, locationId: %s", session.getUserEmail(), practitionerId));
                 throw new ResourceCreationException(String.format("Error creating practitioner location with emailId %s", session.getUserEmail()));
             }
 
-            PractitionerLocationResponse response = new PractitionerLocationResponse(practitionerLocationId, userId, practitionerLocation.getEntityId(), practitionerLocation.getName(), practitionerLocation.getDescription(), practitionerLocation.getSpeciality().toString(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(), practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation.getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(), practitionerLocation.getLicense(), practitionerLocation.getIsVerified(), practitionerLocation.getIsActive());
+            PractitionerLocationResponse response = new PractitionerLocationResponse(practitionerLocationId, userId, practitionerId, practitionerLocation.getName(), practitionerLocation.getDescription(), practitionerLocation.getSpeciality().toString(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(), practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation.getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(), practitionerLocation.getLicense(), practitionerLocation.getIsVerified(), practitionerLocation.getIsActive());
             response.setStatus(HttpStatus.SC_OK);
             return response;
 

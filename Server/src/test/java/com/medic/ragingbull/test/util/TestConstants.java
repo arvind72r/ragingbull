@@ -6,6 +6,7 @@
 
 package com.medic.ragingbull.test.util;
 
+import com.medic.ragingbull.core.constants.LocationSpeciality;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import org.joda.time.DateTime;
 
@@ -76,7 +77,34 @@ public interface TestConstants {
     String TEST_PRACTITIONER_ISSUING_AUTHORITY = "Test Practitioner Issuing Authority %d";
     String TEST_PRACTITIONER_LICENSE = "Test Practitioner License %d";
 
+    /*
+    ______               _   _ _   _                         _                     _   _
+    | ___ \             | | (_) | (_)                       | |                   | | (_)
+    | |_/ / __ __ _  ___| |_ _| |_ _  ___  _ __   ___ _ __  | |     ___   ___ __ _| |_ _  ___  _ __
+    |  __/ '__/ _` |/ __| __| | __| |/ _ \| '_ \ / _ \ '__| | |    / _ \ / __/ _` | __| |/ _ \| '_ \
+    | |  | | | (_| | (__| |_| | |_| | (_) | | | |  __/ |    | |___| (_) | (_| (_| | |_| | (_) | | | |
+    \_|  |_|  \__,_|\___|\__|_|\__|_|\___/|_| |_|\___|_|    \_____/\___/ \___\__,_|\__|_|\___/|_| |_|
 
+     */
+
+    String TEST_PRACTITIONER_LOCATION_NAME = "Test Practitioner Location Name%d";
+    String TEST_PRACTITIONER_LOCATION_DESCRIPTION = "Test Practitioner Description%d";
+    LocationSpeciality TEST_PRACTITIONER_LOCATION_SPECIALITY = LocationSpeciality.CARDIOLOGY‎;
+    String TEST_PRACTITIONER_LOCATION_LOCATION = "Test Location%d";
+    String TEST_PRACTITIONER_LOCATION_PRIMARY_CONTACT = 44  + "" + new Random().nextInt(99999999);
+    String TEST_PRACTITIONER_LOCATION_SECONDARY_CONTACT = 44  + "" + new Random().nextInt(99999999);
+    String TEST_PRACTITIONER_LOCATION_ADDRESS1 = "Test Practitioner Primary Address %d";
+    String TEST_PRACTITIONER_LOCATION_ADDRESS2 = "Test Practitioner Secondary Address %d";
+    String TEST_PRACTITIONER_LOCATION_CITY = "Gotham";
+    String TEST_PRACTITIONER_LOCATION_STATE = "KA";
+    Long TEST_PRACTITIONER_LOCATION_ZIP = 560075L;
+    String TEST_PRACTITIONER_LOCATION_COUNTRY = "India";
+    Float TEST_PRACTITIONER_LOCATION_LONGITUDE = 12.9539974F;
+    Float TEST_PRACTITIONER_LOCATION_LATITUDE = 77.6309395F;
+    Integer TEST_PRACTITIONER_LOCATION_WORKING_HOURS = 12;
+    Integer TEST_PRACTITIONER_LOCATION_WORKING_DAYS = 12;
+    String TEST_PRACTITIONER_LOCATION_LICENSE = "Test License %d";
+    String TEST_PRACTITIONER_LOCATION_LANDMARK = "Test Landmark %d";
 
     // URLS
     String BASE_URL = "http://localhost:8080";
@@ -97,4 +125,10 @@ public interface TestConstants {
 
     String PRACTITIONER_ADD = BASE_URL + "/practitioner";
     String PRACTITIONER_GET = BASE_URL + "/practitioner/%s";
+
+    String PRACTITIONER_LOCATION_ADD = BASE_URL + "/practitioner/%s/location";
+    String PRACTITIONER_LOCATION_GET = BASE_URL + "/practitioner/%s/location/%s";
+
+
+
 }

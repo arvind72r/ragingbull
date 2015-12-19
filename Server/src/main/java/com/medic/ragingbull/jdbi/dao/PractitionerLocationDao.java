@@ -49,6 +49,6 @@ public interface PractitionerLocationDao {
     @SqlQuery("SELECT * FROM practitioner_location where id = :id")
     PractitionerLocation getPractitionerLocation(@Bind("id") String id);
 
-
-
+    @SqlUpdate("DELETE FROM practitioner_location")
+    int cleanAll();
 }

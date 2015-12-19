@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 /**
  * Created by Vamshi Molleti
  */
-public class PractitionerResourceTest extends RagingBullTestApp{
+public class PractitionerResourceTest extends RagingBullTestApp {
 
     @Test
     public void testCreatePractitioner() {
@@ -35,7 +35,8 @@ public class PractitionerResourceTest extends RagingBullTestApp{
         TestUtils.validateSession(session);
 
         Practitioner testPractitioner = TestPractitioner.generatePractitioner(0);
-        Response practitionerResponse = ClientUtil.getRequestWithAuth(session.getToken(), TestConstants.PRACTITIONER_ADD, Optional.absent(), testPractitioner);
+        Response practitionerResponse = ClientUtil.getRequestWithAuth(session.getToken(), TestConstants
+                        .PRACTITIONER_ADD, Optional.absent(), testPractitioner);
         TestUtils.assertValidResponse(practitionerResponse);
     }
 
@@ -48,11 +49,13 @@ public class PractitionerResourceTest extends RagingBullTestApp{
         TestUtils.validateSession(session);
 
         Practitioner testPractitioner = TestPractitioner.generatePractitioner(1);
-        Response practitionerResponse = ClientUtil.postRequestWithAuth(session.getToken(), TestConstants.PRACTITIONER_ADD, Optional.absent(), testPractitioner);
+        Response practitionerResponse = ClientUtil.postRequestWithAuth(session.getToken(), TestConstants
+                        .PRACTITIONER_ADD, Optional.absent(), testPractitioner);
         PractitionerResponse practitioner = practitionerResponse.readEntity(PractitionerResponse.class);
         TestUtils.assertValidResponse(practitionerResponse);
 
-        Response getPractitionerResponse = ClientUtil.getRequestWithAuth(session.getToken(), TestConstants
+        Response getPractitionerResponse = ClientUtil.getRequestWithAuth(
+                session.getToken(), TestConstants
                         .PRACTITIONER_GET, Optional.absent(), practitioner.getId());
         PractitionerResponse fetchedPractitioner = getPractitionerResponse.readEntity(PractitionerResponse.class);
         TestUtils.assertValidResponse(getPractitionerResponse);
@@ -68,11 +71,13 @@ public class PractitionerResourceTest extends RagingBullTestApp{
         TestUtils.validateSession(session);
 
         Practitioner testPractitioner = TestPractitioner.generatePractitioner(2);
-        Response practitionerResponse = ClientUtil.postRequestWithAuth(session.getToken(), TestConstants
+        Response practitionerResponse = ClientUtil.postRequestWithAuth(
+                session.getToken(), TestConstants
                         .PRACTITIONER_ADD, Optional.absent(), testPractitioner);
         TestUtils.assertValidResponse(practitionerResponse);
 
-        Response duplicateResponse = ClientUtil.postRequestWithAuth(session.getToken(), TestConstants.PRACTITIONER_ADD, Optional.absent(), testPractitioner);
+        Response duplicateResponse = ClientUtil.postRequestWithAuth(session.getToken(), TestConstants
+                        .PRACTITIONER_ADD, Optional.absent(), testPractitioner);
         TestUtils.assertConflict(duplicateResponse);
     }
 
@@ -93,33 +98,39 @@ public class PractitionerResourceTest extends RagingBullTestApp{
 
         // Create different practitioners
         Practitioner testPractitionerA = TestPractitioner.generatePractitioner(3);
-        Response practitionerResponseA = ClientUtil.postRequestWithAuth(userASession.getToken(), TestConstants.PRACTITIONER_ADD, Optional.absent(), testPractitionerA);
+        Response practitionerResponseA = ClientUtil.postRequestWithAuth(userASession.getToken(), TestConstants
+                        .PRACTITIONER_ADD, Optional.absent(), testPractitionerA);
         PractitionerResponse practitionerA = practitionerResponseA.readEntity(PractitionerResponse.class);
         TestUtils.assertValidResponse(practitionerResponseA);
 
         Practitioner testPractitionerB = TestPractitioner.generatePractitioner(4);
-        Response practitionerResponseB = ClientUtil.postRequestWithAuth(userBSession.getToken(), TestConstants.PRACTITIONER_ADD, Optional.absent(), testPractitionerB);
+        Response practitionerResponseB = ClientUtil.postRequestWithAuth(userBSession.getToken(), TestConstants
+                        .PRACTITIONER_ADD, Optional.absent(), testPractitionerB);
         PractitionerResponse practitionerB = practitionerResponseB.readEntity(PractitionerResponse.class);
         TestUtils.assertValidResponse(practitionerResponseB);
 
         // Fetch created practitioners and compare with response while registering
-        Response getPractitionerAResponse = ClientUtil.getRequestWithAuth(userASession.getToken(), TestConstants
+        Response getPractitionerAResponse = ClientUtil.getRequestWithAuth(
+                userASession.getToken(), TestConstants
                         .PRACTITIONER_GET, Optional.absent(), practitionerA.getId());
         PractitionerResponse fetchedPractitionerA = getPractitionerAResponse.readEntity(PractitionerResponse.class);
         TestUtils.assertValidResponse(getPractitionerAResponse);
         TestUtils.assertTrue(practitionerA.equals(fetchedPractitionerA));
 
-        Response getPractitionerBResponse = ClientUtil.getRequestWithAuth(userBSession.getToken(), TestConstants
+        Response getPractitionerBResponse = ClientUtil.getRequestWithAuth(
+                userBSession.getToken(), TestConstants
                         .PRACTITIONER_GET, Optional.absent(), practitionerB.getId());
         PractitionerResponse fetchedPractitionerB = getPractitionerBResponse.readEntity(PractitionerResponse.class);
         TestUtils.assertValidResponse(getPractitionerBResponse);
         TestUtils.assertTrue(practitionerB.equals(fetchedPractitionerB));
 
         // Try to get credentials for practitionerB by practitionerA
-        Response spoofedAResponse = ClientUtil.getRequestWithAuth(userASession.getToken(), TestConstants
+        Response spoofedAResponse = ClientUtil.getRequestWithAuth(
+                userASession.getToken(), TestConstants
                         .PRACTITIONER_GET, Optional.absent(), practitionerB.getId());
         TestUtils.assertForbidden(spoofedAResponse);
-        Response spoofedBResponse = ClientUtil.getRequestWithAuth(userBSession.getToken(), TestConstants
+        Response spoofedBResponse = ClientUtil.getRequestWithAuth(
+                userBSession.getToken(), TestConstants
                         .PRACTITIONER_GET, Optional.absent(), practitionerA.getId());
         TestUtils.assertForbidden(spoofedBResponse);
     }

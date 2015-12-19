@@ -9,6 +9,7 @@ package com.medic.ragingbull.resources;
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.service.PractitionerAccessService;
+import com.medic.ragingbull.core.access.service.PractitionerLocationAccessService;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
 import com.medic.ragingbull.core.services.PractitionerService;
 import com.medic.ragingbull.exception.DuplicateEntityException;
@@ -33,17 +34,13 @@ public class PractitionerResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(PractitionerResource.class);
 
     private PractitionerAccessService practitionerAccessService;
-    private PractitionerService practitionerService;
-    private PractitionerLocationService practitionerLocationService;
+    private PractitionerLocationAccessService practitionerLocationAccessService;
 
     @Inject
-    public PractitionerResource(PractitionerAccessService practitionerAccessService, PractitionerService practitionerService, PractitionerLocationService practitionerLocationService) {
+    public PractitionerResource(PractitionerAccessService practitionerAccessService, PractitionerLocationAccessService practitionerLocationAccessService) {
         this.practitionerAccessService = practitionerAccessService;
-        this.practitionerService = practitionerService;
-        this.practitionerLocationService = practitionerLocationService;
+        this.practitionerLocationAccessService = practitionerLocationAccessService;
     }
-
-
 
     @GET
     public Response getPractitioners(@Auth Session session) throws StorageException {
@@ -53,6 +50,7 @@ public class PractitionerResource {
         Response response = practitionerAccessService.getPractitioners(session);
         return response;
     }
+
     @GET
     @Path("/{id}")
     public Response getPractitioner(@Auth Session session, @PathParam("id") String practitionerId) throws StorageException, ResourceCreationException {
@@ -72,15 +70,19 @@ public class PractitionerResource {
 
     @POST
     @Path("/{id}/location")
-    public PractitionerLocationResponse addPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
-        PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
-        return response;
+    public Response addPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format("Creating practitioner location. PractitionerId: %s, UserEmail: %s.", practitionerId, session.getUserEmail()));
+        }
+        return practitionerLocationAccessService.createPractitionerLocation(session, practitionerId, practitionerLocation);
     }
 
     @GET
     @Path("/{id}/location/{locationId}")
-    public PractitionerLocationResponse getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
-        PractitionerLocationResponse response = practitionerLocationService.getPractitioner(session, practitionerId, locationId);
-        return response;
+    public Response getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format("Getting practitioner location. LocationId: %s, PractitionerId: %s, UserEmail: %s.", locationId, practitionerId, session.getUserEmail()));
+        }
+        return practitionerLocationAccessService.getPractitionerLocation(session, practitionerId, locationId);
     }
 }

@@ -44,7 +44,7 @@ public class PractitionerLocationResource {
     @GET
     @Path("/{locationId}")
     public PractitionerLocationResponse getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
-        PractitionerLocationResponse response = practitionerLocationService.getPractitioner(session, practitionerId, locationId);
+        PractitionerLocationResponse response = practitionerLocationService.getPractitionerLocation(session, practitionerId, locationId);
         return response;
     }
 

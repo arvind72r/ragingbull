@@ -10,20 +10,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.medic.ragingbull.RagingBullServer;
+import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.services.*;
-import com.medic.ragingbull.jdbi.dao.AccessDao;
-import com.medic.ragingbull.jdbi.dao.PractitionerDao;
-import com.medic.ragingbull.jdbi.dao.SessionsDao;
-import com.medic.ragingbull.jdbi.dao.UsersDao;
+import com.medic.ragingbull.jdbi.dao.*;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 
@@ -56,6 +52,7 @@ public abstract class RagingBullTestApp {
     private SessionsDao sessionsDao;
     private AccessDao accessDao;
     private PractitionerDao practitionerDao;
+    private PractitionerLocationDao practitionerLocationDao;
 
     // Mappers
     protected ObjectMapper objectMapper;
@@ -93,6 +90,7 @@ public abstract class RagingBullTestApp {
         sessionsDao = app.getService(SessionsDao.class);
         accessDao = app.getService(AccessDao.class);
         practitionerDao = app.getService(PractitionerDao.class);
+        practitionerLocationDao = app.getService(PractitionerLocationDao.class);
 
 
         // Create Jackson ObjectMapper
@@ -110,6 +108,7 @@ public abstract class RagingBullTestApp {
         sessionsDao.cleanseAll();
         accessDao.cleanseAll();
         practitionerDao.cleanseAll();
+        practitionerLocationDao.cleanAll();
         // Remove the temp database created.
         //Files.deleteIfExists(Paths.get("ragingbull_test.mv.db"));
     }
