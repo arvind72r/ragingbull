@@ -50,7 +50,7 @@ public class UserAccessService {
         return Response.ok().build();
     }
 
-    public Response addMember(Session session, String userId, Member user) throws ResourceCreationException, StorageException {
+    public Response addMember(Session session, String userId, Member user) throws ResourceCreationException, StorageException, DuplicateEntityException {
         if (!StringUtils.equals(session.getUserId(), userId)) {
             return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_USER_RESOURCE_CODE).build();
         }
@@ -82,6 +82,10 @@ public class UserAccessService {
         }
 
         if ((session.getRole() & UserRoles.Permissions.USER_MODIFY.getBitValue()) == UserRoles.Permissions.USER_MODIFY.getBitValue()) {
+            if (StringUtils.containsAny(field, "phone")) {
+                // Check if the user is OAuthUser
+                //if (session.getIn)
+            }
             if (StringUtils.equals(field, "password")) {
                 return userService.updatePassword(session, userId, data) ? Response.ok().build() : Response.status(Response.Status.BAD_REQUEST).entity(ErrorMessages.INVALID_PASSWORD_USER_RESOURCE_CODE).build();
             } else {

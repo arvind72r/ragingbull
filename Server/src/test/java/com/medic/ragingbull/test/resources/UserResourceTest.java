@@ -204,5 +204,74 @@ public class UserResourceTest extends RagingBullTestApp {
         }
     }
 
+    @Test
+    public void testGetUserDetailsDifferentId() {
 
+        User userA = TestUser.generateUser(7);
+        Response userAResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), userA);
+        Session userASession = userAResponse.readEntity(Session.class);
+        TestUtils.validateSession(userASession);
+
+        User userB = TestUser.generateUser(8);
+        Response userBResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), userB);
+        Session userBSession = userBResponse.readEntity(Session.class);
+        TestUtils.validateSession(userBSession);
+
+
+        // UserA trying to fetch userB details
+        Response userResponse = ClientUtil.getRequestWithAuth(userASession.getToken(), TestConstants.USER_GET_DETAILS, Optional.absent(), userBSession.getUserId());
+        TestUtils.assertForbidden(userResponse);
+
+    }
+
+    @Test
+    public void testUpdateUserDetailsDifferentId() {
+
+        User userA = TestUser.generateUser(9);
+        Response userAResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), userA);
+        Session userASession = userAResponse.readEntity(Session.class);
+        TestUtils.validateSession(userASession);
+
+        User userB = TestUser.generateUser(10);
+        Response userBResponse = ClientUtil.postRequest(TestConstants.USER_REGISTRATION_URL, Optional.absent(), userB);
+        Session userBSession = userBResponse.readEntity(Session.class);
+        TestUtils.validateSession(userBSession);
+
+        String updatedName = "Batman";
+        String updatedEmail = "batman@gotham.com";
+        String updatedPassword = "222222";
+
+        // Update Name
+        Map<String, String> updateNameMap = new HashMap<>();
+        updateNameMap.put("value", updatedName);
+        Response userNameResponse = ClientUtil.putRequestWithAuth(userASession.getToken(), TestConstants.USER_UPDATE_DETAILS, Optional.absent(), updateNameMap, userBSession.getUserId(), "name");
+        TestUtils.assertForbidden(userNameResponse);
+
+        Response updateNameDetailsResponse = ClientUtil.getRequestWithAuth(userBSession.getToken(), TestConstants.USER_GET_DETAILS, Optional.absent(), userBSession.getUserId());
+        User nameUpdatedUser = updateNameDetailsResponse.readEntity(User.class);
+        TestUtils.assertEquals(userB.getName(), nameUpdatedUser.getName());
+
+        // Update email
+        updateNameMap = new HashMap<>();
+        updateNameMap.put("value", updatedEmail);
+        Response userEmailResponse = ClientUtil.putRequestWithAuth(userASession.getToken(), TestConstants.USER_UPDATE_DETAILS, Optional.absent(), updateNameMap, userBSession.getUserId(), "email");
+        TestUtils.assertForbidden(userEmailResponse);
+
+        Response updateEmailDetailsResponse = ClientUtil.getRequestWithAuth(userBSession.getToken(), TestConstants.USER_GET_DETAILS, Optional.absent(), userBSession.getUserId());
+        User emailUpdatedUser = updateEmailDetailsResponse.readEntity(User.class);
+        TestUtils.assertEquals(userB.getEmail(), emailUpdatedUser.getEmail());
+
+        // Update password
+        Map<String, String> updatePasswordMap = new HashMap<>();
+        updatePasswordMap.put("password", userB.getPassword());
+        updatePasswordMap.put("password1", updatedPassword);
+        updatePasswordMap.put("password2", updatedPassword);
+
+        Response userPasswordResponse = ClientUtil.putRequestWithAuth(userASession.getToken(), TestConstants.USER_UPDATE_DETAILS, Optional.absent(), updatePasswordMap, userBSession.getUserId(), "password");
+        TestUtils.assertForbidden(userPasswordResponse);
+
+        Response passwordUpdatedUser = ClientUtil.getRequestWithBasicAuth(userB.getEmail(), userB.getPassword(), TestConstants.USER_GET_DETAILS, Optional.absent(), userBSession.getUserId());
+        User updatedUser = passwordUpdatedUser.readEntity(User.class);
+        TestUtils.assertEquals(userBSession.getUserId(), updatedUser.getId());
+    }
 }

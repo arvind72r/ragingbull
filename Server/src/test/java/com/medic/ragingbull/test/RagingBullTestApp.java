@@ -13,6 +13,7 @@ import com.medic.ragingbull.RagingBullServer;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.services.*;
 import com.medic.ragingbull.jdbi.dao.AccessDao;
+import com.medic.ragingbull.jdbi.dao.PractitionerDao;
 import com.medic.ragingbull.jdbi.dao.SessionsDao;
 import com.medic.ragingbull.jdbi.dao.UsersDao;
 import io.dropwizard.testing.junit.DropwizardAppRule;
@@ -54,6 +55,7 @@ public abstract class RagingBullTestApp {
     private UsersDao usersDao;
     private SessionsDao sessionsDao;
     private AccessDao accessDao;
+    private PractitionerDao practitionerDao;
 
     // Mappers
     protected ObjectMapper objectMapper;
@@ -90,6 +92,7 @@ public abstract class RagingBullTestApp {
         usersDao = app.getService(UsersDao.class);
         sessionsDao = app.getService(SessionsDao.class);
         accessDao = app.getService(AccessDao.class);
+        practitionerDao = app.getService(PractitionerDao.class);
 
 
         // Create Jackson ObjectMapper
@@ -106,6 +109,7 @@ public abstract class RagingBullTestApp {
         usersDao.cleanseAll();
         sessionsDao.cleanseAll();
         accessDao.cleanseAll();
+        practitionerDao.cleanseAll();
         // Remove the temp database created.
         //Files.deleteIfExists(Paths.get("ragingbull_test.mv.db"));
     }

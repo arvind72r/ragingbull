@@ -9,6 +9,7 @@ package com.medic.ragingbull.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medic.ragingbull.core.access.roles.UserRoleGenerator;
 import com.medic.ragingbull.core.access.roles.UserRoles;
+import com.medic.ragingbull.core.constants.InletType;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Session {
     private String userId;
     private String phone;
     private Long role;
+    private InletType inletType;
     private Boolean isUserValid;
     private DateTime createdAt;
     private DateTime expiry;

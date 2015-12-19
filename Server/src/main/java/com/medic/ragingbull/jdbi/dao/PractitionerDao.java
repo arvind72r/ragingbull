@@ -45,4 +45,8 @@ public interface PractitionerDao {
 
     @SqlQuery("SELECT * FROM practitioner where user_id = :userId")
     Practitioner getByUserId(@Bind("userId") String userId);
+
+    @SqlUpdate("DELETE FROM practitioner")
+    int cleanseAll();
+
 }

@@ -11,6 +11,8 @@ import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.service.PractitionerAccessService;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
 import com.medic.ragingbull.core.services.PractitionerService;
+import com.medic.ragingbull.exception.DuplicateEntityException;
+import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
@@ -48,24 +50,24 @@ public class PractitionerResource {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(String.format("Fetching all practitioners in system. Request by: %s", session.getUserEmail()));
         }
-
         Response response = practitionerAccessService.getPractitioners(session);
         return response;
     }
     @GET
     @Path("/{id}")
-    public PractitionerResponse getPractitioner(@Auth Session session, @PathParam("id") String practitionerId) throws StorageException {
+    public Response getPractitioner(@Auth Session session, @PathParam("id") String practitionerId) throws StorageException, ResourceCreationException {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(String.format("Fetching practitioner id: %s. Request by: %s", practitionerId, session.getUserEmail()));
         }
-        PractitionerResponse practitionerResponse = practitionerService.getPractitioner(session, practitionerId);
-        return practitionerResponse;
+        return practitionerAccessService.getPractitioner(session, practitionerId);
     }
 
     @POST
-    public PractitionerResponse createPractitioner(@Auth Session session, @Valid Practitioner practitioner) throws StorageException {
-        PractitionerResponse practitionerResponse = practitionerService.createPractitioner(session, practitioner);
-        return practitionerResponse;
+    public Response createPractitioner(@Auth Session session, @Valid Practitioner practitioner) throws StorageException, ResourceCreationException, DuplicateEntityException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format("Creating practitioner. Request by: %s", session.getUserEmail()));
+        }
+        return practitionerAccessService.createPractitioner(session, practitioner);
     }
 
     @POST

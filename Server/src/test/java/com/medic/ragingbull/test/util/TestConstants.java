@@ -20,6 +20,20 @@ public interface TestConstants {
 
     String HEADER_AUTH = "Auth-Token";
     String HEADER_BASIC_AUTH = "Authorization";
+
+
+    // Templates
+
+    /*
+     _   _
+    | | | |
+    | | | |___  ___ _ __
+    | | | / __|/ _ \ '__|
+    | |_| \__ \  __/ |
+     \___/|___/\___|_|
+
+    */
+
     String TEST_USER_EMAIL_TEMPLATE = "user%d@email.com";
     String TEST_USER_NAME_TEMPLATE = "Test%d User";
     String TEST_USER_PICTURE_URL = "testUserPictureUrl";
@@ -31,11 +45,38 @@ public interface TestConstants {
     DateTime TEST_USER_DOB_MAJOR = new DateTime().minusYears(19);
     DateTime TEST_USER_DOB_MINOR = new DateTime().minusYears(15);
 
-    // Member
+    /*
+    ___  ___               _
+    |  \/  |              | |
+    | .  . | ___ _ __ ___ | |__   ___ _ __
+    | |\/| |/ _ \ '_ ` _ \| '_ \ / _ \ '__|
+    | |  | |  __/ | | | | | |_) |  __/ |
+    \_|  |_/\___|_| |_| |_|_.__/ \___|_|
+
+     */
     String TEST_MEMBER_NAME_TEMPLATE = "Test%d Member";
     String TEST_MEMBER_EMAIL_TEMPLATE = "member%d@email.com";
     SystemConstants.Sex TEST_MEMBER_SEX = SystemConstants.Sex.MALE;
     DateTime TEST_MEMBER_DOB_MAJOR = new DateTime().minusYears(19);
+
+    /*
+    ______               _   _ _   _
+    | ___ \             | | (_) | (_)
+    | |_/ / __ __ _  ___| |_ _| |_ _  ___  _ __   ___ _ __
+    |  __/ '__/ _` |/ __| __| | __| |/ _ \| '_ \ / _ \ '__|
+    | |  | | | (_| | (__| |_| | |_| | (_) | | | |  __/ |
+    \_|  |_|  \__,_|\___|\__|_|\__|_|\___/|_| |_|\___|_|
+
+     */
+    String TEST_PRACTITIONER_DESCRIPTION = "Test Practitioner Description %d";
+    Integer TEST_PRACTITIONER_PHONE = 33 + new Random().nextInt(99999999);
+    String TEST_PRACTITIONER_PRIMARYID = "Test Practitioner PrimaryId %d";
+    String TEST_PRACTITIONER_SECONDARYID = "Test Practitioner SecondaryId %d";
+    String TEST_PRACTITIONER_REGISTRATIONID = "Test Practitioner RegistrationId %d";
+    String TEST_PRACTITIONER_ISSUING_AUTHORITY = "Test Practitioner Issuing Authority %d";
+    String TEST_PRACTITIONER_LICENSE = "Test Practitioner License %d";
+
+
 
     // URLS
     String BASE_URL = "http://localhost:8080";
@@ -53,4 +94,7 @@ public interface TestConstants {
     String USER_GET_DETAILS = BASE_URL + "/user/%s";
     String USER_ADD_MEMBER = BASE_URL + "/user/%s/member";
     String USER_UPDATE_DETAILS = BASE_URL + "/user/%s/modify/%s";
+
+    String PRACTITIONER_ADD = BASE_URL + "/practitioner";
+    String PRACTITIONER_GET = BASE_URL + "/practitioner/%s";
 }

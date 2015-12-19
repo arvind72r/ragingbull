@@ -45,6 +45,9 @@ public class TestUtils {
     public static void assertConflict(Response response) {
         Assert.assertEquals(Response.Status.CONFLICT.getStatusCode(), response.getStatus());
     }
+    public static void assertForbidden(Response response) {
+        Assert.assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
+    }
 
     public static void assertMissingMandatory(Response response) {
         Assert.assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
@@ -67,5 +70,10 @@ public class TestUtils {
         Assert.assertEquals(session.getUserId(), user.getId());
         Assert.assertEquals(session.getUserEmail(), user.getEmail());
         Assert.assertEquals(session.getPhone(), user.getPhone());
+    }
+
+
+    public static void assertTrue(boolean value) {
+        Assert.assertTrue(value);
     }
 }

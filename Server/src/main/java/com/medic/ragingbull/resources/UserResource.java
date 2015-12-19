@@ -13,6 +13,7 @@ import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.core.access.service.UserAccessService;
 import com.medic.ragingbull.core.services.UserService;
+import com.medic.ragingbull.exception.DuplicateEntityException;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
@@ -39,7 +40,7 @@ public class UserResource {
     private UserAccessService userAccessService;
 
     public enum Fields {
-        name("name"), email("email"), password ("password");
+        name("name"), email("email"), password ("password"), phone("phone"), dob("dob");
 
         private String value;
         Fields(String value) {
@@ -75,7 +76,7 @@ public class UserResource {
 
     @POST
     @Path("/{id}/member")
-    public Response addMember(@Auth Session session, @PathParam("id") String userId, @Valid Member member) throws ResourceCreationException, StorageException {
+    public Response addMember(@Auth Session session, @PathParam("id") String userId, @Valid Member member) throws ResourceCreationException, StorageException, DuplicateEntityException {
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }

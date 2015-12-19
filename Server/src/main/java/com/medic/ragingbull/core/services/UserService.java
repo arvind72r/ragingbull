@@ -53,7 +53,9 @@ public class UserService {
     private final NotificationFactory notificationFactory;
 
     @Inject
-    public UserService(DBI database, NotificationFactory notificationFactory, UsersDao userDao, AccessDao accessDao, SessionsDao sessionsDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao, ConsultationDao consultationDao) {
+    public UserService(DBI database, NotificationFactory notificationFactory, UsersDao userDao, AccessDao accessDao,
+                       SessionsDao sessionsDao, PractitionerDao practitionerDao, PharmacistDao pharmacistDao,
+                       ConsultationDao consultationDao) {
         this.database = database;
         this.notificationFactory = notificationFactory;
         this.userDao = userDao;
@@ -61,23 +63,25 @@ public class UserService {
         this.sessionsDao = sessionsDao;
         this.practitionerDao = practitionerDao;
         this.pharmacistDao = pharmacistDao;
-        this.consultationDao =  consultationDao;
+        this.consultationDao = consultationDao;
     }
 
-    public Session register(User user) throws StorageException, ResourceCreationException, NotificationException, DuplicateEntityException {
+    public Session register(User user) throws StorageException, ResourceCreationException, NotificationException,
+            DuplicateEntityException {
         try {
             user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
 
             if (StringUtils.isBlank(user.getEmail())) {
-                user.setEmail(user.getPhone()+"@noemail.com");
+                user.setEmail(user.getPhone() + "@noemail.com");
             }
 
             String email = StringUtils.lowerCase(user.getEmail());
             String hashPass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
 
-
-            int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), user.getPictureUrl(), user.getSex().name(), user.getDob().getMillis());
+            int userCreated = userDao.createUser(user.getId(), user.getName(), email, hashPass, user.getPhone(), user
+                            .getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), user.getPictureUrl(), user
+                            .getSex().name(), user.getDob().getMillis());
 
             if (userCreated == 0) {
                 LOGGER.error(String.format("Error registering user %s. DB failed to save the record", user.getEmail()));
@@ -92,7 +96,8 @@ public class UserService {
             String accessId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.ACCESS);
             long expiry = Time.getMillisAfterXDays(1);
 
-            int inviteCreated = accessDao.create(accessId, user.getId(), authCode.toString(), SystemConstants.AccessEntities.INVITE.name(), expiry);
+            int inviteCreated = accessDao.create(accessId, user.getId(), authCode.toString(), SystemConstants
+                            .AccessEntities.INVITE.name(), expiry);
 
             if (inviteCreated == 0) {
                 LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
@@ -111,7 +116,8 @@ public class UserService {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), re));
             throw re;
         } catch (NotificationException re) {
-            LOGGER.error(String.format("Error sending notification to the  user %s. Exception %s", user.getEmail(), re));
+            LOGGER.error(String.format("Error sending notification to the  user %s. Exception %s", user.getEmail(),
+                            re));
             throw re;
         } catch (final Exception e) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", user.getEmail(), e));
@@ -129,7 +135,9 @@ public class UserService {
                 String userId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
                 String email = StringUtils.lowerCase(oauthUser.getEmail());
 
-                int userCreated = userDao.createUser(userId, oauthUser.getName(), email, null, null, oauthUser.getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), oauthUser.getPictureUrl(), oauthUser.getSex().name(), null);
+                int userCreated = userDao.createUser(userId, oauthUser.getName(), email, null, null, oauthUser
+                                .getInletType(), UserRoles.Role.NATIVE_USER.getRoleBit(), oauthUser.getPictureUrl(),
+                        oauthUser.getSex().name(), null);
                 if (userCreated == 0) {
                     LOGGER.error(String.format("Error registering oauth user %s.", oauthUser.getEmail()));
                     throw new StorageException("Error registering user. Please try again");
@@ -140,33 +148,39 @@ public class UserService {
             }
             Session session = getSession(user);
             return session;
-        }
-        catch (StorageException re) {
+        } catch (StorageException re) {
             throw re;
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             LOGGER.error(String.format("Error creating oauth under user %s. Exception %s", oauthUser.getEmail(), e));
             throw new ResourceCreationException(e.getMessage());
         }
     }
 
-    public Response addMember(Session session, String userId, Member member) throws StorageException, ResourceCreationException {
+    public Response addMember(Session session, String userId, Member member) throws StorageException,
+            ResourceCreationException, DuplicateEntityException {
         try {
             String memberId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
             String hashPass = BCrypt.hashpw(SystemConstants.MEMBER_DEFAULT_PASSWORD, BCrypt.gensalt());
             if (StringUtils.isBlank(member.getPhone())) {
-                // We take the phone no of the parent and prefix it with last for chars of the memberId to maintain uniqueness
+                // We take the phone no of the parent and prefix it with last for chars of the memberId to maintain
+                // uniqueness
                 member.setPhone(memberId.substring(0, 5) + session.getPhone());
             }
 
-            int memberCreated = userDao.createMember(memberId, userId, member.getName(), member.getEmail(), hashPass, member.getPhone(), "SELF", UserRoles.Role.NATIVE_MEMBER.getRoleBit(), member.getSex().name(), member.getDob().getMillis());
+            int memberCreated = userDao.createMember(memberId, userId, member.getName(), member.getEmail(), hashPass,
+                    member.getPhone(), "SELF", UserRoles.Role.NATIVE_MEMBER.getRoleBit(), member.getSex().name(),
+                    member.getDob().getMillis());
 
             if (memberCreated == 0) {
                 LOGGER.error(String.format("Error creating member under user %s.", session.getUserEmail()));
                 throw new StorageException("Error creating member. Please try again");
             }
             return Response.ok().build();
+        } catch (UnableToExecuteStatementException re) {
+            LOGGER.error(String.format("Member already exists with email %s. Exception %s", member.getEmail(), re));
+            throw new DuplicateEntityException("Member already exists");
         } catch (StorageException re) {
+            LOGGER.error(String.format("Error registering member %s. Exception %s", member.getEmail(), re));
             throw re;
         } catch (Exception e) {
             LOGGER.error(String.format("Error creating member under user %s. Exception %s", session.getUserEmail(), e));
@@ -184,23 +198,27 @@ public class UserService {
         }
     }
 
-    public String resendInviteAuthCode(Session session, String userId) throws StorageException, NotificationException, ResourceCreationException {
+    public String resendInviteAuthCode(Session session, String userId) throws StorageException,
+            NotificationException, ResourceCreationException {
         try {
             User user = new User();
             user.setEmail(session.getUserEmail());
             user.setPhone(session.getPhone());
             Access access = accessDao.getActiveByUserId(userId);
             if (access != null) {
-                notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE, access.getCode());
+                notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE,
+                        access.getCode());
                 return access.getCode();
             } else {
                 Integer authCode = new Random().nextInt(SystemConstants.MAX_BOUND);
-                notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE, authCode.toString());
+                notificationFactory.notifyUser(user.getPhone(), Notifiable.NotificationEvent.RESEND_INVITE_CODE,
+                        authCode.toString());
 
                 String inviteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.INVITE);
                 long expiry = Time.getMillisAfterXDays(1);
 
-                int inviteCreated = accessDao.create(inviteId, userId, authCode.toString(), SystemConstants.AccessEntities.INVITE.name(), expiry);
+                int inviteCreated = accessDao.create(inviteId, userId, authCode.toString(), SystemConstants
+                                .AccessEntities.INVITE.name(), expiry);
                 if (inviteCreated == 0) {
                     LOGGER.error(String.format("Error creating invite for user %s.", user.getEmail()));
                     throw new StorageException("Error creating invite. Please try again");
@@ -208,10 +226,12 @@ public class UserService {
                 return authCode.toString();
             }
         } catch (StorageException re) {
-            LOGGER.error(String.format("Error creating invite entry for the  user %s. Exception %s", session.getUserEmail(), re));
+            LOGGER.error(String.format("Error creating invite entry for the  user %s. Exception %s", session
+                                    .getUserEmail(), re));
             throw re;
         } catch (NotificationException ne) {
-            LOGGER.error(String.format("Error resending notification to the  user %s. Exception %s", session.getUserEmail(), ne));
+            LOGGER.error(String.format("Error resending notification to the  user %s. Exception %s", session
+                                    .getUserEmail(), ne));
             throw ne;
         } catch (Exception e) {
             LOGGER.error(String.format("Error registering user %s. Exception %s", session.getUserEmail(), e));
@@ -273,9 +293,11 @@ public class UserService {
         String sessionId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.SESSION);
         DateTime expiry = new DateTime().plus(Time.getMillisAfterXDays(365));
         DateTime createdAt = new DateTime();
-        Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), user.getPhone(), user.getRole(), user.getVerified(), expiry, createdAt);
+        Session loggedInUserSession = new Session(sessionId, user.getEmail(), user.getId(), user.getPhone(), user
+                .getRole(), user.getVerified(), expiry, createdAt);
 
-        int sessionCreated = sessionsDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(), expiry.getMillis());
+        int sessionCreated = sessionsDao.createSession(sessionId, user.getId(), user.getEmail(), user.getRole(),
+                expiry.getMillis());
         if (sessionCreated == 0) {
             LOGGER.error(String.format("Error creating session for user %s.", user.getEmail()));
             throw new ResourceCreationException("Error creating session for the user. Please try again");
@@ -284,7 +306,8 @@ public class UserService {
         return loggedInUserSession;
     }
 
-    public User getUser(Session session, String userId, Boolean hydrated) throws ResourceUpdateException, StorageException {
+    public User getUser(Session session, String userId, Boolean hydrated) throws ResourceUpdateException,
+            StorageException {
         try {
             User user = userDao.getById(userId);
 
@@ -294,11 +317,13 @@ public class UserService {
             }
 
             if (hydrated) {
-                if ((user.getRole() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) {
+                if ((user.getRole() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role
+                        .NATIVE_PRACTITIONER.getRoleBit()) {
                     Practitioner practitioner = practitionerDao.getByUserId(userId);
                     user.setPractitioner(practitioner);
                 }
-                if ((user.getRole() & UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) == UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) {
+                if ((user.getRole() & UserRoles.Role.NATIVE_PHARMACIST.getRoleBit()) == UserRoles.Role
+                        .NATIVE_PHARMACIST.getRoleBit()) {
                     Pharmacist pharmacist = pharmacistDao.getByUserId(userId);
                     user.setPharmacist(pharmacist);
                 }
@@ -313,7 +338,8 @@ public class UserService {
 
     }
 
-    public Boolean updateUser(Session session, String userId, String field, Map<String, String> data) throws ResourceUpdateException, StorageException {
+    public Boolean updateUser(Session session, String userId, String field, Map<String, String> data) throws
+            ResourceUpdateException, StorageException {
         try {
             Handle h = database.open();
             int update = h.update("UPDATE USERS set " + field + " = ?  where id = ?", data.get("value"), userId);
@@ -324,7 +350,8 @@ public class UserService {
             }
             return true;
         } catch (StorageException re) {
-            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), re));
+            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(),
+                            re));
             throw re;
         } catch (Exception e) {
             LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), e));
@@ -332,11 +359,13 @@ public class UserService {
         }
     }
 
-    public Boolean updatePassword(Session session, String userId, Map<String, String> data) throws ResourceUpdateException, StorageException {
+    public Boolean updatePassword(Session session, String userId, Map<String, String> data) throws
+            ResourceUpdateException, StorageException {
         try {
             String currentPasswordHash = userDao.getHashById(userId);
 
-            if (BCrypt.checkpw(data.get("password"), currentPasswordHash) && StringUtils.equals(data.get("password1"), data.get("password2"))) {
+            if (BCrypt.checkpw(data.get("password"), currentPasswordHash) && StringUtils.equals(data.get("password1")
+                    , data.get("password2"))) {
                 // Matching password
                 String latestPasswordHash = BCrypt.hashpw(data.get("password1"), BCrypt.gensalt());
 
@@ -350,7 +379,8 @@ public class UserService {
             }
             return false;
         } catch (StorageException re) {
-            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), re));
+            LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(),
+                            re));
             throw re;
         } catch (Exception e) {
             LOGGER.error(String.format("Error updating password for user %s. Exception %s", session.getUserEmail(), e));
@@ -377,7 +407,8 @@ public class UserService {
         if (session.getUserRole() == UserRoles.Role.NATIVE_PRACTITIONER) {
             // Doctor
             // Dashboard will current consultations
-            List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations(userId);
+            List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations
+                    (userId);
 
             dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(currentPractitionerConsultations);
         }
