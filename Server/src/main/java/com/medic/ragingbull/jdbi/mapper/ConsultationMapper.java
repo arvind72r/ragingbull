@@ -27,6 +27,9 @@ public class ConsultationMapper implements ResultSetMapper<Consultation> {
                 r.getString("location_id"),
                 r.getString("creator_id"),
                 r.getBoolean("active"),
+                r.getString("symptoms"),
+                r.getString("diagnosis"),
+                r.getString("user_notes"),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at")));
     }

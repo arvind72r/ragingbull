@@ -18,6 +18,10 @@ import java.util.Map;
  */
 public class DashBoard {
 
+    class NATIVE {
+        public List<Object> current;
+        public List<Object> pending;
+    }
     private Map<UserRoles.Role, List<Object>> dash = new HashMap<>();
 
     public DashBoard() {};

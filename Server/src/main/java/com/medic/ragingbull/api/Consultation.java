@@ -27,7 +27,6 @@ public class Consultation {
     private String id;
 
     @JsonProperty
-    @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
     private String userId;
 
     @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
@@ -41,13 +40,13 @@ public class Consultation {
     private String creatorId;
 
     @JsonProperty
-    private List<String> symptoms = new ArrayList<>();
+    private String symptoms;
 
     @JsonProperty
-    private List<String> diagnosis = new ArrayList<>();
+    private String diagnosis;
 
     @JsonProperty
-    private List<String> userNotes = new ArrayList<>();
+    private String userNotes;
 
     @JsonProperty
     private Boolean active = Boolean.TRUE;
@@ -66,6 +65,17 @@ public class Consultation {
 
     public Consultation () {};
 
+    public Consultation(String practitionerId, String symptoms) {
+        this.practitionerId = practitionerId;
+        this.symptoms = symptoms;
+    }
+
+    public Consultation(String userId, String practitionerId, String symptoms) {
+        this.userId = userId;
+        this.practitionerId = practitionerId;
+        this.symptoms = symptoms;
+    }
+
     public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, Boolean active, String userName, String userAge, String userPhone, String practitionerName, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.userId = userId;
@@ -81,13 +91,16 @@ public class Consultation {
         this.updatedAt = updatedAt;
     }
 
-    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, Boolean active, DateTime createdAt, DateTime updatedAt) {
+    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, Boolean active, String symptoms, String diagnosis, String userNotes, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
         this.creatorId = creatorId;
         this.active = active;
+        this.symptoms = symptoms;
+        this.diagnosis = diagnosis;
+        this.userNotes = userNotes;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -112,15 +125,15 @@ public class Consultation {
         return creatorId;
     }
 
-    public List<String> getSymptoms() {
+    public String getSymptoms() {
         return symptoms;
     }
 
-    public List<String> getDiagnosis() {
+    public String getDiagnosis() {
         return diagnosis;
     }
 
-    public List<String> getUserNotes() {
+    public String getUserNotes() {
         return userNotes;
     }
 

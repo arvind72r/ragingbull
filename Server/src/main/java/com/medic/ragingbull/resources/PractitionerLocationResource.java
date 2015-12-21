@@ -8,6 +8,7 @@ package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
 import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.core.access.service.PractitionerLocationAccessService;
 import com.medic.ragingbull.core.services.ConsultationService;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
 import com.medic.ragingbull.exception.ResourceCreationException;
@@ -31,48 +32,39 @@ public class PractitionerLocationResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PractitionerLocationResource.class);
 
-    private PractitionerLocationService practitionerLocationService;
-
+    private PractitionerLocationAccessService practitionerLocationAccessService;
     private ConsultationService consultationService;
 
     @Inject
-    public PractitionerLocationResource(PractitionerLocationService practitionerLocationService, ConsultationService consultationService) {
-        this.practitionerLocationService = practitionerLocationService;
+    public PractitionerLocationResource(ConsultationService consultationService, PractitionerLocationAccessService practitionerLocationAccessService) {
         this.consultationService = consultationService;
+        this.practitionerLocationAccessService = practitionerLocationAccessService;
     }
 
     @GET
     @Path("/{locationId}")
-    public PractitionerLocationResponse getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
-        PractitionerLocationResponse response = practitionerLocationService.getPractitionerLocation(session, practitionerId, locationId);
-        return response;
+    public Response getPractitionerLocation(@Auth Session session, @PathParam("locationId") String locationId) throws StorageException {
+        return practitionerLocationAccessService.getPractitionerLocation(session, locationId);
     }
 
     @GET
     @Path("/{locationId}/users")
-    public Response getUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException, ResourceCreationException {
-        Response response = practitionerLocationService.getUsers(session, practitionerId, locationId);
+    public Response getUsers(@Auth Session session, @PathParam("locationId") String locationId) throws StorageException, ResourceCreationException {
+        Response response = practitionerLocationAccessService.getUsers(session, locationId);
         return response;
     }
 
     @GET
     @Path("/{locationId}/users/{userId}")
-    public Response getUser(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @PathParam("userId") String userId) throws StorageException, ResourceCreationException {
-        Response response = practitionerLocationService.getUser(session, practitionerId, locationId, userId);
+    public Response getUser(@Auth Session session, @PathParam("locationId") String locationId, @PathParam("userId") String userId) throws StorageException, ResourceCreationException {
+        Response response = practitionerLocationAccessService.getUser(session, locationId, userId);
         return response;
     }
 
     @PUT
     @Path("/{locationId}/users")
-    public Response addUsers(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId, @Valid List<EntityUser> entityUsers) throws StorageException, ResourceCreationException {
-        Response response = practitionerLocationService.addUsers(session, practitionerId, locationId, entityUsers);
-        return response;
-    }
-
-    @GET
-    @Path("/{locationId}/consultation/{consultationId}")
-    public ConsultationResponse getConsultation(@Auth Session session, @PathParam("locationId") String locationId,  @PathParam("consultationId") String consultationId) throws StorageException {
-        ConsultationResponse response = consultationService.getConsultation(session, consultationId);
+    public Response addUsers(@Auth Session session, @PathParam("locationId") String locationId, @Valid List<EntityUser> entityUsers) throws StorageException, ResourceCreationException {
+        Response response = practitionerLocationAccessService.addUsers(session, locationId, entityUsers);
         return response;
     }
 

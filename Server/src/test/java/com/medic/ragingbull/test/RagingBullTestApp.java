@@ -53,6 +53,8 @@ public abstract class RagingBullTestApp {
     private AccessDao accessDao;
     private PractitionerDao practitionerDao;
     private PractitionerLocationDao practitionerLocationDao;
+    private EntityUsersDao entityUsersDao;
+    private ConsultationDao consultationDao;
 
     // Mappers
     protected ObjectMapper objectMapper;
@@ -91,6 +93,8 @@ public abstract class RagingBullTestApp {
         accessDao = app.getService(AccessDao.class);
         practitionerDao = app.getService(PractitionerDao.class);
         practitionerLocationDao = app.getService(PractitionerLocationDao.class);
+        entityUsersDao = app.getService(EntityUsersDao.class);
+        consultationDao = app.getService(ConsultationDao.class);
 
 
         // Create Jackson ObjectMapper
@@ -109,6 +113,8 @@ public abstract class RagingBullTestApp {
         accessDao.cleanseAll();
         practitionerDao.cleanseAll();
         practitionerLocationDao.cleanAll();
+        entityUsersDao.cleanAll();
+        consultationDao.cleanAll();
         // Remove the temp database created.
         //Files.deleteIfExists(Paths.get("ragingbull_test.mv.db"));
     }

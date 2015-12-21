@@ -36,14 +36,17 @@ public interface EntityUsersDao {
                @Bind("entity") String entity);
 
     @SqlQuery("SELECT * FROM entity_users where entity_id = :entityId")
-    ImmutableList<EntityAdmin> getAll(@Bind("entityId") String entityId);
+    ImmutableList<EntityUser> getAll(@Bind("entityId") String entityId);
 
     @SqlQuery("SELECT * FROM entity_users where entity_id = :entityId and user_id = :userId")
-    EntityAdmin getUser(@Bind("entityId") String entityId, @Bind("userId") String userId);
+    EntityUser getUser(@Bind("entityId") String entityId, @Bind("userId") String userId);
 
     @RegisterMapper(Mapper.class)
     @SqlQuery("SELECT usr.name, pr.id as practitionerId, eu.user_id, pl.location, pl.id as locationId FROM USERS usr, PRACTITIONER pr, " +
             "PRACTITIONER_LOCATION pl, ENTITY_USERS eu " +
             "WHERE usr.id = pr.user_id AND pr.user_id = eu.user_id AND pl.id = eu.entity_id AND eu.entity = :entity")
     List<Map<String, Object>> getAllByType(@Bind("entity") String entity);
+
+    @SqlUpdate("DELETE FROM entity_users")
+    int cleanAll();
 }

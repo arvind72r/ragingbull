@@ -156,7 +156,7 @@ public class UserService {
         }
     }
 
-    public Response addMember(Session session, String userId, Member member) throws StorageException,
+    public Member addMember(Session session, String userId, Member member) throws StorageException,
             ResourceCreationException, DuplicateEntityException {
         try {
             String memberId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER);
@@ -175,7 +175,8 @@ public class UserService {
                 LOGGER.error(String.format("Error creating member under user %s.", session.getUserEmail()));
                 throw new StorageException("Error creating member. Please try again");
             }
-            return Response.ok().build();
+            member.setId(memberId);
+            return member;
         } catch (UnableToExecuteStatementException re) {
             LOGGER.error(String.format("Member already exists with email %s. Exception %s", member.getEmail(), re));
             throw new DuplicateEntityException("Member already exists");
@@ -391,26 +392,33 @@ public class UserService {
     public DashBoard getDashBoard(Session session, String userId) {
 
         DashBoard dash = new DashBoard();
-        if (session.getUserRole() == UserRoles.Role.NATIVE_USER) {
+        if ((session.getUserRole().getRoleBit() & UserRoles.Role.NATIVE_USER.getRoleBit()) == UserRoles.Role.NATIVE_USER.getRoleBit()) {
             // User
-            // Dashboard will return current consultations
+            // Add current consultations
             List<Consultation> currentConsultations = consultationDao.getActiveConsultations(userId);
 
             dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(currentConsultations);
 
-            // Dashboard will return past consultations
+            // Add  past consultations
             List<Consultation> pastConsultations = consultationDao.getPastConsultations(userId);
 
             dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(pastConsultations);
+
+            // Add current consultation of members
+            List<Consultation> currentMemberConsultations = consultationDao.getActiveMemberConsultations(userId);
+            dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(currentMemberConsultations);
+
+            // Add past consultation of members
+            List<Consultation> pastMemberConsultations = consultationDao.getPastMemberConsultations(userId);
+            dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(pastMemberConsultations);
         }
 
-        if (session.getUserRole() == UserRoles.Role.NATIVE_PRACTITIONER) {
+        if ((session.getUserRole().getRoleBit() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) {
             // Doctor
             // Dashboard will current consultations
-            List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations
-                    (userId);
+            List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations(userId);
 
-            dash.getRoleResources(UserRoles.Role.NATIVE_USER).add(currentPractitionerConsultations);
+            dash.getRoleResources(UserRoles.Role.NATIVE_PRACTITIONER).add(currentPractitionerConsultations);
         }
 
         // For pharmacist

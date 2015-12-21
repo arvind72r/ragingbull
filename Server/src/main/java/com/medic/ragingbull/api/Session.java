@@ -24,7 +24,6 @@ public class Session {
     private String userId;
     private String phone;
     private Long role;
-    private InletType inletType;
     private Boolean isUserValid;
     private DateTime createdAt;
     private DateTime expiry;
@@ -98,9 +97,7 @@ public class Session {
 
     public UserRoles.Role getUserRole() {
         if (userRole == null) {
-            for (UserRoles.Role role : UserRoles.Role.values()) {
-
-            }
+            userRole = UserRoleGenerator.generateRole(this.role);
         }
         return userRole;
     }

@@ -109,8 +109,48 @@ public abstract class TransactionalDao {
         if (userRoleUpdated == 0) {
             throw new TransactionException("Unable to update user role");
         }
+
+        // Update session of the user to have latest role
+        int roleUpdated = updateSessionByUserId( userId, role);
+        if (roleUpdated == 0) {
+            throw new TransactionException("Unable to update user role");
+        }
+
         return true;
     }
+
+    @Transaction
+    public boolean addEntityUsers(String userId, Long role, String id, String createdBy, String entityId, String entity) {
+
+        // Create entity user
+        int entityCreated = createEntityUser(id, userId, createdBy, entityId, entity);
+        if (entityCreated == 0) {
+            throw new TransactionException("Unable to create practitioner location");
+        }
+
+        // Update user role
+        int userRoleUpdated = updateRoleById(userId, role);
+        if (userRoleUpdated == 0) {
+            throw new TransactionException("Unable to update user role");
+        }
+
+        // Update session of the user to have latest role
+        int roleUpdated = updateSessionByUserId( userId, role);
+        if (roleUpdated == 0) {
+            throw new TransactionException("Unable to update user role");
+        }
+        return true;
+    }
+
+    @SqlUpdate("INSERT INTO entity_users (id, user_id, created_by, entity_id, entity) VALUES (:id, :userId, :createdBy, :entityId, :entity)")
+    protected abstract int createEntityUser(@Bind("id") String adminId,
+                                           @Bind("userId") String userId,
+                                           @Bind("createdBy") String createdBy,
+                                           @Bind("entityId") String entityId,
+                                           @Bind("entity") String entity);
+
+    @SqlUpdate("UPDATE SESSIONS set role = :role where user_id = :userId")
+    protected abstract int updateSessionByUserId(@Bind("userId") String userId, @Bind("role") Long role);
 
     @SqlUpdate("INSERT INTO practitioner_location (id, user_id, practitioner_id, name, description, speciality, " +
             "location, primary_contact, secondary_contact, address1, address2, city, state, zip, country, landmark, longitude, " +
@@ -165,6 +205,7 @@ public abstract class TransactionalDao {
 
     @SqlUpdate("UPDATE CONSULTATION SET active = false WHERE id = :id AND practitioner_id = :practitionerId")
     protected abstract int lockConsultations(@Bind("id") String id, @Bind("practitionerId") String practitionerId);
+
 
 
 }

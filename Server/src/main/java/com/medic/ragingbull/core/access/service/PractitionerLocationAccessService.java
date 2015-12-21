@@ -6,16 +6,20 @@
 
 package com.medic.ragingbull.core.access.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
+import com.medic.ragingbull.api.EntityUser;
 import com.medic.ragingbull.api.PractitionerLocation;
 import com.medic.ragingbull.api.PractitionerLocationResponse;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
+import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti
@@ -36,10 +40,36 @@ public class PractitionerLocationAccessService {
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
     }
 
-    public Response getPractitionerLocation(Session session, String practitionerId, String locationId) throws StorageException {
+    public Response getPractitionerLocation(Session session, String locationId) throws StorageException {
         if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_READ.getBitValue()) != UserRoles.Permissions.PRACTITIONER_LOCATION_READ.getBitValue()) {
-            PractitionerLocationResponse response = practitionerLocationService.getPractitionerLocation(session, practitionerId, locationId);
+            PractitionerLocationResponse response = practitionerLocationService.getPractitionerLocation(session, locationId);
             return Response.ok().entity(response).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
+    }
+
+    public Response getUsers(Session session, String locationId) {
+        if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) != UserRoles.Permissions.BLOCK.getBitValue()) {
+            ImmutableList<EntityUser> users = practitionerLocationService.getUsers(session, locationId);
+            return Response.ok().entity(users).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
+    }
+
+    public Response getUser(Session session, String locationId, String userId) {
+        if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) != UserRoles.Permissions.BLOCK.getBitValue()) {
+            EntityUser user = practitionerLocationService.getUsers(session, locationId, userId);
+            return Response.ok().entity(user).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
+    }
+
+    public Response addUsers(Session session, String locationId, List<EntityUser> entityUsers) throws ResourceCreationException {
+        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_USER_ADD.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_USER_ADD.getBitValue()) {
+            boolean success = practitionerLocationService.addUsers(session, locationId, entityUsers);
+            if (success) {
+                return Response.ok().build();
+            }
         }
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
     }

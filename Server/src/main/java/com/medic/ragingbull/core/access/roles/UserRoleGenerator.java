@@ -16,7 +16,7 @@ public class UserRoleGenerator {
     public static UserRoles.Role generateRole (Long currentRole) {
         UserRoles.Role generatedRole = null;
         for (UserRoles.Role role : UserRoles.Role.values()) {
-            if ( role.getRoleBit() >= currentRole && (role.getRoleBit() & currentRole) == role.getRoleBit()) {
+            if ((role.getRoleBit() & currentRole) == role.getRoleBit()) {
                 generatedRole = role;
             }
         }

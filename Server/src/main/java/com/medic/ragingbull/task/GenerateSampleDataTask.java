@@ -21,9 +21,7 @@ import io.dropwizard.servlets.tasks.Task;
 import org.joda.time.DateTime;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Vamshi Molleti
@@ -38,7 +36,9 @@ public class GenerateSampleDataTask extends Task {
     private PrescriptionService prescriptionService;
 
     @Inject
-    public GenerateSampleDataTask(String name, RagingBullConfiguration configuration, UserService userService, PractitionerService practitionerService, PractitionerLocationService practitionerLocationService, ConsultationService consultationService, PrescriptionService prescriptionService) {
+    public GenerateSampleDataTask(String name, RagingBullConfiguration configuration, UserService userService, PractitionerService
+            practitionerService, PractitionerLocationService practitionerLocationService, ConsultationService consultationService,
+                                  PrescriptionService prescriptionService) {
         super(name);
         this.configuration = configuration;
         this.userService = userService;
@@ -56,11 +56,14 @@ public class GenerateSampleDataTask extends Task {
         int memberCount = memberConfig.getCount();
         int practitionerCount = configuration.getTaskConfiguration().getPractitionerTaskConfiguration().getCount();
         int practitionerLocationCount = configuration.getTaskConfiguration().getPractitionerLocationTaskConfiguration().getCount();
-        int pharmacistCount = configuration.getTaskConfiguration().getPharmacistTaskConfiguration().getCount();
-        int pharmacyCount = configuration.getTaskConfiguration().getPharmacyTaskConfiguration().getCount();;
+        int consultationCount = configuration.getTaskConfiguration().getConsultationTaskConfiguration().getCount();
+
+        Map<Session, List<Member>> userIds = new HashMap<>();
+        Map<String, String> locationIds = new HashMap<>();
 
         for (int userCount = 0; userCount < userConfig.getCount(); userCount++) {
-            User user = new User(String.format(String.format(userConfig.getPrefix(), userCount)),
+            User user = new User(
+                    String.format(String.format(userConfig.getPrefix(), userCount)),
                     userConfig.getPassword(),
                     String.format(userConfig.getEmailDomain(), userCount),
                     String.valueOf(userConfig.getPhonePrefix() + new Random().nextInt(99999999)),
@@ -73,26 +76,34 @@ public class GenerateSampleDataTask extends Task {
             Session session = userService.register(user);
 
             // Create 5 members for each user
+            List<Member> members = new ArrayList<>();
             for (int count = 0; count < memberCount; count++) {
                 Member member = new Member(
-                        String.format(String.format(memberConfig.getPrefix(), String.valueOf(userCount + ""+ count))),
-                        String.format(memberConfig.getEmailDomain(), String.valueOf(userCount + ""+ count)),
+                        String.format(String.format(memberConfig.getPrefix(), String.valueOf(userCount + "" + count))),
+                        String.format(memberConfig.getEmailDomain(), String.valueOf(userCount + "" + count)),
                         String.valueOf(memberConfig.getPhonePrefix() + new Random().nextInt(99999999)),
                         SystemConstants.Sex.MALE,
                         new DateTime().minusYears(19));
-                userService.addMember(session, session.getUserId(), member);
+                Member createdMember = userService.addMember(session, session.getUserId(), member);
+                members.add(createdMember);
             }
 
+            userIds.put(session, members);
+
             // Make first n users as practitioners
-            if (practitionerCount > 0 ) {
-                Practitioner practitioner = new Practitioner("Test Description", user.getPhone(), "9885977975", "BFIPM1982E", "WTFID", "DummyRegistrationID", "Indian Govt", "Dummy License");
+
+            if (practitionerCount > 0) {
+                Practitioner practitioner = new Practitioner(
+                        "Test Description", user.getPhone(), "9885977975", "BFIPM1982E", "WTFID",
+                        "DummyRegistrationID", "Indian Govt", "Dummy License");
                 PractitionerResponse response = practitionerService.createPractitioner(session, practitioner);
                 // Add location to first n practitioners
-                if (practitionerLocationCount > 0 ) {
-                    PractitionerLocation practitionerLocation = new PractitionerLocation(String.format("ABC Super Speciality Hospital %d", userCount),
-                            String.format("This is test description for the location %d", userCount), LocationSpeciality.CARDIOLOGY‎, "Indiranagar",
-                            user.getPhone(), "9886577575", "Test Building Name", "Test Street, Bangalore", "Bangalore", "KA", 560075l, "INDIA", "Test Landmark", 12.9539974f, 77.6309395f, 12 , 12, "DummyLicense");
+                if (practitionerLocationCount > 0) {
+                    PractitionerLocation practitionerLocation = new PractitionerLocation(String.format("ABC Super Speciality Hospital %d", userCount), String.format("This is test description for the location %d", userCount), LocationSpeciality.CARDIOLOGY‎, "Indiranagar",
+                            user.getPhone(), "9886577575", "Test Building Name", "Test Street, Bangalore", "Bangalore", "KA", 560075l, "INDIA",
+                            "Test Landmark", 12.9539974f, 77.6309395f, 12, 12, "DummyLicense");
                     PractitionerLocationResponse locationResponse = practitionerLocationService.createPractitionerLocation(session, response.getId(), practitionerLocation);
+                    locationIds.put(locationResponse.getId(), response.getId());
                     practitionerLocationCount--;
 
                     List<UserRoles.Permissions> permissions = new ArrayList<>();
@@ -102,17 +113,26 @@ public class GenerateSampleDataTask extends Task {
                     permissions.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD);
                     EntityUser entityUser = new EntityUser(session.getUserId(), permissions);
                     // Add current practitioner as entity user
-                    practitionerLocationService.addUsers(session, response.getId(), locationResponse.getId(), ImmutableList.of(entityUser));
+                    practitionerLocationService.addUsers(session, locationResponse.getId(), ImmutableList.of(entityUser));
                 }
                 practitionerCount--;
             }
+        }
 
-            // Make next n users pharmacist
-            if (pharmacistCount > 0 ) {
-                Pharmacist pharmacist = new Pharmacist();
-                // Add n pharmacies
-                if (pharmacyCount > 0 ) {
-                    PharmacyLocation pharmacyLocation = new PharmacyLocation();
+        // Create Consultation for each user/members for each location under each doctor
+        for (Session userSession : userIds.keySet()) {
+
+            for (String location : locationIds.keySet()) {
+                Consultation consultation = new Consultation(locationIds.get(location), "This is test symptom");
+                consultationService.createConsultation(userSession, location, consultation);
+            }
+
+
+            // Create consultation for each user as well
+            for (Member member : userIds.get(userSession)) {
+                for (String location : locationIds.keySet()) {
+                    Consultation consultation = new Consultation(member.getId(), locationIds.get(location), "This is test symptom");
+                    consultationService.createConsultation(userSession, location, consultation);
                 }
             }
         }

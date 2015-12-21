@@ -53,42 +53,14 @@ public class ConsultationService {
         try {
             String consultationId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.CONSULTATION);
 
-            List<Notes> consultationNotes = new ArrayList<>();
-
-            for (String symptom : consultation.getSymptoms()) {
-                String noteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
-                Notes symptomNote = new Notes(noteId, consultationId, SystemConstants.NotesTypes.SYMPTOMS, symptom);
-                consultationNotes.add(symptomNote);
-            }
-
-            for (String symptom : consultation.getDiagnosis()) {
-                String noteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
-                Notes symptomNote = new Notes(noteId, consultationId, SystemConstants.NotesTypes.DIAGNOSIS, symptom);
-                consultationNotes.add(symptomNote);
-            }
-
-            for (String symptom : consultation.getUserNotes()) {
-                String noteId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
-                Notes symptomNote = new Notes(noteId, consultationId, SystemConstants.NotesTypes.USER, symptom);
-                consultationNotes.add(symptomNote);
-            }
-
             String creatorId = consultation.getCreatorId() != null ? consultation.getCreatorId() : session.getUserId();
 
-            int consultationCreated = consultationDao.createConsultation(consultationId, locationId, consultation.getPractitionerId(), consultation.getUserId(), creatorId);
+            String userId = consultation.getUserId() != null ? consultation.getUserId() : session.getUserId();
+
+            int consultationCreated = consultationDao.createConsultation(consultationId, locationId, consultation.getPractitionerId(), userId, creatorId, consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes());
 
             if (consultationCreated == 0) {
                 LOGGER.error(String.format("Error creating consultation with email %s", session.getUserEmail()));
-                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
-            }
-
-            int notesCreated = 1;
-            for (Notes notes : consultationNotes) {
-                notesCreated = notesDao.create(notes.getId(), notes.getEntityId(), notes.getEntityType().name(), notes.getContent());
-            }
-
-            if (notesCreated == 0) {
-                LOGGER.error(String.format("Error creating consultation notes with email %s", session.getUserEmail()));
                 throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
             }
 
@@ -109,18 +81,6 @@ public class ConsultationService {
         try {
 
             Consultation consultation = consultationDao.getConsultationDetails(consultationId);
-
-            List<Notes> notes = notesDao.getNotes(consultationId);
-
-            for (Notes note : notes) {
-                if (note.getEntityType() == SystemConstants.NotesTypes.SYMPTOMS) {
-                    consultation.getSymptoms().add(note.getContent());
-                } else if (note.getEntityType() == SystemConstants.NotesTypes.DIAGNOSIS) {
-                    consultation.getDiagnosis().add(note.getContent());
-                } else if (note.getEntityType() == SystemConstants.NotesTypes.USER) {
-                    consultation.getUserNotes().add(note.getContent());
-                }
-            }
 
             if (consultation == null) {
                 ConsultationResponse response = new ConsultationResponse();

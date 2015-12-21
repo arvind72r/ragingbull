@@ -6,9 +6,14 @@
 
 package com.medic.ragingbull.test.generator;
 
+import com.medic.ragingbull.api.EntityUser;
 import com.medic.ragingbull.api.Member;
 import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.test.util.TestConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti
@@ -121,4 +126,14 @@ public class TestUser {
     }
 
 
+    public static EntityUser generateLocationEntityUser(String userId) {
+        // Test premissions for a entity user at location. These can be practitioner or normal acting as front desk
+        List<UserRoles.Permissions> permissionsList = new ArrayList<>();
+        permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_ADD);
+        permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_READ);
+        permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY);
+        permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_DELETE);
+        permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD);
+        return new EntityUser(userId, permissionsList);
+    }
 }

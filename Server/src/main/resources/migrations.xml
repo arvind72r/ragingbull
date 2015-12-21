@@ -465,6 +465,9 @@
             <column name="creator_id" type="CHAR(128)">
                 <constraints nullable="false"/>
             </column>
+            <column name="symptoms" type="TEXT"/>
+            <column name="diagnosis" type="TEXT"/>
+            <column name="user_notes" type="TEXT"/>
             <column name="active" type="BOOLEAN" defaultValueComputed="true"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>

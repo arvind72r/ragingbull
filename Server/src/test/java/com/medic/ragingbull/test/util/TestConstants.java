@@ -127,8 +127,13 @@ public interface TestConstants {
     String PRACTITIONER_GET = BASE_URL + "/practitioner/%s";
 
     String PRACTITIONER_LOCATION_ADD = BASE_URL + "/practitioner/%s/location";
-    String PRACTITIONER_LOCATION_GET = BASE_URL + "/practitioner/%s/location/%s";
+
+    String PRACTITIONER_LOCATION_GET = BASE_URL + "/location/%s";
+    String PRACTITIONER_LOCATION_ADD_USER = BASE_URL + "/location/%s/users";
+    String PRACTITIONER_LOCATION_GET_USERS = BASE_URL + "/location/%s/users";
+
+    String PRACTITIONER_LOCATION_ADD_CONSULTATION = BASE_URL + "/location/%s/consultation";
 
 
-
+    String SYMPTOMS = "Test Symptoms %d. a) Test Symptoms A b) Test Symptoms B c) Test Symptoms C";
 }

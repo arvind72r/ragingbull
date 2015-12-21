@@ -50,13 +50,13 @@ public class PractitionerLocationService {
         this.transactionalDao = transactionalDao;
     }
 
-    public PractitionerLocationResponse getPractitionerLocation(Session session, String practitionerId, String practitionerLocationId) throws StorageException {
+    public PractitionerLocationResponse getPractitionerLocation(Session session, String locationId) throws StorageException {
         try {
-            PractitionerLocation practitionerLocation = practitionerLocationDao.getPractitionerLocation(practitionerLocationId);
+            PractitionerLocation practitionerLocation = practitionerLocationDao.getPractitionerLocation(locationId);
             PractitionerLocationResponse response = new PractitionerLocationResponse(practitionerLocation.getId(), practitionerLocation.getUserId(), practitionerLocation.getEntityId(), practitionerLocation.getName(), practitionerLocation.getDescription(), practitionerLocation.getSpeciality().toString(), practitionerLocation.getLocation(), practitionerLocation.getPrimaryContact(), practitionerLocation.getSecondaryContact(), practitionerLocation.getAddress1(), practitionerLocation.getAddress2(), practitionerLocation.getCity(), practitionerLocation.getState(), practitionerLocation.getZip(), practitionerLocation.getCountry(), practitionerLocation.getLandmark(), practitionerLocation.getLongitude(), practitionerLocation.getLatitude(), practitionerLocation.getWorkingHours(), practitionerLocation.getWorkingDays(), practitionerLocation.getLicense(), practitionerLocation.getIsVerified(), practitionerLocation.getIsActive());
             return response;
         } catch (Exception e) {
-            LOGGER.error(String.format("Error fetching a practitioner location with email %s, locationId: %s", session.getUserEmail(), practitionerLocationId));
+            LOGGER.error(String.format("Error fetching a practitioner location with email %s, locationId: %s", session.getUserEmail(), locationId));
             throw new StorageException(String.format("Error fetching practitioner location with emailId %s", session.getUserEmail()));
         }
     }
@@ -101,7 +101,7 @@ public class PractitionerLocationService {
         }
     }
 
-    public Response addUsers(Session session, String practitionerId, String locationId, List<EntityUser> entityUsers) throws ResourceCreationException {
+    public Boolean addUsers(Session session, String locationId, List<EntityUser> entityUsers) throws ResourceCreationException {
         for (EntityUser entityUser : entityUsers) {
 
             User user = usersDao.getRoleById(entityUser.getUserId());
@@ -122,31 +122,23 @@ public class PractitionerLocationService {
             entityUser.setEntityId(locationId);
             entityUser.setEntity(SystemConstants.Entities.PRACTITIONER_LOCATION);
 
-            int entityCreated = entityUsersDao.create(entityId, entityUser.getUserId(), session.getUserId(), locationId, entityUser.getEntity().name());
+            boolean entityUserCreated = transactionalDao.addEntityUsers(entityUser.getUserId(), userRole, entityId, session.getUserId(), locationId, entityUser.getEntity().name());
 
-            if (entityCreated == 0) {
-                LOGGER.error(String.format("Error creating an admin users by user with email %s, locationId: %s", session.getUserEmail(), practitionerId));
-                throw new ResourceCreationException(String.format("Error creating an admin users by user with email %s", session.getUserEmail()));
+            if (!entityUserCreated) {
+                LOGGER.error(String.format("Error creating a entity user for  location with email %s, locationId: %s", session.getUserEmail(), locationId));
+                throw new ResourceCreationException(String.format("Error creating practitioner location with emailId %s", session.getUserEmail()));
             }
-
-            int userUpdated = usersDao.updateRoleById(user.getId(), userRole);
-
-            if (userUpdated == 0) {
-                LOGGER.error(String.format("Error creating an admin users by user with email %s, locationId: %s", session.getUserEmail(), practitionerId));
-                throw new ResourceCreationException(String.format("Error creating an admin users by user with email %s", session.getUserEmail()));
-            }
-            return Response.ok().build();
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        return true;
     }
 
-    public Response getUsers(Session session, String practitionerId, String locationId) {
-        ImmutableList<EntityAdmin> entityAdmins = entityUsersDao.getAll(locationId);
-        return Response.ok().entity(entityAdmins).build();
+    public ImmutableList<EntityUser> getUsers(Session session, String locationId) {
+        ImmutableList<EntityUser> entityAdmins = entityUsersDao.getAll(locationId);
+        return entityAdmins;
     }
 
-    public Response getUser(Session session, String practitionerId, String locationId, String userId) {
-        EntityAdmin entityAdmin = entityUsersDao.getUser(locationId, userId);
-        return Response.ok().entity(entityAdmin).build();
+    public EntityUser getUsers(Session session, String locationId, String userId) {
+        EntityUser entityAdmin = entityUsersDao.getUser(locationId, userId);
+        return entityAdmin;
     }
 }

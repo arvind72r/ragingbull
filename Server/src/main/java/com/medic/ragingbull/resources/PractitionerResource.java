@@ -76,13 +76,4 @@ public class PractitionerResource {
         }
         return practitionerLocationAccessService.createPractitionerLocation(session, practitionerId, practitionerLocation);
     }
-
-    @GET
-    @Path("/{id}/location/{locationId}")
-    public Response getPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId, @PathParam("locationId") String locationId) throws StorageException {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Getting practitioner location. LocationId: %s, PractitionerId: %s, UserEmail: %s.", locationId, practitionerId, session.getUserEmail()));
-        }
-        return practitionerLocationAccessService.getPractitionerLocation(session, practitionerId, locationId);
-    }
 }

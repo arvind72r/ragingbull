@@ -32,13 +32,13 @@ public class ConsultationResponse extends AbstractResponse{
     private String userId;
 
     @JsonProperty
-    private List<String> symptoms;
+    private String symptoms;
 
     @JsonProperty
-    private List<String> diagnosisNotes;
+    private String diagnosisNotes;
 
     @JsonProperty
-    private List<String> userNotes;
+    private String userNotes;
 
     @JsonProperty
     private Boolean active;
@@ -53,7 +53,8 @@ public class ConsultationResponse extends AbstractResponse{
 
     public ConsultationResponse() {};
 
-    public ConsultationResponse(String id, String practitionerId, String locationId, String userId, List<String> symptoms, List<String> diagnosisNotes, List<String> userNotes, Boolean active, String userName, String userAge, String userPhone, String practitionerName) {
+    public ConsultationResponse(String id, String practitionerId, String locationId, String userId, String symptoms, String diagnosisNotes, String
+            userNotes, Boolean active, String userName, String userAge, String userPhone, String practitionerName) {
         this.id = id;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
@@ -68,7 +69,7 @@ public class ConsultationResponse extends AbstractResponse{
         this.practitionerName = practitionerName;
     }
 
-    public ConsultationResponse(String id, String practitionerId, String locationId, String userId, List<String> symptoms, List<String> diagnosisNotes, List<String> userNotes, Boolean active) {
+    public ConsultationResponse(String id, String practitionerId, String locationId, String userId, String symptoms, String diagnosisNotes, String userNotes, Boolean active) {
         this.id = id;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
@@ -95,15 +96,15 @@ public class ConsultationResponse extends AbstractResponse{
         return userId;
     }
 
-    public List<String> getSymptoms() {
+    public String getSymptoms() {
         return symptoms;
     }
 
-    public List<String> getDiagnosisNotes() {
+    public String getDiagnosisNotes() {
         return diagnosisNotes;
     }
 
-    public List<String> getUserNotes() {
+    public String getUserNotes() {
         return userNotes;
     }
 

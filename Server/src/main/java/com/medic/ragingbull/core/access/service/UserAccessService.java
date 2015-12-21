@@ -56,7 +56,8 @@ public class UserAccessService {
         }
 
         if ((session.getRole() & UserRoles.Permissions.USER_MEMBER_ADD.getBitValue()) == UserRoles.Permissions.USER_MEMBER_ADD.getBitValue()) {
-            return userService.addMember(session, userId, user);
+            Member member = userService.addMember(session, userId, user);
+            return Response.ok().entity(member).build();
         }
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_ADD_MEMBER_CODE).build();
     }
