@@ -6,6 +6,7 @@
 
 package com.medic.ragingbull.jdbi.dao;
 
+import com.medic.ragingbull.api.Consultation;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.skife.jdbi.v2.sqlobject.Bind;
@@ -144,6 +145,15 @@ public abstract class TransactionalDao {
         }
         return true;
     }
+
+    @Transaction
+    public Consultation getCompleteConsultation(String consultationId) {
+        Consultation consultation = getConsultation(consultationId);
+        return consultation;
+    }
+
+    @SqlQuery("")
+    protected abstract Consultation getConsultation(String consultationId);
 
     @SqlQuery("SELECT USER_ID from CONSULTATION where id = :id")
     protected abstract String getUserIdByConsultationId(@Bind("id") String id);

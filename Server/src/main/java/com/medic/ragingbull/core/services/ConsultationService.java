@@ -178,9 +178,9 @@ public class ConsultationService {
             {
                 throw new StorageException("Storage exception");
             }
-//            Consultation consultation = consultationDao.getCompleteConsultation(consultationId);
-//
-//            notificationFactory.notifyUser(userId, Notifiable.NotificationEvent.CONSULTATION_SUBMITTED, );
+
+            Consultation consultation = transactionalDao.getCompleteConsultation(consultationId);
+            notificationFactory.notifyUser(userId, Notifiable.NotificationEvent.CONSULTATION_SUBMITTED, consultation);
 
             return Response.ok().build();
         }
