@@ -47,7 +47,7 @@ public interface ConsultationDao  {
     @SqlUpdate("UPDATE CONSULTATION set active = false where id = :id")
     int deleteConsultation(@Bind("id") String id);
 
-    @SqlQuery("SELECT * FROM consultation where user_id = :userId and active = true")
+    @SqlQuery("SELECT * FROM consultation cn, users us, practitioner pr where user_id = :userId and active = true")
     List<Consultation> getActiveConsultations(@Bind("userId") String userId);
 
     @SqlQuery("SELECT * FROM consultation where user_id = :userId and active = false")

@@ -25,7 +25,7 @@
         <jbcrypt.version>0.3m</jbcrypt.version>
         <apache.common.io.version>2.4</apache.common.io.version>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-        <stringtemplate.version>3.2.1</stringtemplate.version>
+        <stringtemplate.version>4.0.8</stringtemplate.version>
         <pdfbox.version>1.8.7</pdfbox.version>
         <jedis.version>2.6.0</jedis.version>
         <jedis-lock.version>1.0.0</jedis-lock.version>
@@ -222,6 +222,13 @@
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- String template-->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>ST4</artifactId>
+            <version>${stringtemplate.version}</version>
         </dependency>
 
         <dependency>

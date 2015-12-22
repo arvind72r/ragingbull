@@ -135,7 +135,7 @@ task:
 notifications:
 
   notifierMap:
-    SIGN_UP: []
+    SIGN_UP: [MAIL]
     RESEND_INVITE_CODE: [SMS]
     NEWSLETTER: [PUSH, MAIL]
     UPDATES: [PUSH]

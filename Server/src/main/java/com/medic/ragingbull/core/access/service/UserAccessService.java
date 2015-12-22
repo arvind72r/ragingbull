@@ -83,7 +83,7 @@ public class UserAccessService {
         }
 
         if ((session.getRole() & UserRoles.Permissions.USER_MODIFY.getBitValue()) == UserRoles.Permissions.USER_MODIFY.getBitValue()) {
-            if (StringUtils.containsAny(field, "phone")) {
+            if (StringUtils.equals(field, "phone")) {
                 boolean updatePhone = userService.updatePhone(userId, data);
                 if (updatePhone) {
                     return Response.ok().build();
