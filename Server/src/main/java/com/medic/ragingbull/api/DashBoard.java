@@ -6,6 +6,8 @@
 
 package com.medic.ragingbull.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,24 +15,29 @@ import java.util.List;
  * Created by Vamshi Molleti
  */
 public class DashBoard {
+    @JsonProperty
     private User user;
+
+    @JsonProperty
     private Member member;
+
+    @JsonProperty
     private Practitioner practitioner;
     private Pharmacist pharmacist;
 
     private class User {
-        public List<Object> current = new ArrayList<>();
-        public List<Object> past = new ArrayList<>();
+        public List<Consultation> current = new ArrayList<>();
+        public List<Consultation> past = new ArrayList<>();
     }
 
     private class Member {
-        public List<Object> current = new ArrayList<>();
-        public List<Object> past = new ArrayList<>();
+        public List<Consultation> current = new ArrayList<>();
+        public List<Consultation> past = new ArrayList<>();
     }
 
     private class Practitioner {
-        public List<Object> current = new ArrayList<>();
-        public List<Object> past = new ArrayList<>();
+        public List<Consultation> current = new ArrayList<>();
+        public List<Consultation> past = new ArrayList<>();
     }
 
     private class Pharmacist {
@@ -45,27 +52,27 @@ public class DashBoard {
         pharmacist = new Pharmacist();
     };
 
-    public List<Object> getUserCurrent() {
+    public List<Consultation> getUserCurrent() {
         return user.current;
     }
 
-    public List<Object> getUserPast() {
+    public List<Consultation> getUserPast() {
         return user.past;
     }
 
-    public List<Object> getMemberCurrent() {
+    public List<Consultation> getMemberCurrent() {
         return member.current;
     }
 
-    public List<Object> getMemberPast() {
+    public List<Consultation> getMemberPast() {
         return member.past;
     }
 
-    public List<Object> getPractitionerCurrent() {
+    public List<Consultation> getPractitionerCurrent() {
         return practitioner.current;
     }
 
-    public List<Object> getPractitionerPast() {
+    public List<Consultation> getPractitionerPast() {
         return practitioner.past;
     }
 }

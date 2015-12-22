@@ -396,26 +396,26 @@ public class UserService {
             // User
             // Add current consultations
             List<Consultation> currentConsultations = consultationDao.getActiveConsultations(userId);
-            dash.getUserCurrent().add(currentConsultations);
+            dash.getUserCurrent().addAll(currentConsultations);
 
             // Add  past consultations
             List<Consultation> pastConsultations = consultationDao.getPastConsultations(userId);
-            dash.getUserPast().add(pastConsultations);
+            dash.getUserPast().addAll(pastConsultations);
 
             // Add current consultation of members
             List<Consultation> currentMemberConsultations = consultationDao.getActiveMemberConsultations(userId);
-            dash.getMemberCurrent().add(currentMemberConsultations);
+            dash.getMemberCurrent().addAll(currentMemberConsultations);
 
             // Add past consultation of members
             List<Consultation> pastMemberConsultations = consultationDao.getPastMemberConsultations(userId);
-            dash.getMemberPast().add(pastMemberConsultations);
+            dash.getMemberPast().addAll(pastMemberConsultations);
         }
 
         if ((session.getUserRole().getRoleBit() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) {
             // Doctor
             // Dashboard will current consultations
             List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations(userId);
-            dash.getPractitionerCurrent().add(currentPractitionerConsultations);
+            dash.getPractitionerCurrent().addAll(currentPractitionerConsultations);
         }
         return dash;
     }
