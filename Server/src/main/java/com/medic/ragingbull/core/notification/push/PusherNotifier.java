@@ -26,7 +26,7 @@ public class PusherNotifier extends Notifiable {
         pusher = new Pusher(configuration.getApplicationId(), configuration.getApplicationKey(), configuration.getApplicationSecret());
     }
 
-    public void notify(String id, NotificationEvent event, String message) {
+    public void notify(String id, NotificationEvent event, Object message) {
         String channelName = event.name() + id;
         pusher.trigger(channelName, event.name(), message);
     }

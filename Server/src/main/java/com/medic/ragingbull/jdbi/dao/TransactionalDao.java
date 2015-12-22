@@ -9,6 +9,7 @@ package com.medic.ragingbull.jdbi.dao;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.Transaction;
 
@@ -18,7 +19,7 @@ import org.skife.jdbi.v2.sqlobject.Transaction;
 public abstract class TransactionalDao {
 
     @Transaction
-    public boolean lockConsultation(String practitionerId, String consultationId) throws TransactionException {
+    public String lockConsultation(String practitionerId, String consultationId) throws TransactionException {
 
         // LockConsultation
         int consultationLocked = lockConsultations(consultationId, practitionerId);
@@ -40,7 +41,9 @@ public abstract class TransactionalDao {
         if (prescriptionLocked == 0) {
             throw new TransactionException("Unable to lock prescription");
         }
-        return true;
+
+        String consultationUserId = getUserIdByConsultationId(consultationId);
+        return consultationUserId;
     }
 
     @Transaction
@@ -141,6 +144,9 @@ public abstract class TransactionalDao {
         }
         return true;
     }
+
+    @SqlQuery("SELECT USER_ID from CONSULTATION where id = :id")
+    protected abstract String getUserIdByConsultationId(@Bind("id") String id);
 
     @SqlUpdate("INSERT INTO entity_users (id, user_id, created_by, entity_id, entity) VALUES (:id, :userId, :createdBy, :entityId, :entity)")
     protected abstract int createEntityUser(@Bind("id") String adminId,

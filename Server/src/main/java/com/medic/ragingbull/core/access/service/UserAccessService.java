@@ -84,10 +84,14 @@ public class UserAccessService {
 
         if ((session.getRole() & UserRoles.Permissions.USER_MODIFY.getBitValue()) == UserRoles.Permissions.USER_MODIFY.getBitValue()) {
             if (StringUtils.containsAny(field, "phone")) {
-                // Check if the user is OAuthUser
-                //if (session.getIn)
+                boolean updatePhone = userService.updatePhone(userId, data);
+                if (updatePhone) {
+                    return Response.ok().build();
+                } else {
+                    return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_USER_MODIFY_CODE).build();
+                }
             }
-            if (StringUtils.equals(field, "password")) {
+            else if (StringUtils.equals(field, "password")) {
                 return userService.updatePassword(session, userId, data) ? Response.ok().build() : Response.status(Response.Status.BAD_REQUEST).entity(ErrorMessages.INVALID_PASSWORD_USER_RESOURCE_CODE).build();
             } else {
                 return userService.updateUser(session, userId, field, data)? Response.ok().build() : Response.status(Response.Status.BAD_REQUEST).entity(ErrorMessages.INVALID_DETAILS_USER_RESOURCE_CODE).build();

@@ -30,9 +30,11 @@ public class MandrillAppNotifier extends Notifiable {
         this.mailChimpConfiguration = mailChimpConfiguration;
     }
 
-    public void notify(String id, NotificationEvent event, String message) {
+    public void notify(String id, NotificationEvent event, Object message) {
         if (event == NotificationEvent.SIGN_UP) {
-            notifySignUp(id, message);
+            notifySignUp(id, String.valueOf(message));
+        } else if (event == NotificationEvent.CONSULTATION_SUBMITTED) {
+
         }
 
     }

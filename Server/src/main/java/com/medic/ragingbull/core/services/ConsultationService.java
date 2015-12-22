@@ -13,12 +13,15 @@ import com.medic.ragingbull.api.Notes;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
+import com.medic.ragingbull.core.notification.Notifiable;
+import com.medic.ragingbull.core.notification.NotificationFactory;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.ConsultationDao;
 import com.medic.ragingbull.jdbi.dao.NotesDao;
 import com.medic.ragingbull.jdbi.dao.TransactionalDao;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.slf4j.Logger;
@@ -36,16 +39,17 @@ public class ConsultationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsultationService.class);
 
+    private NotificationFactory notificationFactory;
     private ConsultationDao consultationDao;
-
     private NotesDao notesDao;
-
     private TransactionalDao transactionalDao;
 
     @Inject
-    public ConsultationService(ConsultationDao consultationDao, NotesDao notesDao) {
+    public ConsultationService(ConsultationDao consultationDao, NotesDao notesDao, TransactionalDao transactionalDao, NotificationFactory notificationFactory) {
         this.consultationDao = consultationDao;
         this.notesDao = notesDao;
+        this.transactionalDao = transactionalDao;
+        this.notificationFactory = notificationFactory;
     }
 
     public ConsultationResponse createConsultation(Session session, String locationId, Consultation consultation) throws StorageException, ResourceCreationException {
@@ -168,12 +172,16 @@ public class ConsultationService {
 
         try {
             // Lock Consultation, Prescription, Notes
-            boolean success = transactionalDao.lockConsultation(session.getUserId(), consultationId);
+            String userId = transactionalDao.lockConsultation(session.getUserId(), consultationId);
 
-            if (!success) {
-                LOGGER.error(String.format("Error locking consultation: %s. User: %s", consultationId, session.getUserEmail()));
-                throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
+            if (StringUtils.isBlank(userId))
+            {
+                throw new StorageException("Storage exception");
             }
+//            Consultation consultation = consultationDao.getCompleteConsultation(consultationId);
+//
+//            notificationFactory.notifyUser(userId, Notifiable.NotificationEvent.CONSULTATION_SUBMITTED, );
+
             return Response.ok().build();
         }
         catch (StorageException e) {

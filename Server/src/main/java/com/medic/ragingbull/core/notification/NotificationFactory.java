@@ -39,7 +39,7 @@ public class NotificationFactory extends Notifiable{
         this.twilioNotifier = twilioNotifier;
     }
 
-    public void notifyUser(String id, NotificationEvent event, String message) throws NotificationException {
+    public void notifyUser(String id, NotificationEvent event, Object message) throws NotificationException {
             for (Mode mode : notificationEventMap.get(event)) {
                 switch (mode) {
                     case MAIL:

@@ -396,7 +396,6 @@ public class UserService {
             // User
             // Add current consultations
             List<Consultation> currentConsultations = consultationDao.getActiveConsultations(userId);
-
             dash.getUserCurrent().add(currentConsultations);
 
             // Add  past consultations
@@ -418,13 +417,17 @@ public class UserService {
             List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations(userId);
             dash.getPractitionerCurrent().add(currentPractitionerConsultations);
         }
-
-        // For pharmacist
-
-        // Current orders
-
         return dash;
     }
 
 
+    public boolean updatePhone(String userId, Map<String, String> data) {
+        int phoneUpdated = userDao.updatePhone(userId, data.get("value"));
+
+        if (phoneUpdated == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

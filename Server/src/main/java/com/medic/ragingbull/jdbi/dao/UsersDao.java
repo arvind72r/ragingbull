@@ -104,4 +104,6 @@ public interface UsersDao {
     @SqlUpdate("DELETE FROM USERS")
     int cleanseAll();
 
+    @SqlUpdate("UPDATE USERS SET phone = :phone and id = :id where phone = 'DummyPhoneNo'")
+    int updatePhone(String userId, String value);
 }

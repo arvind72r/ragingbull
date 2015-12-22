@@ -67,4 +67,5 @@ public interface ConsultationDao  {
 
     @SqlQuery("SELECT * FROM consultation cn, users us where cn.active = false and cn.user_id  = us.id and us.parent_id = :userId")
     List<Consultation> getPastMemberConsultations(@Bind("userId") String userId);
+
 }
