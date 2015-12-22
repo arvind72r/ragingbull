@@ -6,38 +6,66 @@
 
 package com.medic.ragingbull.api;
 
-import com.medic.ragingbull.core.access.roles.UserRoles;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Vamshi Molleti
  */
 public class DashBoard {
+    private User user;
+    private Member member;
+    private Practitioner practitioner;
+    private Pharmacist pharmacist;
 
-    class NATIVE {
-        public List<Object> current;
-        public List<Object> pending;
-    }
-    private Map<UserRoles.Role, List<Object>> dash = new HashMap<>();
-
-    public DashBoard() {};
-
-    public DashBoard(Map<UserRoles.Role, List<Object>> dash) {
-        this.dash = dash;
+    private class User {
+        public List<Object> current = new ArrayList<>();
+        public List<Object> pending = new ArrayList<>();
     }
 
-    public Map<UserRoles.Role, List<Object>> getDash() {
-        return dash;
+    private class Member {
+        public List<Object> current = new ArrayList<>();
+        public List<Object> pending = new ArrayList<>();
     }
 
-    public List<Object> getRoleResources(UserRoles.Role role) {
-        if (!dash.containsKey(role)) {
-             dash.put(role, new ArrayList<>());
-        }
-        return dash.get(role);
+    private class Practitioner {
+        public List<Object> current = new ArrayList<>();
+        public List<Object> pending = new ArrayList<>();
+    }
+
+    private class Pharmacist {
+        public List<Object> current = new ArrayList<>();
+        public List<Object> pending = new ArrayList<>();
+    }
+
+    public DashBoard() {
+        user = new User();
+        member = new Member();
+        practitioner = new Practitioner();
+        pharmacist = new Pharmacist();
+    };
+
+    public List<Object> getUserCurrent() {
+        return user.current;
+    }
+
+    public List<Object> getUserPending() {
+        return user.pending;
+    }
+
+    public List<Object> getMemberCurrent() {
+        return member.current;
+    }
+
+    public List<Object> getMemberPending() {
+        return member.pending;
+    }
+
+    public List<Object> getPractitionerCurrent() {
+        return practitioner.current;
+    }
+
+    public List<Object> getPractitionerPending() {
+        return practitioner.pending;
     }
 }
