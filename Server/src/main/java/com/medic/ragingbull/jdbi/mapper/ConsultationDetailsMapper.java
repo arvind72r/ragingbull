@@ -21,18 +21,19 @@ public class ConsultationDetailsMapper implements ResultSetMapper<Consultation> 
 
     @Override
     public Consultation map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-        return new Consultation(
-                r.getString("id"),
-                r.getString("user_id"),
-                r.getString("practitioner_id"),
-                r.getString("location_id"),
-                r.getString("creator_id"),
-                r.getBoolean("active"),
-                r.getString("userName"),
-                String.valueOf(new DateTime().getYear() - new DateTime(r.getTimestamp("userDob")).getYear()),
-                r.getString("userPhone"),
-                r.getString("practitionerName"),
-                new DateTime(r.getTimestamp("created_at")),
-                new DateTime(r.getTimestamp("updated_at")));
+        return null;
+//        return new Consultation(
+//                r.getString("id"),
+//                r.getString("user_id"),
+//                r.getString("practitioner_id"),
+//                r.getString("location_id"),
+//                r.getString("creator_id"),
+//                r.getBoolean("active"),
+//                r.getString("userName"),
+//                new DateTime(r.getTimestamp("userDob")),
+//                r.getString("userPhone"),
+//                r.getString("practitionerName"),
+//                new DateTime(r.getTimestamp("created_at")),
+//                new DateTime(r.getTimestamp("updated_at")));
     }
 }

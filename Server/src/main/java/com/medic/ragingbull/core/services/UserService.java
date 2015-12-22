@@ -400,7 +400,7 @@ public class UserService {
 
             // Add  past consultations
             List<Consultation> pastConsultations = consultationDao.getPastConsultations(userId);
-            dash.getUserPending().add(pastConsultations);
+            dash.getUserPast().add(pastConsultations);
 
             // Add current consultation of members
             List<Consultation> currentMemberConsultations = consultationDao.getActiveMemberConsultations(userId);
@@ -408,7 +408,7 @@ public class UserService {
 
             // Add past consultation of members
             List<Consultation> pastMemberConsultations = consultationDao.getPastMemberConsultations(userId);
-            dash.getMemberPending().add(pastMemberConsultations);
+            dash.getMemberPast().add(pastMemberConsultations);
         }
 
         if ((session.getUserRole().getRoleBit() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) {

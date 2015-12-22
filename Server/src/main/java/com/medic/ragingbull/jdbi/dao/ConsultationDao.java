@@ -26,11 +26,7 @@ public interface ConsultationDao  {
     @SqlQuery("SELECT * FROM consultation where id = :id")
     Consultation getConsultation(@Bind("id") String id);
 
-    @SqlQuery("SELECT cn.*, us.name as userName, us.phone as userPhone, us.dob as userDob, pr.name as practitionerName FROM CONSULTATION cn, USERS us, USERS pr , PRACTITIONER practitioner where cn.id = :id " +
-            "and us.id = cn.user_id " +
-            "and practitioner.id = cn.practitioner_id " +
-            "and pr.id = practitioner.user_id")
-    @Mapper(ConsultationDetailsMapper.class)
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.id = :id and cn.active = true")
     Consultation getConsultationDetails(@Bind("id") String id);
 
     @SqlUpdate("INSERT INTO consultation (id, location_id, practitioner_id, user_id, creator_id, symptoms, diagnosis, user_notes) " +
@@ -47,13 +43,13 @@ public interface ConsultationDao  {
     @SqlUpdate("UPDATE CONSULTATION set active = false where id = :id")
     int deleteConsultation(@Bind("id") String id);
 
-    @SqlQuery("SELECT * FROM consultation cn, users us, practitioner pr where user_id = :userId and active = true")
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = :userId and cn.active = true")
     List<Consultation> getActiveConsultations(@Bind("userId") String userId);
 
-    @SqlQuery("SELECT * FROM consultation where user_id = :userId and active = false")
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = :userId and cn.active = false")
     List<Consultation> getPastConsultations(@Bind("userId") String userId);
 
-    @SqlQuery("SELECT * FROM consultation cs, practitioner pr where cs.practitioner_id = pr.id AND pr.user_id = :userId AND cs.active = true")
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cs.* FROM consultation cs, practitioner pr, practitioner_location location, users consultee, users doctor where consultee.id = cs.user_id AND doctor.id = pr.user_id AND location.id = cs.location_id AND cs.practitioner_id = pr.id AND pr.user_id = :userId AND cs.active = true ;")
     List<Consultation> getActivePractitionerConsultations(@Bind("userId") String userId);
 
     @SqlQuery("SELECT * FROM consultation where practitioner_id = :practitionerId and active = false")
@@ -62,10 +58,11 @@ public interface ConsultationDao  {
     @SqlUpdate("DELETE FROM consultation")
     int cleanAll();
 
-    @SqlQuery("SELECT * FROM consultation cn, users us where cn.active = true and cn.user_id  = us.id and us.parent_id = :userId")
+
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = consultee.id and consultee.parent_id = :userId and cn.active = true")
     List<Consultation> getActiveMemberConsultations(@Bind("userId") String userId);
 
-    @SqlQuery("SELECT * FROM consultation cn, users us where cn.active = false and cn.user_id  = us.id and us.parent_id = :userId")
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = consultee.id and consultee.parent_id = :userId and cn.active = false")
     List<Consultation> getPastMemberConsultations(@Bind("userId") String userId);
 
 }

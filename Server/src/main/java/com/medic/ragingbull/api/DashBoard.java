@@ -20,22 +20,22 @@ public class DashBoard {
 
     private class User {
         public List<Object> current = new ArrayList<>();
-        public List<Object> pending = new ArrayList<>();
+        public List<Object> past = new ArrayList<>();
     }
 
     private class Member {
         public List<Object> current = new ArrayList<>();
-        public List<Object> pending = new ArrayList<>();
+        public List<Object> past = new ArrayList<>();
     }
 
     private class Practitioner {
         public List<Object> current = new ArrayList<>();
-        public List<Object> pending = new ArrayList<>();
+        public List<Object> past = new ArrayList<>();
     }
 
     private class Pharmacist {
         public List<Object> current = new ArrayList<>();
-        public List<Object> pending = new ArrayList<>();
+        public List<Object> past = new ArrayList<>();
     }
 
     public DashBoard() {
@@ -49,23 +49,23 @@ public class DashBoard {
         return user.current;
     }
 
-    public List<Object> getUserPending() {
-        return user.pending;
+    public List<Object> getUserPast() {
+        return user.past;
     }
 
     public List<Object> getMemberCurrent() {
         return member.current;
     }
 
-    public List<Object> getMemberPending() {
-        return member.pending;
+    public List<Object> getMemberPast() {
+        return member.past;
     }
 
     public List<Object> getPractitionerCurrent() {
         return practitioner.current;
     }
 
-    public List<Object> getPractitionerPending() {
-        return practitioner.pending;
+    public List<Object> getPractitionerPast() {
+        return practitioner.past;
     }
 }

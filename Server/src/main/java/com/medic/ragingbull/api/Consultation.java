@@ -59,8 +59,8 @@ public class Consultation {
 
     private String practitionerName;
 
-
     private DateTime createdAt;
+
     private DateTime updatedAt;
 
     public Consultation () {};
@@ -76,16 +76,19 @@ public class Consultation {
         this.symptoms = symptoms;
     }
 
-    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, Boolean active, String userName, String userAge, String userPhone, String practitionerName, DateTime createdAt, DateTime updatedAt) {
+    public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, String symptoms, String diagnosis, String userNotes, Boolean active, String name, DateTime dob, String phone, String practitionerName, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
         this.creatorId = creatorId;
+        this.symptoms = symptoms;
+        this.diagnosis = diagnosis;
+        this.userNotes = userNotes;
         this.active = active;
-        this.userName = userName;
-        this.userAge = userAge;
-        this.userPhone = userPhone;
+        this.userName = name;
+        this.userAge = String.valueOf(new DateTime().getYear() - dob.getYear());
+        this.userPhone = phone;
         this.practitionerName = practitionerName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
