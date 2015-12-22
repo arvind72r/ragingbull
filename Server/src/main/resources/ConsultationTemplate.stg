@@ -1,0 +1,15 @@
+Dr. <doctorName> <specialization>
+<qualification>
+
+<locationName>
+<locationAddress>
+<locationPhone1><locationPhone2>
+<email>
+<website>
+
+Patient Details
+Name: <patientName>
+Age: <patientAge>   Sex: <patientSex>
+Mobile: <patientMobile>
+
+
