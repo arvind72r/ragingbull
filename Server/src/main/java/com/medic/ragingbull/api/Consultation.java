@@ -12,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.medic.ragingbull.core.constants.ValidationConstants;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by Vamshi Molleti
@@ -59,9 +58,9 @@ public class Consultation {
 
     private String practitionerName;
 
-    private DateTime createdAt;
+    private String createdAt;
 
-    private DateTime updatedAt;
+    private String updatedAt;
 
     public Consultation () {};
 
@@ -77,6 +76,7 @@ public class Consultation {
     }
 
     public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, String symptoms, String diagnosis, String userNotes, Boolean active, String name, DateTime dob, String phone, String practitionerName, DateTime createdAt, DateTime updatedAt) {
+        DateTimeFormatter format = DateTimeFormat.forPattern("dd-MMM-YYYY");
         this.id = id;
         this.userId = userId;
         this.practitionerId = practitionerId;
@@ -90,11 +90,12 @@ public class Consultation {
         this.userAge = String.valueOf(new DateTime().getYear() - dob.getYear());
         this.userPhone = phone;
         this.practitionerName = practitionerName;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.createdAt = createdAt.toString(format);
+        this.updatedAt = updatedAt.toString(format);;
     }
 
     public Consultation(String id, String userId, String practitionerId, String locationId, String creatorId, Boolean active, String symptoms, String diagnosis, String userNotes, DateTime createdAt, DateTime updatedAt) {
+        DateTimeFormatter format = DateTimeFormat.forPattern("dd-MMM-YYYY");
         this.id = id;
         this.userId = userId;
         this.practitionerId = practitionerId;
@@ -104,8 +105,8 @@ public class Consultation {
         this.symptoms = symptoms;
         this.diagnosis = diagnosis;
         this.userNotes = userNotes;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.createdAt = createdAt.toString(format);
+        this.updatedAt = updatedAt.toString(format);;
     }
 
     public String getId() {
@@ -144,11 +145,11 @@ public class Consultation {
         return active;
     }
 
-    public DateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public DateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 

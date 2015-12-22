@@ -7,7 +7,6 @@
 package com.medic.ragingbull.core.notification;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.config.NotificationConfiguration;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.mail.MandrillAppNotifier;

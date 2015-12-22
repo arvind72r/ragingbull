@@ -7,7 +7,10 @@
 package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.api.ConsultationResponse;
+import com.medic.ragingbull.api.Prescription;
+import com.medic.ragingbull.api.PrescriptionResponse;
+import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.services.ConsultationService;
 import com.medic.ragingbull.core.services.PrescriptionService;

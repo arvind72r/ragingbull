@@ -7,7 +7,6 @@
 package com.medic.ragingbull.core.auth;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.services.UserService;
 import io.dropwizard.auth.AuthenticationException;

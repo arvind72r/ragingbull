@@ -7,7 +7,6 @@
 package com.medic.ragingbull.core.notification.sms;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.User;
 import com.medic.ragingbull.config.RagingBullConfiguration;
 import com.medic.ragingbull.config.TwilioConfiguration;
 import com.medic.ragingbull.core.notification.Notifiable;

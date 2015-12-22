@@ -7,18 +7,22 @@
 package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.api.Practitioner;
+import com.medic.ragingbull.api.PractitionerResponse;
+import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
-import com.medic.ragingbull.exception.*;
+import com.medic.ragingbull.exception.DuplicateEntityException;
+import com.medic.ragingbull.exception.EntityNotFoundException;
+import com.medic.ragingbull.exception.ResourceCreationException;
+import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.EntityUsersDao;
 import com.medic.ragingbull.jdbi.dao.PractitionerDao;
 import com.medic.ragingbull.jdbi.dao.TransactionalDao;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.skife.jdbi.v2.exceptions.DBIException;
-import org.skife.jdbi.v2.exceptions.UnableToCreateStatementException;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

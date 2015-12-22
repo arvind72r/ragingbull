@@ -23,13 +23,10 @@ import com.medic.ragingbull.jdbi.dao.NotesDao;
 import com.medic.ragingbull.jdbi.dao.TransactionalDao;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Vamshi Molleti

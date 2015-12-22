@@ -7,9 +7,7 @@
 package com.medic.ragingbull.jdbi.dao;
 
 import com.google.common.collect.ImmutableList;
-import com.medic.ragingbull.api.EntityAdmin;
 import com.medic.ragingbull.api.EntityUser;
-import com.medic.ragingbull.api.Practitioner;
 import com.medic.ragingbull.jdbi.mapper.EntityUsersMapper;
 import com.medic.ragingbull.jdbi.mapper.Mapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
@@ -17,7 +15,6 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

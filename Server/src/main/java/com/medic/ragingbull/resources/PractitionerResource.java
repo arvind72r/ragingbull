@@ -7,11 +7,11 @@
 package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.*;
+import com.medic.ragingbull.api.Practitioner;
+import com.medic.ragingbull.api.PractitionerLocation;
+import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.access.service.PractitionerAccessService;
 import com.medic.ragingbull.core.access.service.PractitionerLocationAccessService;
-import com.medic.ragingbull.core.services.PractitionerLocationService;
-import com.medic.ragingbull.core.services.PractitionerService;
 import com.medic.ragingbull.exception.DuplicateEntityException;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;

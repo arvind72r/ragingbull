@@ -7,9 +7,6 @@
 package com.medic.ragingbull.core.constants;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.codehaus.jackson.JsonFactory;
-
 /**
  * Created by Vamshi Molleti
  */

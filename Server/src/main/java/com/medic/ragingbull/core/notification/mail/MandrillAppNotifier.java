@@ -7,25 +7,9 @@
 package com.medic.ragingbull.core.notification.mail;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.User;
-import com.medic.ragingbull.api.notification.Mail;
-import com.medic.ragingbull.api.notification.MailConfig;
-import com.medic.ragingbull.api.notification.MailDynamicContent;
 import com.medic.ragingbull.config.MailChimpConfiguration;
 import com.medic.ragingbull.config.MandrillAppConfiguration;
 import com.medic.ragingbull.core.notification.Notifiable;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.STGroupFile;
-
-import java.io.File;
 
 /**
  * Created by Vamshi Molleti

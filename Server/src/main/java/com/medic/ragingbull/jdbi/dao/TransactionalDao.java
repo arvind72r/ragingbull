@@ -7,7 +7,6 @@
 package com.medic.ragingbull.jdbi.dao;
 
 import com.medic.ragingbull.api.Consultation;
-import com.medic.ragingbull.core.access.roles.UserRoles;
 import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;

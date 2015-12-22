@@ -9,10 +9,7 @@ package com.medic.ragingbull.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medic.ragingbull.core.access.roles.UserRoleGenerator;
 import com.medic.ragingbull.core.access.roles.UserRoles;
-import com.medic.ragingbull.core.constants.InletType;
 import org.joda.time.DateTime;
-
-import java.util.ArrayList;
 
 /**
  * Created by Vamshi Molleti

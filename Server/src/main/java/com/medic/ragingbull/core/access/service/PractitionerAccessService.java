@@ -7,7 +7,6 @@
 package com.medic.ragingbull.core.access.service;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.EntityUser;
 import com.medic.ragingbull.api.Practitioner;
 import com.medic.ragingbull.api.PractitionerResponse;
 import com.medic.ragingbull.api.Session;

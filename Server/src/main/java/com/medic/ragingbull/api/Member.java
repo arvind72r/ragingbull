@@ -6,7 +6,6 @@
 
 package com.medic.ragingbull.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.constants.ValidationConstants;
