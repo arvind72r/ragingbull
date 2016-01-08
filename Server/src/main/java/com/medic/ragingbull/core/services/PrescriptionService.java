@@ -17,6 +17,7 @@ import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.DrugsDao;
 import com.medic.ragingbull.jdbi.dao.PrescriptionDao;
+import com.medic.ragingbull.jdbi.dao.TransactionalDao;
 import com.medic.ragingbull.util.Ids;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,25 +31,34 @@ import java.util.List;
 public class PrescriptionService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PrescriptionService.class);
+    private TransactionalDao transactionalDao;
     private PrescriptionDao prescriptionDao;
     private DrugsDao drugsDao;
 
     @Inject
-    public PrescriptionService(PrescriptionDao prescriptionDao, DrugsDao drugsDao) {
+    public PrescriptionService(PrescriptionDao prescriptionDao, DrugsDao drugsDao, TransactionalDao transactionalDao) {
+        this.transactionalDao = transactionalDao;
         this.prescriptionDao = prescriptionDao;
         this.drugsDao = drugsDao;
     }
 
-    public PrescriptionResponse getPrescription(Session session, String prescriptionId) throws ResourceFetchException {
+    public PrescriptionResponse getPrescription(Session session, String prescriptionId) throws ResourceFetchException, StorageException {
 
         try {
             Prescription prescription = prescriptionDao.getPrescription(prescriptionId);
             List<Drug> drugsList = drugsDao.getByPrescriptionId(prescriptionId);
 
+            if (prescription == null) {
+                LOGGER.error(String.format("Error fetching prescription with email %s", session.getUserEmail()));
+                throw new ResourceFetchException(String.format("Error fetching consultation with email %s", session.getUserEmail()));
+            }
             return new PrescriptionResponse(prescription.getId(), prescription.getConsultationId(), prescription.getPractitionerId(), prescription.getUserId(), drugsList, prescription.getActive());
-        } catch(Exception e) {
+        } catch (ResourceFetchException re) {
+            LOGGER.error(String.format("Error fetching prescription with email %s. Exception: %s", session.getUserEmail(), re));
+            throw re;
+        } catch (Exception e) {
             LOGGER.error(String.format("Error fetching prescription: %s. for user %s. Exception %s", prescriptionId, session.getUserEmail(), e));
-            throw new ResourceFetchException(e.getMessage());
+            throw new StorageException(String.format("Error creating consultation with email %s", session.getUserEmail()));
         }
     }
 
@@ -67,30 +77,23 @@ public class PrescriptionService {
                 prescription.getDrugs().get(i).setUserId(prescription.getUserId());
             }
 
-            int prescriptionCreated = prescriptionDao.createPrescription(prescriptionId, consultationId, session.getUserId(), prescription.getUserId());
 
-            if (prescriptionCreated == 0) {
+            boolean success = transactionalDao.createPrescription(prescriptionId, consultationId, session.getUserId(), prescription.getUserId(), prescription.getDrugs());
+            if (!success) {
                 LOGGER.error(String.format("Error creating prescription for consultation: %s. by user: %s.", consultationId, session.getUserEmail()));
-                throw new StorageException("Error creating prescription. Please try again");
-            }
-
-            int[] drugsCreated = drugsDao.createAll(prescription.getDrugs());
-
-            if (drugsCreated.length < prescription.getDrugs().size()) {
-                LOGGER.error(String.format("Error creating prescription for consultation: %s. by user: %s.", consultationId, session.getUserEmail()));
-                throw new StorageException("Error creating prescription. Please try again");
+                throw new ResourceCreationException("Error creating prescription. Please try again");
             }
             return new PrescriptionResponse(prescriptionId, consultationId, session.getUserId(), prescription.getUserId(), prescription.getDrugs(), prescription.getActive());
-        } catch (StorageException e) {
+        } catch (ResourceCreationException e) {
             LOGGER.error(String.format("Error creating prescription for consultation: %s. by user: %s.", consultationId, session.getUserEmail()));
             throw e;
         } catch (Exception e) {
             LOGGER.error(String.format("Error creating prescription for consultation: %s. for user %s. Exception %s", consultationId, session.getUserEmail(), e));
-            throw new ResourceCreationException(e.getMessage());
+            throw new StorageException(e.getMessage());
         }
     }
 
-    public Response deletePrescription(Session session, String prescriptionId) throws StorageException, ResourceUpdateException {
+    public boolean deletePrescription(Session session, String prescriptionId) throws StorageException, ResourceUpdateException {
         try {
             int prescriptionDeleted = prescriptionDao.deletePrescription(prescriptionId);
 
@@ -98,7 +101,7 @@ public class PrescriptionService {
                 LOGGER.error(String.format("Error deleting prescription Id: %s. by user: %s.", prescriptionId, session.getUserEmail()));
                 throw new StorageException("Error deleting prescription. Please try again");
             }
-            return Response.ok().build();
+            return true;
         } catch (StorageException e) {
             LOGGER.error(String.format("Error deleting prescription Id: %s. by user: %s.", prescriptionId, session.getUserEmail()));
             throw e;
@@ -108,7 +111,7 @@ public class PrescriptionService {
         }
     }
 
-    public Response addDrug(Session session, String prescriptionId, Drug drug) throws ResourceCreationException, StorageException {
+    public Boolean addDrug(Session session, String prescriptionId, Drug drug) throws ResourceCreationException, StorageException {
         try {
 
             Prescription prescription = prescriptionDao.getPrescription(prescriptionId);
@@ -119,7 +122,7 @@ public class PrescriptionService {
                 LOGGER.error(String.format("Error adding drug for prescription: %s. by user: %s.", prescriptionId, session.getUserEmail()));
                 throw new StorageException("Error adding drug for prescription. Please try again");
             }
-            return Response.ok().build();
+            return true;
         } catch (StorageException e) {
             LOGGER.error(String.format("Error adding drug for prescription: %s. by user: %s.", prescriptionId, session.getUserEmail()));
             throw e;
@@ -129,14 +132,14 @@ public class PrescriptionService {
         }
     }
 
-    public Response deleteDrug(Session session, String prescriptionId, String drugId) throws ResourceCreationException, StorageException {
+    public boolean deleteDrug(Session session, String prescriptionId, String drugId) throws ResourceCreationException, StorageException {
         try {
             int drugRemoved = drugsDao.removeDrug(prescriptionId, drugId);
             if (drugRemoved == 0) {
                 LOGGER.error(String.format("Error removing drug for prescription: %s. drug: %s. by user: %s.", prescriptionId, drugId, session.getUserEmail()));
                 throw new StorageException("Error adding drug for prescription. Please try again");
             }
-            return Response.ok().build();
+            return true;
         } catch (StorageException e) {
             LOGGER.error(String.format("Error removing drug for prescription: %s. drug: %s. by user: %s.", prescriptionId, drugId, session.getUserEmail()));
             throw e;
@@ -151,5 +154,11 @@ public class PrescriptionService {
 
 
         return null;
+    }
+
+    public PrescriptionResponse getCurrentPrescription(Session session, String consultationId) {
+        Prescription prescription = prescriptionDao.getCurrentPrescription(consultationId);
+        List<Drug> drugsList = drugsDao.getByPrescriptionId(prescription.getId());
+        return new PrescriptionResponse(prescription.getId(), prescription.getConsultationId(), prescription.getPractitionerId(), prescription.getUserId(), drugsList, prescription.getActive());
     }
 }

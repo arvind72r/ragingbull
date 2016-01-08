@@ -38,7 +38,7 @@ public interface ConsultationDao  {
                            @Bind("diagnosis") String diagnosis,
                            @Bind("userNotes") String userNotes);
 
-    @SqlUpdate("UPDATE CONSULTATION set active = false where id = :id")
+    @SqlUpdate("DELETE CONSULTATION where id = :id AND active = true")
     int deleteConsultation(@Bind("id") String id);
 
     @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = :userId and cn.active = true")
@@ -63,4 +63,9 @@ public interface ConsultationDao  {
     @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = consultee.id and consultee.parent_id = :userId and cn.active = false")
     List<Consultation> getPastMemberConsultations(@Bind("userId") String userId);
 
+    @SqlUpdate("UPDATE CONSULTATION set diagnosis = :diagnosis where id = :id")
+    int updateDiagnosis(@Bind("id") String id, @Bind("diagnosis") String diagnosis);
+
+    @SqlUpdate("UPDATE CONSULTATION set symptoms = :symptoms where id = :id")
+    int updateSymptom(@Bind("id") String id, @Bind("symptoms") String symptoms);
 }

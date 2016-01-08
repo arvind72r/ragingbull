@@ -35,23 +35,28 @@ public class PractitionerLocationResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(PractitionerLocationResource.class);
 
     private PractitionerLocationAccessService practitionerLocationAccessService;
-    private ConsultationService consultationService;
+
 
     @Inject
-    public PractitionerLocationResource(ConsultationService consultationService, PractitionerLocationAccessService practitionerLocationAccessService) {
-        this.consultationService = consultationService;
+    public PractitionerLocationResource(PractitionerLocationAccessService practitionerLocationAccessService) {
         this.practitionerLocationAccessService = practitionerLocationAccessService;
     }
 
     @GET
     @Path("/{locationId}")
     public Response getPractitionerLocation(@Auth Session session, @PathParam("locationId") String locationId) throws StorageException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Get Practitioner location: Fetching all location details id: %s. Request by: %s", locationId, session.getUserEmail()));
+        }
         return practitionerLocationAccessService.getPractitionerLocation(session, locationId);
     }
 
     @GET
     @Path("/{locationId}/users")
     public Response getUsers(@Auth Session session, @PathParam("locationId") String locationId) throws StorageException, ResourceCreationException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Get Practitioner location users: Fetching all users for a location id: %s. Request by: %s", locationId, session.getUserEmail()));
+        }
         Response response = practitionerLocationAccessService.getUsers(session, locationId);
         return response;
     }
@@ -59,6 +64,9 @@ public class PractitionerLocationResource {
     @GET
     @Path("/{locationId}/users/{userId}")
     public Response getUser(@Auth Session session, @PathParam("locationId") String locationId, @PathParam("userId") String userId) throws StorageException, ResourceCreationException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Get Practitioner location user: Fetching user for a location id: %s. User id: %s. Request by: %s", locationId, userId, session.getUserEmail()));
+        }
         Response response = practitionerLocationAccessService.getUser(session, locationId, userId);
         return response;
     }
@@ -66,14 +74,20 @@ public class PractitionerLocationResource {
     @PUT
     @Path("/{locationId}/users")
     public Response addUsers(@Auth Session session, @PathParam("locationId") String locationId, @Valid List<EntityUser> entityUsers) throws StorageException, ResourceCreationException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Create Practitioner location user: Creating a user for a location id: %s. Request by: %s", locationId, session.getUserEmail()));
+        }
         Response response = practitionerLocationAccessService.addUsers(session, locationId, entityUsers);
         return response;
     }
 
     @POST
     @Path("/{locationId}/consultation")
-    public ConsultationResponse addConsultation(@Auth Session session, @PathParam("locationId") String locationId,  @Valid Consultation consultation) throws StorageException, ResourceCreationException {
-        ConsultationResponse response = consultationService.createConsultation(session, locationId, consultation);
+    public Response addConsultation(@Auth Session session, @PathParam("locationId") String locationId,  @Valid Consultation consultation) throws StorageException, ResourceCreationException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Create Consultation: Creating consultation for a location id: %s. Request by: %s", locationId, session.getUserEmail()));
+        }
+        Response response = practitionerLocationAccessService.createConsultation(session, locationId, consultation);
         return response;
     }
 

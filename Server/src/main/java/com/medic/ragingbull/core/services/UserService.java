@@ -65,6 +65,9 @@ public class UserService {
     public Session register(User user) throws StorageException, ResourceCreationException, NotificationException,
             DuplicateEntityException {
         try {
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info(String.format("Register: Registering user. UserName: %s", user.getName()));
+            }
             user.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER));
 
             if (StringUtils.isBlank(user.getEmail())) {
@@ -103,6 +106,9 @@ public class UserService {
             user.setRole(UserRoles.Role.NATIVE_USER.getRoleBit());
 
             Session session = getSession(user);
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info(String.format("Register: Successfully registered user. UserName: %s", user.getName()));
+            }
             return session;
 
         } catch (UnableToExecuteStatementException re) {
@@ -123,6 +129,9 @@ public class UserService {
 
     public Session registerOAuth(User oauthUser) throws ResourceCreationException, StorageException {
         try {
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info(String.format("RegisterOAuth: Registering oauth user. UserName: %s", oauthUser.getName()));
+            }
             // Check if user is present already
             User user = userDao.getByEmail(oauthUser.getEmail());
 
@@ -143,6 +152,9 @@ public class UserService {
                 user = oauthUser;
             }
             Session session = getSession(user);
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info(String.format("RegisterOAuth: Successfully registerd oauth user. UserName: %s", oauthUser.getName()));
+            }
             return session;
         } catch (StorageException re) {
             throw re;

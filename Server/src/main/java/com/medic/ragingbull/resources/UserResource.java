@@ -66,20 +66,36 @@ public class UserResource {
     @GET
     @Path("/{id}/dashboard")
     public Response getUser(@Auth Session session, @PathParam("id") String userId) throws StorageException, ResourceUpdateException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("GetUser: Getting Dashboard. RequestBy: %s", session.getUserEmail()));
+        }
+
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
-        return userAccessService.getUserDashBoard(session, userId);
+
+        Response response =  userAccessService.getUserDashBoard(session, userId);
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("GetUser: Successfully gt Dashboard. RequestBy: %s", session.getUserEmail()));
+        }
+        return response;
     }
 
     @POST
     @Path("/{id}/member")
     public Response addMember(@Auth Session session, @PathParam("id") String userId, @Valid Member member) throws ResourceCreationException, StorageException, DuplicateEntityException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("AddMember: Received request to add member. MemberName: %s. RequestBy: %s", member.getName(), session.getUserEmail()));
+        }
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
-
         Response response = userAccessService.addMember(session, userId, member);
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("AddMember: Successfully created member. MemberName: %s.  RequestBy: %s", member.getName(), session.getUserEmail()));
+        }
         return response;
     }
 

@@ -42,10 +42,14 @@ public class AuthResource {
     @Path("/login")
     @POST
     public Response login(@Auth Session session) throws StorageException {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Logged in user with email %s", session.getUserEmail()));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Login: Logging in user. Request by: %s", session.getUserEmail()));
         }
         LoginResponse response = new LoginResponse(session.getToken(), session.getUserEmail(), session.getIsUserValid(), session.getExpiry());
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Login: Successfully logged in user. Request by: %s", session.getUserEmail()));
+        }
         return Response.ok().entity(response).cookie(new NewCookie(SystemConstants.SESSION_COOKIE_NAME, session.getToken())).build();
     }
 
@@ -60,7 +64,7 @@ public class AuthResource {
     @POST
     public Response getResetLink(@QueryParam("id") @Valid @Email String userEmail) throws StorageException {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Resetting password link for user with email %s", userEmail);
+            LOGGER.debug("Resetting password link for user. Request by: %s", userEmail);
         }
 
         PasswordReset reset = authService.resetPasswordLink(userEmail);
@@ -71,10 +75,13 @@ public class AuthResource {
     @POST
     public Response resetPassword(@PathParam("id") String resetId, @FormParam("userEmail") String userEmail, @FormParam("password") String password) throws StorageException {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Resetting password for user with email %s", userEmail);
+            LOGGER.debug("Reset Password: Resetting for user. Request by: %s", userEmail);
         }
-
         authService.resetPassword(resetId, userEmail, password);
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Reset Password: Success reset password for user. Request by: %s", userEmail);
+        }
         return Response.ok().build();
     }
 }

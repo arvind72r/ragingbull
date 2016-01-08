@@ -38,13 +38,11 @@ public class ConsultationService {
 
     private NotificationFactory notificationFactory;
     private ConsultationDao consultationDao;
-    private NotesDao notesDao;
     private TransactionalDao transactionalDao;
 
     @Inject
     public ConsultationService(ConsultationDao consultationDao, NotesDao notesDao, TransactionalDao transactionalDao, NotificationFactory notificationFactory) {
         this.consultationDao = consultationDao;
-        this.notesDao = notesDao;
         this.transactionalDao = transactionalDao;
         this.notificationFactory = notificationFactory;
     }
@@ -95,15 +93,7 @@ public class ConsultationService {
         }
     }
 
-    public ConsultationResponse getConsultations(Session session, String locationId) {
-        try {
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public Response deleteConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
+    public boolean deleteConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
         try {
             int consultationDeleted = consultationDao.deleteConsultation(consultationId);
             if (consultationDeleted == 0) {
@@ -111,7 +101,7 @@ public class ConsultationService {
                 throw new ResourceUpdateException(String.format("Error creating consultation with email %s", session.getUserEmail()));
             }
 
-            return Response.ok().build();
+            return true;
         } catch (ResourceUpdateException re) {
             LOGGER.error(String.format("Error deleting consultation with email %s. Exception: %s", session.getUserEmail(), re));
             throw re;
@@ -122,50 +112,7 @@ public class ConsultationService {
         }
     }
 
-    public Response createNotes(Session session, String consultationId, SystemConstants.NotesTypes type, String content) throws ResourceCreationException, StorageException {
-
-        try {
-            String notesId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.NOTES);
-            int notesCreated = notesDao.create(notesId, consultationId, type.toString(), content);
-            if (notesCreated == 0) {
-                LOGGER.error(String.format("Error creating notes notes with email %s", session.getUserEmail()));
-                throw new ResourceCreationException(String.format("Error creating consultation with email %s", session.getUserEmail()));
-            }
-
-            return Response.ok().entity(new Notes(notesId, consultationId, type, content)).build();
-        } catch (ResourceCreationException re) {
-            LOGGER.error(String.format("Error creating notes with email %s. Exception: %s", session.getUserEmail(), re));
-            throw re;
-        }
-        catch(Exception e) {
-            LOGGER.error(String.format("Error creating notes with email %s. Exception: %s", session.getUserEmail(), e));
-            throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
-        }
-    }
-
-    public Response deleteNote(Session session, String consultationId, String noteId) throws ResourceUpdateException, StorageException {
-        try {
-            int noteDeleted = notesDao.deleteNotes(consultationId, noteId);
-
-            if (noteDeleted == 0) {
-                LOGGER.error(String.format("Error deleting notes notes with email %s", session.getUserEmail()));
-                throw new StorageException(String.format("Error creating notes with email %s", session.getUserEmail()));
-            }
-
-            return Response.ok().build();
-        }
-        catch (StorageException re) {
-            LOGGER.error(String.format("Error deleting notes with email %s. Exception: %s", session.getUserEmail(), re));
-            throw re;
-        }
-        catch(Exception e) {
-            LOGGER.error(String.format("Error deleting notes with email %s. Exception: %s", session.getUserEmail(), e));
-            throw new ResourceUpdateException(String.format("Error creating notes with email %s", session.getUserEmail()));
-        }
-    }
-
-
-    public Response lockConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
+    public boolean lockConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
 
         try {
             // Lock Consultation, Prescription, Notes
@@ -179,7 +126,7 @@ public class ConsultationService {
             Consultation consultation = transactionalDao.getCompleteConsultation(consultationId);
             notificationFactory.notifyUser(userId, Notifiable.NotificationEvent.CONSULTATION_SUBMITTED, consultation);
 
-            return Response.ok().build();
+            return true;
         }
         catch (StorageException e) {
             LOGGER.error(String.format("Error locking consultation with consultationId: %s, email %s. Exception: %s", consultationId, session.getUserEmail(), e));
@@ -189,5 +136,17 @@ public class ConsultationService {
             LOGGER.error(String.format("Error locking consultation with consultationId: %s, email %s. Exception: %s", consultationId, session.getUserEmail(), e));
             throw new ResourceUpdateException(String.format("Error locking consultation"));
         }
+    }
+
+
+    public boolean updateNotes(Session session, String consultationId, SystemConstants.NotesTypes type, String note) {
+        if (type == SystemConstants.NotesTypes.DIAGNOSIS) {
+            // Update diagnosis
+            consultationDao.updateDiagnosis(consultationId, note);
+        } else if (type == SystemConstants.NotesTypes.SYMPTOMS) {
+            // Update symptoms
+            consultationDao.updateSymptom(consultationId, note);
+        }
+        return true;
     }
 }

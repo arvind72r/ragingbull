@@ -8,12 +8,10 @@ package com.medic.ragingbull.core.access.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.EntityUser;
-import com.medic.ragingbull.api.PractitionerLocation;
-import com.medic.ragingbull.api.PractitionerLocationResponse;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
+import com.medic.ragingbull.core.services.ConsultationService;
 import com.medic.ragingbull.core.services.PractitionerLocationService;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
@@ -26,10 +24,12 @@ import java.util.List;
  */
 public class PractitionerLocationAccessService {
     private PractitionerLocationService practitionerLocationService;
+    private ConsultationService consultationService;
 
     @Inject
-    public PractitionerLocationAccessService(PractitionerLocationService practitionerLocationService) {
+    public PractitionerLocationAccessService(PractitionerLocationService practitionerLocationService, ConsultationService consultationService) {
         this.practitionerLocationService = practitionerLocationService;
+        this.consultationService = consultationService;
     }
 
     public Response createPractitionerLocation(Session session, String practitionerId, PractitionerLocation practitionerLocation) throws StorageException {
@@ -70,6 +70,15 @@ public class PractitionerLocationAccessService {
             if (success) {
                 return Response.ok().build();
             }
+        }
+        return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
+    }
+
+
+    public Response createConsultation(Session session, String locationId, Consultation consultation) throws ResourceCreationException, StorageException {
+        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_ADD.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_ADD.getBitValue()) {
+            ConsultationResponse response = consultationService.createConsultation(session, locationId, consultation);
+            return Response.ok().entity(response).build();
         }
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
     }

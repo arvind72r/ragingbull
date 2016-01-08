@@ -20,8 +20,8 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 public interface PrescriptionDao {
 
 
-    @SqlQuery("SELECT * FROM prescription where id = :id")
-    Prescription getPrescription(@Bind("id") String id);
+    @SqlQuery("SELECT * FROM prescription where id = :id AND consultation_id = :consultationId")
+    Prescription getPrescription(@Bind("id") String id, @Bind("consultationId") String consultationId);
 
     @SqlUpdate("INSERT INTO prescription (id, consultation_id, practitioner_id, user_id ) " +
             "VALUES(:id, :consultationId, :practitionerId, :userId)")
@@ -32,4 +32,10 @@ public interface PrescriptionDao {
 
     @SqlUpdate("UPDATE PRESCRIPTION set active = false where id = :id")
     int deletePrescription(@Bind("id") String id);
+
+    @SqlQuery("SELECT * FROM prescription where id = :id")
+    Prescription getPrescription(@Bind("id") String id);
+
+    @SqlQuery("SELECT * FROM prescription where consultation_id = :consultationId")
+    Prescription getCurrentPrescription(@Bind("consultationId") String consultationId);
 }

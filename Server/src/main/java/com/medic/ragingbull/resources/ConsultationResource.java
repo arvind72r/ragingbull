@@ -11,6 +11,7 @@ import com.medic.ragingbull.api.ConsultationResponse;
 import com.medic.ragingbull.api.Prescription;
 import com.medic.ragingbull.api.PrescriptionResponse;
 import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.core.access.service.ConsultationAccessService;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.services.ConsultationService;
 import com.medic.ragingbull.core.services.PrescriptionService;
@@ -35,67 +36,70 @@ import javax.ws.rs.core.Response;
 public class ConsultationResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsultationResource.class);
 
-    private ConsultationService consultationService;
-    private PrescriptionService prescriptionService;
+    private ConsultationAccessService consultationAccessService;
 
     @Inject
-    public ConsultationResource(ConsultationService consultationService, PrescriptionService prescriptionService) {
-        this.consultationService = consultationService;
-        this.prescriptionService = prescriptionService;
-    }
-
-    @GET
-    public ConsultationResponse getConsultations(@Auth Session session, @PathParam("id") String locationId) throws StorageException {
-        ConsultationResponse response = consultationService.getConsultations(session, locationId);
-        return response;
+    public ConsultationResource(ConsultationAccessService consultationAccessService) {
+        this.consultationAccessService = consultationAccessService;
     }
 
     @GET
     @Path("/{consultationId}")
-    public ConsultationResponse getConsultation(@Auth Session session, @PathParam("consultationId") String consultationId) throws StorageException {
-        ConsultationResponse response = consultationService.getConsultation(session, consultationId);
+    public Response getConsultation(@Auth Session session, @PathParam("consultationId") String consultationId) throws StorageException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Get Consultation: Fetching consultation details id: %s. Request by: %s", consultationId, session.getUserEmail()));
+        }
+        Response response = consultationAccessService.getConsultation(session, consultationId);
         return response;
     }
 
-    @POST
+    @PUT
     @Path("/{consultationId}/notes/{type}")
-    public Response addNotes(@Auth Session session,  @PathParam("consultationId") String consultationId, @PathParam("type") SystemConstants.NotesTypes type, String content) throws StorageException, ResourceCreationException {
-        Response response = consultationService.createNotes(session, consultationId, type, content);
-        return response;
-    }
-
-    @DELETE
-    @Path("/{consultationId}/notes/{noteId}")
-    public Response deleteNotes(@Auth Session session,  @PathParam("consultationId") String consultationId, @PathParam("noteId") String noteId) throws StorageException, ResourceCreationException, ResourceUpdateException {
-        Response response = consultationService.deleteNote(session, consultationId, noteId);
+    public Response addNotes(@Auth Session session, @PathParam("consultationId") String consultationId, @PathParam("type") SystemConstants.NotesTypes type, String note) throws StorageException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Get Consultation: Fetching consultation details id: %s. Request by: %s", consultationId, session.getUserEmail()));
+        }
+        Response response = consultationAccessService.addNotes(session, consultationId, type, note);
         return response;
     }
 
     @DELETE
     @Path("/{consultationId}")
     public Response deleteConsultation(@Auth Session session,  @PathParam("consultationId") String consultationId) throws StorageException, ResourceUpdateException {
-        Response response = consultationService.deleteConsultation(session, consultationId);
-        return response;
-    }
-
-    @GET
-    @Path("/{consultationId}/prescription/{prescriptionId}")
-    public PrescriptionResponse getPrescription(@Auth Session session, @PathParam("consultationId") String consultationId, @PathParam("prescriptionId") String prescriptionId) throws StorageException, ResourceFetchException {
-        PrescriptionResponse response = prescriptionService.getPrescription(session, prescriptionId);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Delete Consultation: Deleting consultation id: %s. Request by: %s", consultationId, session.getUserEmail()));
+        }
+        Response response = consultationAccessService.deleteConsultation(session, consultationId);
         return response;
     }
 
     @POST
     @Path("/{consultationId}/prescription")
-    public PrescriptionResponse createPrescription(@Auth Session session, @PathParam("consultationId") String consultId, @Valid Prescription prescription) throws StorageException, ResourceCreationException {
-        PrescriptionResponse response = prescriptionService.createPrescription(session, consultId, prescription);
+    public Response createPrescription(@Auth Session session, @PathParam("consultationId") String consultationId, @Valid Prescription prescription) throws StorageException, ResourceCreationException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Create Prescription: Creating prescription. Consultation id: %s. Request by: %s", consultationId, session.getUserEmail()));
+        }
+        Response response = consultationAccessService.createPrescription(session, consultationId, prescription);
+        return response;
+    }
+
+    @GET
+    @Path("/{consultationId}/prescription")
+    public Response getCurrentPrescription(@Auth Session session, @PathParam("consultationId") String consultationId) throws StorageException, ResourceCreationException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Create Prescription: Creating prescription. Consultation id: %s. Request by: %s", consultationId, session.getUserEmail()));
+        }
+        Response response = consultationAccessService.getCurrentPrescription(session, consultationId);
         return response;
     }
 
     @POST
     @Path("/{consultationId}/lock")
     public Response lockConsultation(@Auth Session session,  @PathParam("consultationId") String consultationId) throws StorageException, ResourceCreationException, ResourceUpdateException {
-        Response response = consultationService.lockConsultation(session, consultationId);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Lock Consultation: Locking consultation. Consultation id: %s. Request by: %s", consultationId, session.getUserEmail()));
+        }
+        Response response = consultationAccessService.lockConsultation(session, consultationId);
         return response;
     }
 }

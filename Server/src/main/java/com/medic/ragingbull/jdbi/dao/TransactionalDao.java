@@ -7,11 +7,12 @@
 package com.medic.ragingbull.jdbi.dao;
 
 import com.medic.ragingbull.api.Consultation;
+import com.medic.ragingbull.api.Drug;
+import com.medic.ragingbull.jdbi.mapper.BindDrug;
 import org.skife.jdbi.v2.exceptions.TransactionException;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
-import org.skife.jdbi.v2.sqlobject.Transaction;
+import org.skife.jdbi.v2.sqlobject.*;
+
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti
@@ -150,6 +151,45 @@ public abstract class TransactionalDao {
         Consultation consultation = getConsultation(consultationId);
         return consultation;
     }
+
+    @Transaction
+    public boolean createPrescription(String prescriptionId, String consultationId, String practitionerId, String userId, List<Drug> drugs) {
+        // Create prescription
+        int prescriptionCreated = createPrescription(prescriptionId, consultationId, practitionerId, userId);
+
+        if (prescriptionCreated == 0) {
+            throw new TransactionException("Unable to create prescription");
+        }
+        // Create drugs for the prescription
+        int[] drugsCreated = createDrugs(drugs);
+        if (drugsCreated.length != drugs.size()) {
+            throw new TransactionException("Unable to create drugs");
+        }
+        return true;
+    }
+
+    /*
+             _____  _____ _       _____                 _
+            /  ___||  _  | |     |  _  |               (_)
+            \ `--. | | | | |     | | | |_   _  ___ _ __ _  ___  ___
+             `--. \| | | | |     | | | | | | |/ _ \ '__| |/ _ \/ __|
+            /\__/ /\ \/' / |____ \ \/' / |_| |  __/ |  | |  __/\__ \
+            \____/  \_/\_\_____/  \_/\_\\__,_|\___|_|  |_|\___||___/
+
+
+     */
+
+
+    @SqlBatch("INSERT INTO PRESCRIPTION_DRUG (id, consultation_id, user_id, practitioner_id, prescription_id, name, frequency, schedule, dose, unit, days) " +
+            "VALUES (:id, :consultationId, :userId, :practitionerId, :prescriptionId, :name, :frequency, :schedule, :dose, :unit, :days)")
+    protected  abstract int[] createDrugs(@BindDrug List<Drug> drugs);
+
+    @SqlUpdate("INSERT INTO prescription (id, consultation_id, practitioner_id, user_id ) " +
+            "VALUES(:id, :consultationId, :practitionerId, :userId)")
+    protected  abstract int createPrescription(@Bind("id") String id,
+            @Bind("consultationId") String consultationId,
+            @Bind("practitionerId") String practitionerId,
+            @Bind("userId") String userId);
 
     @SqlQuery("")
     protected abstract Consultation getConsultation(String consultationId);

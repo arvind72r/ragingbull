@@ -15,14 +15,10 @@ import java.util.List;
  * Created by Vamshi Molleti
  */
 public class DashBoard {
-    @JsonProperty
     private User user;
-
-    @JsonProperty
     private Member member;
-
-    @JsonProperty
     private Practitioner practitioner;
+
     private Pharmacist pharmacist;
 
     private class User {

@@ -44,8 +44,8 @@ public class PractitionerResource {
 
     @GET
     public Response getPractitioners(@Auth Session session) throws StorageException {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Fetching all practitioners in system. Request by: %s", session.getUserEmail()));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Fetching all practitioners in system. Request by: %s", session.getUserEmail()));
         }
         Response response = practitionerAccessService.getPractitioners(session);
         return response;
@@ -54,26 +54,37 @@ public class PractitionerResource {
     @GET
     @Path("/{id}")
     public Response getPractitioner(@Auth Session session, @PathParam("id") String practitionerId) throws StorageException, ResourceCreationException {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Fetching practitioner id: %s. Request by: %s", practitionerId, session.getUserEmail()));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Get Practitioner: Fetching practitioner details id: %s. Request by: %s", practitionerId, session.getUserEmail()));
         }
         return practitionerAccessService.getPractitioner(session, practitionerId);
     }
 
     @POST
     public Response createPractitioner(@Auth Session session, @Valid Practitioner practitioner) throws StorageException, ResourceCreationException, DuplicateEntityException {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Creating practitioner. Request by: %s", session.getUserEmail()));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Create Practitioner: Received request to create practitioner. Request by: %s", session.getUserEmail()));
         }
-        return practitionerAccessService.createPractitioner(session, practitioner);
+
+        Response response = practitionerAccessService.createPractitioner(session, practitioner);
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Create Practitioner: Successfully created practitioner. Request by: %s", session.getUserEmail()));
+        }
+        return response;
     }
 
     @POST
     @Path("/{id}/location")
     public Response addPractitionerLocation(@Auth Session session, @PathParam("id") String practitionerId,  @Valid PractitionerLocation practitionerLocation) throws StorageException {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Creating practitioner location. PractitionerId: %s, UserEmail: %s.", practitionerId, session.getUserEmail()));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Creating practitioner location: Received request to create practitioner location. PractitionerId: %s. Request by: %s", practitionerId, session.getUserEmail()));
         }
-        return practitionerLocationAccessService.createPractitionerLocation(session, practitionerId, practitionerLocation);
+        Response response  = practitionerLocationAccessService.createPractitionerLocation(session, practitionerId, practitionerLocation);
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Creating practitioner location: Successfully created practitioner location. PractitionerId: %s. Request by: %s", practitionerId, session.getUserEmail()));
+        }
+        return response;
     }
 }

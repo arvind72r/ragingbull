@@ -48,14 +48,26 @@ public class RegistrationResource {
 
     @POST
     public Response registerUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException, DuplicateEntityException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("RegisterUser: Registering a new user. UserName: %s", user.getName());
+        }
         Response response = userAccessService.register(user);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("RegisterUser: Successfully registered user. UserName: %s", user.getName());
+        }
         return response;
     }
 
     @POST
     @Path("/oauth")
     public Response registerOAuthUser(@Valid User user) throws StorageException, NotificationException, ResourceCreationException, DuplicateEntityException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("RegisterOAuthUser: Registering a new oauth user. UserName: %s. InletType: %s", user.getName(), user.getInletType());
+        }
         Response response = userAccessService.registerOAuth(user);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("RegisterOAuthUser: Registering a new oauth user. UserName: %s. InletType: %s", user.getName(), user.getInletType());
+        }
         return response;
     }
 
