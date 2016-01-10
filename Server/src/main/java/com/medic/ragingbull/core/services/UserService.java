@@ -400,7 +400,7 @@ public class UserService {
     public DashBoard getDashBoard(Session session, String userId) {
 
         DashBoard dash = new DashBoard();
-        if ((session.getUserRole().getRoleBit() & UserRoles.Role.NATIVE_USER.getRoleBit()) == UserRoles.Role.NATIVE_USER.getRoleBit()) {
+        if ((session.getRole() & UserRoles.Role.NATIVE_USER.getRoleBit()) == UserRoles.Role.NATIVE_USER.getRoleBit()) {
             // User
             // Add current consultations
             List<Consultation> currentConsultations = consultationDao.getActiveConsultations(userId);
@@ -419,7 +419,7 @@ public class UserService {
             dash.getMemberPast().addAll(pastMemberConsultations);
         }
 
-        if ((session.getUserRole().getRoleBit() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) {
+        if ((session.getRole() & UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) == UserRoles.Role.NATIVE_PRACTITIONER.getRoleBit()) {
             // Doctor
             // Dashboard will current consultations
             List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations(userId);

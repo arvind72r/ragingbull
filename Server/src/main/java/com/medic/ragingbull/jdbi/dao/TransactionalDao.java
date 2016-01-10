@@ -72,6 +72,12 @@ public abstract class TransactionalDao {
             throw new TransactionException("Unable to update user role");
         }
 
+        //Update user sessions
+        int roleUpdated = updateSessionByUserId( userId, role);
+        if (roleUpdated == 0) {
+            throw new TransactionException("Unable to update user role");
+        }
+
         return true;
     }
 

@@ -59,7 +59,7 @@ public class ConsultationAccessService {
     }
 
     public Response createPrescription(Session session, String consultationId, Prescription prescription) throws ResourceCreationException, StorageException {
-        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD.getBitValue()) != UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD.getBitValue()) {
+        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD.getBitValue()) {
             PrescriptionResponse response = prescriptionService.createPrescription(session, consultationId, prescription);
             return Response.ok().entity(response).build();
         }

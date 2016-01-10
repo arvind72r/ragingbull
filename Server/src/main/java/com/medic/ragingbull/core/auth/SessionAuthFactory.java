@@ -81,9 +81,9 @@ public class SessionAuthFactory<T> extends AuthFactory<String, Session> {
                     .build());
         }
 
-        String sessionHeader = request.getHeader(javax.ws.rs.core.HttpHeaders.AUTHORIZATION);
+        String sessionAuthHeader = request.getHeader(javax.ws.rs.core.HttpHeaders.AUTHORIZATION);
 
-        String sessionAuthHeader = request.getHeader(AUTH_HEADER_NAME);
+        String sessionHeader = request.getHeader(AUTH_HEADER_NAME);
 
 
         final boolean sessionHeaderValid = !Strings.isNullOrEmpty(sessionHeader)&& !sessionHeader.toLowerCase().equals("false");

@@ -33,7 +33,6 @@ public class EntityUser {
     @JsonProperty
     private String userId;
 
-
     private List<UserRoles.Permissions> permissions;
 
     @JsonIgnore
