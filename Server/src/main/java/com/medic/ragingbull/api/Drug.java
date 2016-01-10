@@ -76,6 +76,15 @@ public class Drug {
 
     public Drug() {};
 
+    public Drug(String name, Integer frequency, Dosage.Schedule schedule, Integer dose, String unit, Integer days) {
+        this.name = name;
+        this.frequency = frequency;
+        this.schedule = schedule;
+        this.dose = dose;
+        this.unit = unit;
+        this.days = days;
+    }
+
     public Drug(String id, String consultationId, String practitionerId, String prescriptionId, String userId, String name, Integer frequency, Dosage.Schedule schedule, Integer dose, String unit, Integer days, Boolean active, DateTime createdAt, DateTime updatedAt) {
         this.id = id;
         this.consultationId = consultationId;

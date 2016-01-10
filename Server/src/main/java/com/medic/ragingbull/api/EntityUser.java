@@ -33,7 +33,7 @@ public class EntityUser {
     @JsonProperty
     private String userId;
 
-    @NotNull(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+
     private List<UserRoles.Permissions> permissions;
 
     @JsonIgnore

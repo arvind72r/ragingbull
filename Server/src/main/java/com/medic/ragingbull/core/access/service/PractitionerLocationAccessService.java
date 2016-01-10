@@ -33,7 +33,7 @@ public class PractitionerLocationAccessService {
     }
 
     public Response createPractitionerLocation(Session session, String practitionerId, PractitionerLocation practitionerLocation) throws StorageException {
-        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_ADD.getBitValue()) != UserRoles.Permissions.PRACTITIONER_LOCATION_ADD.getBitValue()) {
+        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_ADD.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_ADD.getBitValue()) {
             PractitionerLocationResponse response = practitionerLocationService.createPractitionerLocation(session, practitionerId, practitionerLocation);
             return Response.ok().entity(response).build();
         }

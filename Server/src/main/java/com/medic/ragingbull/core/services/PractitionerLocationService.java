@@ -95,7 +95,7 @@ public class PractitionerLocationService {
             return response;
 
         } catch (Exception e) {
-            LOGGER.error(String.format("Error creating a practitioner location with email %s, locationId: %s", session.getUserEmail(), practitionerId));
+            LOGGER.error(String.format("Error creating a practitioner location with email %s, locationId: %s, Exception: %s", session.getUserEmail(), practitionerId, e));
             throw new StorageException(String.format("Error creating practitioner location with emailId %s", session.getUserEmail()));
         }
     }
@@ -114,6 +114,7 @@ public class PractitionerLocationService {
             permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_ADD);
             permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY);
             permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_DELETE);
+            permissionsList.add(UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_PRESCRIPTION_ADD);
 
             Long userRole = userRoleGenerator.generateRole(user.getRole(), permissionsList);
             entityUser.setId(entityId);

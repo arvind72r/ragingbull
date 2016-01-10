@@ -81,4 +81,7 @@ public class TestUtils {
     }
 
 
+    public static void assertEquals(int expected, int actual) {
+        Assert.assertEquals(expected, actual);
+    }
 }

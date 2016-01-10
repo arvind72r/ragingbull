@@ -19,6 +19,14 @@ public class Dosage {
             this.bitValue = i;
         }
 
+        public static Schedule generateSchedule(Integer bitValue) {
+            for (Schedule schedule : values()) {
+                if (schedule.bitValue.equals(bitValue) ){
+                    return schedule;
+                }
+            }
+            return null;
+        }
         public Integer getBitValue() {
             return bitValue;
         }

@@ -117,6 +117,7 @@ public interface TestConstants {
      */
 
     String TEST_SYMPTOMS = "Test Symptom";
+    String SYMPTOMS = "Test Symptoms %d. a) Test Symptoms A b) Test Symptoms B c) Test Symptoms C";
     String TEST_DIAGNOSIS = "Test Diagnosis";
     // URLS
     String BASE_URL = "http://localhost:8080";
@@ -147,8 +148,23 @@ public interface TestConstants {
     String PRACTITIONER_LOCATION_ADD_CONSULTATION = BASE_URL + "/location/%s/consultation";
     String CONSULTATION_UPDATE_NOTES = BASE_URL + "/consultation/%s/notes/%s";
     String CONSULTATION_GET = BASE_URL + "/consultation/%s";
-    String CONSULTATION_GET_CURRENT_PRESCRIPTION = BASE_URL + "/consultation/%s";
+    String PRESCRIPTION_ADD = BASE_URL + "/consultation/%s/prescription";
+    String CONSULTATION_GET_CURRENT_PRESCRIPTION = BASE_URL + "/consultation/%s/prescription";
 
+    /*
+    ______                        _       _   _
+    | ___ \                      (_)     | | (_)
+    | |_/ / __ ___  ___  ___ _ __ _ _ __ | |_ _  ___  _ __
+    |  __/ '__/ _ \/ __|/ __| '__| | '_ \| __| |/ _ \| '_ \
+    | |  | | |  __/\__ \ (__| |  | | |_) | |_| | (_) | | | |
+    \_|  |_|  \___||___/\___|_|  |_| .__/ \__|_|\___/|_| |_|
+                                   | |
+                                   |_|
+    */
 
-    String SYMPTOMS = "Test Symptoms %d. a) Test Symptoms A b) Test Symptoms B c) Test Symptoms C";
+    String NAME = "Test Drug %d";
+    Integer FREQUENCY = 1;
+    Integer DOSE = 1;
+    String UNIT = "Test Allergy %d";
+    Integer DAYS = 1;
 }

@@ -77,6 +77,12 @@ public class Prescription {
         this.updatedAt = updatedAt;
     }
 
+    public Prescription(String consultationId, String userId, List<Drug> drugs) {
+        this.consultationId = consultationId;
+        this.userId = userId;
+        this.drugs = drugs;
+    }
+
     public String getId() {
         return id;
     }

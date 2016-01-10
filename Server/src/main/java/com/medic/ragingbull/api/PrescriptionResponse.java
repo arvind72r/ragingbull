@@ -37,6 +37,8 @@ public class PrescriptionResponse {
     @JsonProperty
     private Boolean active;
 
+    public PrescriptionResponse() {};
+
     public PrescriptionResponse(String id, String consultationId, String practitionerId, String userId, List<Drug> drugs, Boolean active) {
         this.id = id;
         this.consultationId = consultationId;

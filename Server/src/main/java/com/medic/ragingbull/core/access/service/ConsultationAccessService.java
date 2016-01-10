@@ -86,7 +86,7 @@ public class ConsultationAccessService {
     public Response addNotes(Session session, String consultationId, SystemConstants.NotesTypes type, String note) {
         if (type == SystemConstants.NotesTypes.DIAGNOSIS) {
             // The requester needs to have Consultation MODIFY permission
-            if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) != UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) {
+            if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
         }
