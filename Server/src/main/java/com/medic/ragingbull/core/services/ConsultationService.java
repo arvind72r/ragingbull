@@ -82,9 +82,7 @@ public class ConsultationService {
             Consultation consultation = consultationDao.getConsultationDetails(consultationId);
 
             if (consultation == null) {
-                ConsultationResponse response = new ConsultationResponse();
-                response.setStatus(HttpStatus.SC_BAD_REQUEST);
-                return response;
+                return null;
             }
             return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive(), consultation.getUserName(), consultation.getUserAge(), consultation.getUserPhone(), consultation.getPractitionerName());
         } catch(Exception e) {

@@ -106,6 +106,18 @@ public interface TestConstants {
     String TEST_PRACTITIONER_LOCATION_LICENSE = "Test License %d";
     String TEST_PRACTITIONER_LOCATION_LANDMARK = "Test Landmark %d";
 
+    /*
+     _____                       _ _        _   _
+    /  __ \                     | | |      | | (_)
+    | /  \/ ___  _ __  ___ _   _| | |_ __ _| |_ _  ___  _ __
+    | |    / _ \| '_ \/ __| | | | | __/ _` | __| |/ _ \| '_ \
+    | \__/\ (_) | | | \__ \ |_| | | || (_| | |_| | (_) | | | |
+     \____/\___/|_| |_|___/\__,_|_|\__\__,_|\__|_|\___/|_| |_|
+
+     */
+
+    String TEST_SYMPTOMS = "Test Symptom";
+    String TEST_DIAGNOSIS = "Test Diagnosis";
     // URLS
     String BASE_URL = "http://localhost:8080";
 
@@ -133,6 +145,9 @@ public interface TestConstants {
     String PRACTITIONER_LOCATION_GET_USERS = BASE_URL + "/location/%s/users";
 
     String PRACTITIONER_LOCATION_ADD_CONSULTATION = BASE_URL + "/location/%s/consultation";
+    String CONSULTATION_UPDATE_NOTES = BASE_URL + "/consultation/%s/notes/%s";
+    String CONSULTATION_GET = BASE_URL + "/consultation/%s";
+    String CONSULTATION_GET_CURRENT_PRESCRIPTION = BASE_URL + "/consultation/%s";
 
 
     String SYMPTOMS = "Test Symptoms %d. a) Test Symptoms A b) Test Symptoms B c) Test Symptoms C";

@@ -34,9 +34,13 @@ public class ConsultationAccessService {
         this.prescriptionService = prescriptionService;
         this.consultationService = consultationService;
     }
+
     public Response getConsultation(Session session, String consultationId) throws StorageException {
         if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_READ.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_READ.getBitValue()) {
             ConsultationResponse response = consultationService.getConsultation(session, consultationId);
+            if (response == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity(response).build();
+            }
             return Response.ok().entity(response).build();
         }
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
@@ -63,7 +67,7 @@ public class ConsultationAccessService {
     }
 
     public Response lockConsultation(Session session, String consultationId) throws ResourceUpdateException, StorageException {
-        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_ADD.getBitValue()) != UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_ADD.getBitValue()) {
+        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) {
             boolean success = consultationService.lockConsultation(session, consultationId);
             if (success) {
                 return Response.ok().build();
@@ -80,12 +84,21 @@ public class ConsultationAccessService {
     }
 
     public Response addNotes(Session session, String consultationId, SystemConstants.NotesTypes type, String note) {
-        boolean success = consultationService.updateNotes(session, consultationId, type, note);
-        if (success) {
-            return Response.ok().build();
-        } else {
-            return Response.serverError().build();
-
+        if (type == SystemConstants.NotesTypes.DIAGNOSIS) {
+            // The requester needs to have Consultation MODIFY permission
+            if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) != UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         }
+        if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_READ.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_READ.getBitValue()) {
+            boolean success = consultationService.updateNotes(session, consultationId, type, note);
+            if (success) {
+                return Response.ok().build();
+            } else {
+                return Response.serverError().build();
+
+            }
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 }

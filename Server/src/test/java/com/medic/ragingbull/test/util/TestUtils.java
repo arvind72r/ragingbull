@@ -49,6 +49,9 @@ public class TestUtils {
         Assert.assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
     }
 
+    public static void assertNotFound(Response response) {
+        Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+    }
     public static void assertMissingMandatory(Response response) {
         Assert.assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
     }
@@ -76,4 +79,6 @@ public class TestUtils {
     public static void assertTrue(boolean value) {
         Assert.assertTrue(value);
     }
+
+
 }

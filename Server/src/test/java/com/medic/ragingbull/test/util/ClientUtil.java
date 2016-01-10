@@ -66,6 +66,9 @@ public class ClientUtil {
     public static Response postRequestBasicAuthFormData(String userName, String password, String url, Optional<MultivaluedMap<String,String>> queryParams, Optional<MultivaluedMap<String, String>> formParams, Object... pathParams) {
         return getWebResourceBasicAuth(of(userName), of(password), url, queryParams, of(MediaType.APPLICATION_FORM_URLENCODED_TYPE), pathParams).accept(MediaType.MEDIA_TYPE_WILDCARD).post(Entity.entity(formParams.get(), MediaType.APPLICATION_FORM_URLENCODED));
     }
+    public static Response deleteRequestWithAuth(String authToken, String url, Optional<MultivaluedMap<String,String>> queryParams, Object... pathParams) {
+        return getWebResource(of(authToken), url, queryParams, DEFAULT_TYPE, pathParams).delete();
+    }
 
     private static Client getClient() {
         Client client = ClientBuilder.newClient();
@@ -150,7 +153,4 @@ public class ClientUtil {
 
         return builder;
     }
-
-
-
 }
