@@ -53,7 +53,7 @@ public class ConsultationResource {
         return response;
     }
 
-    @PUT
+    @POST
     @Path("/{consultationId}/notes/{type}")
     public Response addNotes(@Auth Session session, @PathParam("consultationId") String consultationId, @PathParam("type") SystemConstants.NotesTypes type, String note) throws StorageException {
         if (LOGGER.isInfoEnabled()) {
