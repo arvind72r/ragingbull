@@ -1,0 +1,41 @@
+<div class="registerScreen">
+	<div class="container">
+		<div class="row registerSection">
+			<div class="row">
+				<div class="col-xs-5">Mobile #</div>
+				<div class="col-xs-7">{{phone}}</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Full Name</div>
+				<div class="col-xs-6">
+					<input type="text" class="form-control" error="nameError" name="newName" id="newName" placeholder="Full Name" value="{{name}}">
+					<div class="errorText" id="nameError"></div>
+				</div>
+				<div class="col-xs-1 updateSuccesful" id="nameUpdated"><img src="http://localhost:9090/app/www/images/green-tick.png"/></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Email Id</div>
+				<div class="col-xs-6">
+					<input type="email" class="form-control" error="emailError" name="newEmail" id="newEmail" placeholder="Full Name" value="{{email}}">
+					<div class="errorText" id="emailError"></div>
+				</div>
+				<div class="col-xs-1 updateSuccesful" id="emailUpdated"><img src="http://localhost:9090/app/www/images/green-tick.png"/></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Date of Birth</div>
+				<div class="col-xs-7">{{dob}}</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Sex</div>
+				<div class="col-xs-7">{{sex}}</div>
+			</div>
+			<div class="row">
+				<button type="button" class="btn primary changePwd btn-default navbar-btn pull-left"><a href="javascript:void(0)">Change Password</a></button>
+			</div>
+		</div>
+		<div class="sectionDividerBorder"></div>
+		
+		<div class="clear" style="clear:both;"></div>
+	</div>
+
+</div>

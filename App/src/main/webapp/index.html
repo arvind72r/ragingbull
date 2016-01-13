@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+	<meta http-equiv="Content-Type" content="text/html;" charset="utf-8">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="www-built/css/lib/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="www/css/app.css">
+</head>
+<body>
+
+	<div id="container"></div>
+	<div id="modalScreen"></div>
+	<div id="overlay"></div>
+
+	<script src="www/js/lib/requirejs/require.js"></script>
+
+	<script type="text/javascript">
+		var config = {};
+
+		config.userSession = false;
+		config.root = 'http://130.211.246.102:8080';
+		config.nextPage = '';
+		config.memberForCons = '';
+		config.desiredCons = '';
+
+		require(["www/js/config/requireConfig"], function (common) {
+	        //@todo: make a common-webroot instead of over riding build config 
+	        requirejs.config({
+	            baseUrl: "www/js"
+	        });
+	        require(["app"]);
+	    });
+
+	</script>
+
+</body>
+</html>

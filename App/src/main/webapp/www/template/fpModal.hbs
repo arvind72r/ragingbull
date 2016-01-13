@@ -1,0 +1,31 @@
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header popUpTitle">
+                <div class="title">Forgot Password</div>
+                <span class="cross"></span>
+            </div>
+            <div class="modal-body robotoregular">
+                <div class="row">
+                    <div class="col-xs-12">In order to retreive your password please provide your username.</div>
+                </div>
+                <div class="row" id="fpError" style="display:none;">
+                    <div class="col-xs-12">
+                        <div class="errorText"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 phoneContainer">
+                        <div class="phoneText">+91</div>
+                        <input type="tel" class="form-control phone" error="phoneError" data-prop="phone" name="phone" id="fpPhone" placeholder="Phone No." maxlength="10">
+                        <div class="errorText" id="phoneError"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer robotolight">
+                <button type="button" class="btn secondary btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn primary btn-default fpSend">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

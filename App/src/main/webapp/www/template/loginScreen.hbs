@@ -1,0 +1,47 @@
+<div class="loginScreen">
+	<h3 class="header login-header">Sign In</h3>
+	<div class="container">
+		<div class="row loginSection">
+			<div class="col-xs-12 col-sm-6">
+				<div class="col-xs-12">New to this? <a href="#register">Sign Up here</a></div>
+
+				<div class="userDetails pull-left">
+					<div class="col-xs-12 errorText globalError"></div>
+					<div class="col-xs-10">
+						<input type="text" class="form-control" name="userId" id="userId" placeholder="User Id">
+					</div>
+					<div class="col-xs-10">
+						<input maxlength="20" size="25" name="userPassword" id="password" class="form-control" type="password" value="" autocomplete="off" placeholder="Password">
+					</div>
+					<div class="col-xs-2"><span class="glyphicon glyphicon-expand signInAction" aria-hidden="true"></span></div>
+					<div class="col-xs-10 text-right"><a href="javascript:void(0)" class="fpLink">Forgot Password?</a></div>
+				</div>
+			</div>
+
+			<div class="sectionVerticalDivider hidden-xs col-sm-1">
+				<div class="divider"></div>
+				<span class="divider-text">OR</span>
+			</div>
+
+			<div class="sectionDivider col-xs-12 hidden-sm hidden-md hidden-lg">
+	    		<span>Or</span>
+			</div>
+
+			<div class="col-xs-12 col-sm-5">
+				<div class="col-xs-12 signup-other">
+					<a href="/customer/account/googlesignin/callback/" class="signup-g">
+						<small></small><span>sign in with google</span>
+					</a>
+					<a href="/customer/account/fbsignin/" class="signup-fb">
+						<small></small><span>sign in with facebook</span>
+					</a>
+				</div>
+			</div>
+
+			<div class="sectionDividerBorder"></div>
+
+		
+			<div class="clear" style="clear:both;"></div>
+		</div>
+	</div>
+</div>

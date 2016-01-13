@@ -1,0 +1,76 @@
+<div class="registerScreen">
+	<h3 class="header login-header">Registration</h3>
+	<div class="container">
+		<form name="register">
+		<div class="row registerSection">
+			<div class="row">
+				<div class="col-xs-5">Mobile #</div>
+				<div class="col-xs-7 phoneContainer">
+					<div class="phoneText">+91</div>
+					<input type="tel" class="form-control phone" error="phoneError" data-prop="phone" name="phone" id="phone" placeholder="Phone No." maxlength="10">
+					<div class="errorText" id="phoneError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Full Name</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control" error="nameError" name="name" id="name" placeholder="Full Name">
+					<div class="errorText" id="nameError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Date of Birth</div>
+				<div class="col-xs-7">
+					<input type="date" class="form-control dob" error="dobError" name="dob" id="dob" placeholder="DOB">
+					<div class="errorText" id="dobError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Sex</div>
+				<div class="col-xs-7">
+					<div class="select_style">
+						<select id="sex" name="sex" error="sexError">
+							<option value="">Select</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
+						</select>
+						<span></span>
+					</div>
+					<div class="errorText" id="sexError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Email Id</div>
+				<div class="col-xs-7">
+					<input type="email" class="form-control" error="emailError" data-prop="email" name="email" id="email" placeholder="Email Id">
+					<div class="errorText" id="emailError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Password</div>
+				<div class="col-xs-7">
+					<input name="password" error="pwdError" id="password" class="form-control" type="password" value="" autocomplete="off" placeholder="Password" maxlength="16">
+					<div class="errorText" id="pwdError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Confirm Password</div>
+				<div class="col-xs-7">
+					<input name="userRePassword" id="rePassword" error="rePwdError" class="form-control" type="password" value="" autocomplete="off" placeholder="Retype Password" maxlength="16">
+					<div class="errorText" id="rePwdError"></div>
+				</div>
+			</div>
+		</div>
+		</form>
+		<div class="sectionDividerBorder"></div>
+
+		<div class="registerAction">
+			<div class="regError errorText" style="display:none;"></div>
+			<button type="button" class="btn secondary backtoSign btn-default navbar-btn pull-left"><a href="javascript:void(0)">Back to Log In</a></button>
+			<button type="button" class="btn primary signUp btn-default navbar-btn pull-right"><a href="javascript:void(0)">Sign Up</a></button>
+		</div>
+
+		
+		<div class="clear" style="clear:both;"></div>
+	</div>
+</div>

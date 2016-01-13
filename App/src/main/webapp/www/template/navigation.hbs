@@ -1,0 +1,52 @@
+<h3 class="header login-header">My Dashboard</h3>
+
+<button type="button" id="sidebar-toggle" class="navbar-toggle collapsed custom">
+  <span class="sr-only">Toggle navigation</span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</button>
+
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <div class="welcomeContainer">
+            <div class="welcomeText">Welcome</div>
+            <div class="userName">{{name}}</div>
+        </div>
+        <ul class="sidebar-nav">
+            {{#unless userVerified}}
+                <li class="verifyPhone">
+                    <a href="javascript:void(0)">Verify Phone</a>
+                    <div></div>
+                </li>
+            {{/unless}}
+            <li class="active dashboard">
+                <a href="#dashboard">Home</a>
+                <div></div>
+            </li>
+            <li class="profile">
+                <a href="#profile">Profile</a>
+                <div></div>
+            </li>
+            <li class="myMember">
+                <a href="#myMember">My Members</a>
+                <div></div>
+            </li>
+            <li class="createConsultation">
+                <a href="#createConsultation">Create Consultation</a>
+                <div></div>
+            </li>
+            <li class="logout">
+                <a href="javascript:void(0);" id="logout">Logout</a>
+                <div></div>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="mainView" id=""></div>
+    </div>
+</div>

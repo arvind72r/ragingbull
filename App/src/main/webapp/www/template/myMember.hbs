@@ -1,0 +1,28 @@
+{{#if members}}
+	<div class="registerScreen">
+		<div class="container">
+			<div class="row">
+				{{#members}}
+					<div class="col-xs-12 col-sm-10 col-md-6 col-lg-4 memberWidget">
+						<div class="member">
+							<div class="col-xs-4">Name</div><div class="col-xs-8">{{name}}</div>
+							<div class="col-xs-4">Phone</div><div class="col-xs-8">{{phone}}</div>
+							<div class="col-xs-4">Date of Birth</div><div class="col-xs-8">{{dob}}</div>
+							<div class="col-xs-4">Age</div><div class="col-xs-8">{{age}}</div>
+							<div class="col-xs-4">Sex</div><div class="col-xs-8">{{sex}}</div>
+							{{#if email}}
+								<div class="col-xs-4">Email Id</div><div class="col-xs-8">{{email}}</div>
+							{{/if}}
+						</div>
+					</div>
+				{{/members}}
+			</div>
+			<div class="row">
+				<button type="button" class="btn primary addNewMember btn-default navbar-btn pull-left"><a href="javascript:void(0)">Add Member</a></button>
+			</div>
+		</div>
+	</div>
+{{else}}
+	<div style="margin-bottom:20px;">Currently you have not added any member's to your account.</div>
+	<button type="button" class="btn primary addNewMember btn-default navbar-btn pull-left"><a href="javascript:void(0)">Add Member</a></button>
+{{/if}}

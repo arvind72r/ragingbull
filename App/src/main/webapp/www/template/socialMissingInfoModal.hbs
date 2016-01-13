@@ -1,0 +1,42 @@
+<div class="modal fade" id="missingInfoModal" tabindex="-1" role="dialog" aria-labelledby="missingInfoModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header popUpTitle">
+                <div class="title">Provide Additional Information</div>
+                <span class="cross"></span>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">Thanks for signing with social networking website. But we further need few more information.</div>
+                </div>
+                <div class="row" id="avError" style="display:none;">
+                    <div class="col-xs-12">
+                        <div class="errorText"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        Phone
+                    </div>
+                    <div class="col-xs-12 col-sm-8 phoneContainer">
+                        <div class="phoneText">+91</div>
+                        <input type="tel" class="form-control phone" error="phoneError" data-prop="phone" name="phone" id="miPhone" placeholder="Phone No." maxlength="10">
+                        <div class="errorText" id="phoneError"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        DOB
+                    </div>
+                    <div class="col-xs-12 col-sm-8">
+                        <input type="date" class="form-control dob" error="dobError" name="dob" id="miDob" placeholder="DOB">
+                        <div class="errorText" id="dobError"></div>   
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer robotolight">
+                <button type="button" class="btn primary btn-default miUpdate">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

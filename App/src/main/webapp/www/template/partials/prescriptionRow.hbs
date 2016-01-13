@@ -1,0 +1,40 @@
+<div class="prescriptionRow prescRow{{prescRow}}" id="prescRow{{prescRow}}" data-prop="{{prescRow}}">
+	<div class="drugCol">
+		<input type="text" name="drug" class="addPrescRowOnFocus">
+	</div>
+	<div class="schCol">
+		<div class="select_style">
+		<select name="schedule">
+			<option value="">-</option>
+			<option value="BF">BF</option>
+			<option value="AF">AF</option>
+			<option value="EM">EM</option>
+			<option value="BB">BB</option>
+			<option value="NA">NA</option>
+		</select>
+		<span></span>
+	</div>
+	</div>
+	<div class="freqCol">
+	  	<input type="checkbox" name="morning" value="1">
+	    <input type="checkbox" name="afternoon" value="1">
+	    <input type="checkbox" name="evening" value="1">
+	</div>
+	<div class="doseCol">
+		<input type="text" name="dose">
+	</div>
+	<div class="unitCol">
+		<div class="select_style">
+			<select name="unit">
+				<option value="">-</option>
+				<option value="tab">tab</option>
+				<option value="ml">ml</option>
+				<option value="drop">drop</option>
+			</select>
+			<span></span>
+		</div>
+	</div>
+	<div class="daysCol">
+		<input type="text" name="dose">
+	</div>
+</div>
