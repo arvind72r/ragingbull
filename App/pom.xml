@@ -20,5 +20,44 @@
     </dependencies>
     <build>
         <finalName>app</finalName>
+        <plugins>
+        	<plugin>
+				<groupId>com.github.bringking</groupId>
+				<artifactId>requirejs-maven-plugin</artifactId>
+				<version>2.0.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>optimize</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- optional path to a nodejs executable-->
+ 					<nodeExecutable> /usr/local/bin/node</nodeExecutable>
+					<!-- path to optimizer json config file -->
+					<configFile>
+						${basedir}/src/main/webapp/tools/build.js
+					</configFile>
+					<!-- optional path to optimizer executable <optimizerFile> ${basedir}/src/main/scripts/r.js 
+						</optimizerFile> -->
+					<!-- optional parameters to optimizer executable -->
+					<optimizerParameters>
+						<!-- examples:- <parameter>optimize=uglify</parameter> <parameter>baseUrl=${baseDir}</parameter> -->
+						<!-- <parameter>dir=chimera-web/src/main/webapp/${maven.build.timestamp}/www-built</parameter> -->
+					</optimizerParameters>
+					<!-- Whether or not to process configFile with maven filters. If you 
+						use this option, some options in your configFile must resolve to absolute 
+						paths (see below) -->
+					<filterConfig>
+						false
+					</filterConfig>
+					<!-- Skip requirejs optimization if true -->
+					<skip>
+						${SkipFrontendBuild}
+					</skip>
+				</configuration>
+			</plugin>
+        </plugins>
     </build>
 </project>

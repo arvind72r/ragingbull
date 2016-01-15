@@ -1,0 +1,73 @@
+<div class="registerScreen">
+	<div class="container">
+		<form name="createConsultation">
+		<div class="row registerSection">
+			<div class="row">
+				<div class="col-xs-5">Mobile #</div>
+				<div class="col-xs-7 phoneContainer">
+					<div class="">{{selectedUser.phone}}</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Full Name</div>
+				<div class="col-xs-7">
+					<div class="select_style">
+						<select id="patient" name="patientName">
+							<option value="{{user.id}}" data-prop="self" {{#ifEqual user.name selectedUser.name}}selected{{/ifEqual}}>{{user.name}}</option>
+							{{#members}}
+								<option value="{{id}}" data-prop="{{@index}}" {{#ifEqual name ../selectedUser.name}}selected{{/ifEqual}}>{{name}}</option>
+							{{/members}}
+						</select>
+						<span></span>
+					</div>
+					<div class="errorText" id="nameError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Age</div>
+				<div class="col-xs-7 patientAge">
+					{{selectedUser.age}} Year(s)
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Sex</div>
+				<div class="col-xs-7 patientSex">
+					{{selectedUser.sex}}
+				</div>
+			</div>
+			{{!-- <div class="row">
+				<div class="col-xs-5">Speciality</div>
+				<div class="col-xs-7">
+					<div class="select_style">
+						<select>
+							<option value="">Select Speciality</option>
+						</select>
+						<span></span>
+					</div>
+					<div class="errorText" id="pwdError"></div>
+				</div>
+			</div> --}}
+			<div class="row">
+				<div class="col-xs-5">Select Doctor</div>
+				<div class="col-xs-7">
+					<div class="select_style">
+						<select id="selectDoc">
+							<option value="">Select Doctor</option>
+						</select>
+						<span></span>
+					</div>
+					<div class="errorText" id="rePwdError"></div>
+				</div>
+			</div>
+		</div>
+		</form>
+		<div class="sectionDividerBorder"></div>
+
+		<div class="registerAction consultationAction">
+			<button type="button" class="btn secondary addNewMember btn-default navbar-btn pull-left"><a href="javascript:void(0)">Add New Member</a></button>
+			<button type="button" class="btn primary consultation btn-default navbar-btn pull-right"><a href="javascript:void(0)">Create</a></button>
+		</div>
+		
+		<div class="clear" style="clear:both;"></div>
+	</div>
+</div>

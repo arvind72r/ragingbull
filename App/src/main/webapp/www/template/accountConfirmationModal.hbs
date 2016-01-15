@@ -1,0 +1,32 @@
+<div class="modal fade" id="accountConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="accountConfirmationModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header popUpTitle">
+                <div class="title">Verify Your Account</div>
+                <span class="cross"></span>
+            </div>
+            <div class="modal-body robotoregular">
+                <div class="row" id="avError" style="display:none;">
+                    <div class="col-xs-12">
+                        <div class="errorText"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">Please take a moment and verify your account. We have sent you a sms with verification token. Please enter the same and continue.</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="tel" class="form-control verificationToken" name="verifyAccount" id="verifyAccount" placeholder="Verification Token">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">In case due to some reason you have not received the verification number you can skip this step for now and re do it later.</div>
+                </div>
+            </div>
+            <div class="modal-footer robotolight">
+                <button type="button" class="btn secondary btn-default skipNow">Skip for Now</button>
+                <button type="button" class="btn primary btn-default verifyNow">Verify</button>
+            </div>
+        </div>
+    </div>
+</div>

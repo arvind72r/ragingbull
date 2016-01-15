@@ -1,0 +1,215 @@
+<div class="registerScreen dashboard">
+	<div class="container">
+		<div class="">
+			{{#if practitionerRole}}
+				<div class="row">
+					<div class="pull-right userRoleSwitch"><a class="viewSwitch" href="javascript:void(0);" data-prop="user">User</a></div>
+				</div>
+				<div class="row" data-value="practitioner">
+					{{#if noPractitionerCons}}
+						<div class="noConsultation">
+							You do not have any consultation yet. You can create one today and keep track of it.
+						</div>	
+					{{else}}
+						{{#if practitionerCurrent.showData}}
+							<div class="upComing col-xs-12">
+								<div class="heading">Active Consultation - Patient</div>
+								<ul>
+									{{#practitionerCurrent.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-3">{{userName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-3">{{createdAt}}</div>
+											<div class="col-xs-12 col-sm-4 col-md-6 symptoms">{{symptoms}}</div>
+										</li>
+									{{/practitionerCurrent.consultation}}
+								</ul>
+								{{#if practitionerCurrent.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);"  data-prop="practitionerCurrent">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+						{{#if practitionerPast.showData}}
+							<div class="previous col-xs-12">
+								<div class="heading">Past Consultation - Patient</div>
+								<ul>
+									{{#practitionerPast.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-3">{{userName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-3">{{createdAt}}</div>
+											<div class="col-xs-12 col-sm-4 col-md-6 symptoms">{{symptoms}}</div>
+										</li>
+									{{/practitionerPast.consultation}}
+								</ul>
+								{{#if practitionerPast.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="practitionerPast">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+					{{/if}}
+				</div>
+				<div class="row" data-value="user" style="display:none;">
+					{{#if noUserCons}}
+						<div class="noConsultation">
+							You do not have any consultation yet. You can create one today and keep track of it.
+						</div>
+					{{else}}
+						{{#if userCurrent.showData}}
+							<div class="upComing col-xs-12">
+								<div class="heading">Active Consultation - Mine</div>
+								<ul>
+									{{#userCurrent.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Self</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+										</li>
+									{{/userCurrent.consultation}}
+								</ul>
+								{{#if userCurrent.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="userCurrent">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+						{{#if memberCurrent.showData}}
+							<div class="upComing col-xs-12">
+								<div class="heading">Active Consultation - Members</div>
+								<ul>
+									{{#memberCurrent.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{userName}}</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+										</li>
+									{{/memberCurrent.consultation}}
+								</ul>
+								{{#if memberCurrent.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="memberCurrent">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+						{{#if userPast.showData}}
+							<div class="previous col-xs-12">
+								<div class="heading">Past Consultation - Mine</div>
+								<ul>
+									{{#userPast.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Self</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+										</li>
+									{{/userPast.consultation}}
+								</ul>
+								{{#if userPast.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="userPast">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+						{{#if memberPast.showData}}
+							<div class="previous col-xs-12">
+								<div class="heading">Active Consultation - Members</div>
+								<ul>
+									{{#memberPast.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{userName}}</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+										</li>
+									{{/memberPast.consultation}}
+								</ul>
+								{{#if memberPast.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="memberPast">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+					{{/if}}
+				</div>
+			{{else}}
+				<div class="row">
+					{{#if noConsultation}}
+						<div class="noConsultation">
+							You do not have any consultation yet. You can create one today and keep track of it.
+						</div>
+					{{else}}
+						{{#if userCurrent.showData}}
+							<div class="upComing col-xs-12">
+								<div class="heading">Active Consultation - Mine</div>
+								<ul>
+									{{#userCurrent.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Self</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+										</li>
+									{{/userCurrent.consultation}}
+								</ul>
+								{{#if userCurrent.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="userCurrent">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+						{{#if memberCurrent.showData}}
+							<div class="upComing col-xs-12">
+								<div class="heading">Active Consultation - Members</div>
+								<ul>
+									{{#memberCurrent.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{userName}}</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+										</li>
+									{{/memberCurrent.consultation}}
+								</ul>
+								{{#if memberCurrent.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="memberCurrent">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+						{{#if userPast.showData}}
+							<div class="previous col-xs-12">
+								<div class="heading">Past Consultation - Mine</div>
+								<ul>
+									{{#userPast.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Self</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3">{{symptoms}}</div>
+										</li>
+									{{/userPast.consultation}}
+								</ul>
+								{{#if userPast.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="userPast">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+						{{#if memberPast.showData}}
+							<div class="previous col-xs-12">
+								<div class="heading">Active Consultation - Members</div>
+								<ul>
+									{{#memberPast.consultation}}
+										<li class="upcc-pat" data-prop="{{id}}">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">{{userName}}</div>
+											<div class="col-xs-6 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+										</li>
+									{{/memberPast.consultation}}
+								</ul>
+								{{#if memberPast.showViewMore}}
+									<div class="pull-right userRoleSwitch"><a class="viewMore" href="javascript:void(0);" data-prop="memberPast">View More</a></div>
+								{{/if}}
+							</div>
+						{{/if}}
+					{{/if}}
+				</div>
+			{{/if}}
+			<div class="clear" style="clear:both;"></div>
+		</div>
+	</div>
+</div>

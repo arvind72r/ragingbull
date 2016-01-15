@@ -1,0 +1,52 @@
+<div class="registerScreen">
+	<div class="container">
+		<form name="register">
+		<div class="row registerSection">
+			<div class="row">
+				<div class="col-xs-5">Mobile #</div>
+				<div class="col-xs-7 phoneContainer">
+					<div class="phoneText">+91</div>
+					<input type="tel" class="form-control phone" error="phoneError" data-prop="phone" name="phone" id="phone" placeholder="Phone No.">
+					<div class="errorText" id="phoneError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Full Name</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control" error="nameError" name="name" id="name" placeholder="Full Name">
+					<div class="errorText" id="nameError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Date of Birth</div>
+				<div class="col-xs-7">
+					<input type="date" class="form-control dob" error="dobError" name="dob" id="dob" placeholder="DOB">
+					<div class="errorText" id="dobError"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5">Sex</div>
+				<div class="col-xs-7">
+					<div class="select_style">
+						<select name="sex">
+							<option value="">Select</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
+						</select>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+		<div class="sectionDividerBorder"></div>
+
+		<div class="registerAction">
+			<button type="button" class="btn secondary cancelAddMember btn-default navbar-btn pull-left"><a href="javascript:void(0)">Cancel</a></button>
+			<button type="button" class="btn primary addMember btn-default navbar-btn pull-right"><a href="javascript:void(0)">Add Member</a></button>
+		</div>
+		
+		<div class="clear" style="clear:both;"></div>
+	</div>
+
+</div>
