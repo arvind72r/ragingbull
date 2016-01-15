@@ -84,7 +84,7 @@ public class ConsultationService {
             if (consultation == null) {
                 return null;
             }
-            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive(), consultation.getUserName(), consultation.getUserAge(), consultation.getUserPhone(), consultation.getPractitionerName());
+            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive(), consultation.getUserName(), consultation.getUserAge(), consultation.getUserPhone(), consultation.getPractitionerName(), null);
         } catch(Exception e) {
             LOGGER.error(String.format("Error getting consultation with email %s. Exception: %s", session.getUserEmail(), e));
             throw new StorageException(String.format("Error getting consultation with email %s", session.getUserEmail()));
@@ -110,21 +110,20 @@ public class ConsultationService {
         }
     }
 
-    public boolean lockConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
+    public ConsultationResponse lockConsultation(Session session, String consultationId) throws StorageException, ResourceUpdateException {
 
         try {
             // Lock Consultation, Prescription, Notes
-            String userId = transactionalDao.lockConsultation(session.getUserId(), consultationId);
+            boolean success = transactionalDao.lockConsultation(consultationId);
 
-            if (StringUtils.isBlank(userId))
+            if (!success)
             {
                 throw new StorageException("Storage exception");
             }
 
             Consultation consultation = transactionalDao.getCompleteConsultation(consultationId);
-            notificationFactory.notifyUser(userId, Notifiable.NotificationEvent.CONSULTATION_SUBMITTED, consultation);
-
-            return true;
+            notificationFactory.notifyUser(consultation.getUserId(), Notifiable.NotificationEvent.CONSULTATION_SUBMITTED, consultation);
+            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive(), consultation.getUserName(), consultation.getUserAge(), consultation.getUserPhone(), consultation.getPractitionerName(), consultation.getPrescription());
         }
         catch (StorageException e) {
             LOGGER.error(String.format("Error locking consultation with consultationId: %s, email %s. Exception: %s", consultationId, session.getUserEmail(), e));

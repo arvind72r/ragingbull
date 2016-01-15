@@ -41,6 +41,9 @@ public class ConsultationResponse extends AbstractResponse{
     @JsonProperty
     private Boolean active;
 
+    @JsonProperty
+    private Prescription prescription;
+
     private String userName;
 
     private String userAge;
@@ -52,7 +55,7 @@ public class ConsultationResponse extends AbstractResponse{
     public ConsultationResponse() {};
 
     public ConsultationResponse(String id, String practitionerId, String locationId, String userId, String symptoms, String diagnosisNotes, String
-            userNotes, Boolean active, String userName, String userAge, String userPhone, String practitionerName) {
+            userNotes, Boolean active, String userName, String userAge, String userPhone, String practitionerName, Prescription prescription) {
         this.id = id;
         this.practitionerId = practitionerId;
         this.locationId = locationId;
@@ -65,6 +68,7 @@ public class ConsultationResponse extends AbstractResponse{
         this.userAge = userAge;
         this.userPhone = userPhone;
         this.practitionerName = practitionerName;
+        this.prescription = prescription;
     }
 
     public ConsultationResponse(String id, String practitionerId, String locationId, String userId, String symptoms, String diagnosisNotes, String userNotes, Boolean active) {

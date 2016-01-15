@@ -103,6 +103,10 @@ public class Prescription {
         return drugs;
     }
 
+    public void setDrugs(List<Drug> drugs) {
+        this.drugs = drugs;
+    }
+
     public Boolean getActive() {
         return active;
     }

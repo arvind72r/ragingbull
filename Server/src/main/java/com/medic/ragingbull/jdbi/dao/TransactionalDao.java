@@ -8,9 +8,14 @@ package com.medic.ragingbull.jdbi.dao;
 
 import com.medic.ragingbull.api.Consultation;
 import com.medic.ragingbull.api.Drug;
+import com.medic.ragingbull.api.Prescription;
 import com.medic.ragingbull.jdbi.mapper.BindDrug;
+import com.medic.ragingbull.jdbi.mapper.ConsultationMapper;
+import com.medic.ragingbull.jdbi.mapper.DrugsMapper;
+import com.medic.ragingbull.jdbi.mapper.PrescriptionMapper;
 import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.skife.jdbi.v2.sqlobject.*;
+import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 import java.util.List;
 
@@ -20,31 +25,22 @@ import java.util.List;
 public abstract class TransactionalDao {
 
     @Transaction
-    public String lockConsultation(String practitionerId, String consultationId) throws TransactionException {
+    public boolean lockConsultation(String consultationId) throws TransactionException {
 
         // LockConsultation
-        int consultationLocked = lockConsultations(consultationId, practitionerId);
+        int consultationLocked = lockConsultations(consultationId);
 
         if (consultationLocked == 0) {
             throw new TransactionException("Unable to lock consultation");
         }
 
-        // Lock Notes for consultation
-        int consultationNotesLocked = lockNotes(consultationId);
-
-        if (consultationNotesLocked == 0) {
-            throw new TransactionException("Unable to lock consultation notes");
-        }
-
         // LockPrescription
-        int prescriptionLocked = lockPrescription(practitionerId, consultationId);
+        int prescriptionLocked = lockPrescription(consultationId);
 
         if (prescriptionLocked == 0) {
             throw new TransactionException("Unable to lock prescription");
         }
-
-        String consultationUserId = getUserIdByConsultationId(consultationId);
-        return consultationUserId;
+        return true;
     }
 
     @Transaction
@@ -155,6 +151,10 @@ public abstract class TransactionalDao {
     @Transaction
     public Consultation getCompleteConsultation(String consultationId) {
         Consultation consultation = getConsultation(consultationId);
+        Prescription prescription = getPrescription(consultation.getId());
+        List<Drug> drugList = getDrugs(prescription.getId());
+        prescription.setDrugs(drugList);
+        consultation.setPrescription(prescription);
         return consultation;
     }
 
@@ -185,6 +185,9 @@ public abstract class TransactionalDao {
 
      */
 
+    @RegisterMapper(DrugsMapper.class)
+    @SqlQuery("SELECT * FROM PRESCRIPTION_DRUG where prescription_id = :prescriptionId")
+    protected abstract List<Drug> getDrugs(@Bind("prescriptionId") String prescriptionId);
 
     @SqlBatch("INSERT INTO PRESCRIPTION_DRUG (id, consultation_id, user_id, practitioner_id, prescription_id, name, frequency, schedule, dose, unit, days) " +
             "VALUES (:id, :consultationId, :userId, :practitionerId, :prescriptionId, :name, :frequency, :schedule, :dose, :unit, :days)")
@@ -197,8 +200,13 @@ public abstract class TransactionalDao {
             @Bind("practitionerId") String practitionerId,
             @Bind("userId") String userId);
 
-    @SqlQuery("")
-    protected abstract Consultation getConsultation(String consultationId);
+    @RegisterMapper(ConsultationMapper.class)
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.id = :id")
+    protected abstract Consultation getConsultation(@Bind("id") String id);
+
+    @RegisterMapper(PrescriptionMapper.class)
+    @SqlQuery("SELECT p.* FROM PRESCRIPTION p where p.consultation_id = :consultationId")
+    protected abstract Prescription getPrescription(@Bind("consultationId") String consultationId);
 
     @SqlQuery("SELECT USER_ID from CONSULTATION where id = :id")
     protected abstract String getUserIdByConsultationId(@Bind("id") String id);
@@ -258,14 +266,14 @@ public abstract class TransactionalDao {
                                               @Bind("registrationAuthority") String registrationAuthority,
                                               @Bind("license") String license);
 
-    @SqlUpdate("UPDATE prescription SET active = false WHERE practitioner_id = :practitionerId AND consultation_id = :consultationId")
-    protected abstract int lockPrescription(@Bind("practitionerId") String practitionerId, @Bind("consultationId") String consultationId);
+    @SqlUpdate("UPDATE prescription SET active = false WHERE consultation_id = :consultationId")
+    protected abstract int lockPrescription(@Bind("consultationId") String consultationId);
 
     @SqlUpdate("UPDATE NOTES SET active = false WHERE entity_id = :entityId")
     protected abstract int lockNotes(@Bind("entityId") String entityId);
 
-    @SqlUpdate("UPDATE CONSULTATION SET active = false WHERE id = :id AND practitioner_id = :practitionerId")
-    protected abstract int lockConsultations(@Bind("id") String id, @Bind("practitionerId") String practitionerId);
+    @SqlUpdate("UPDATE CONSULTATION SET active = false WHERE id = :id")
+    protected abstract int lockConsultations(@Bind("id") String id);
 
 
 

@@ -46,6 +46,9 @@ database:
   # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
   minIdleTime: 1 minute
 
+  # Whether or not connections will be validated before being borrowed from the pool. If the connection fails to validate, it will be dropped from the pool, and another will be borrowed.
+  checkConnectionOnBorrow: true
+
 # Logging settings.
 logging:
 

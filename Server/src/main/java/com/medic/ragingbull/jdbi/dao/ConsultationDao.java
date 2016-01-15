@@ -56,7 +56,6 @@ public interface ConsultationDao  {
     @SqlUpdate("DELETE FROM consultation")
     int cleanAll();
 
-
     @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = consultee.id and consultee.parent_id = :userId and cn.active = true")
     List<Consultation> getActiveMemberConsultations(@Bind("userId") String userId);
 

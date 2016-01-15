@@ -68,12 +68,8 @@ public class ConsultationAccessService {
 
     public Response lockConsultation(Session session, String consultationId) throws ResourceUpdateException, StorageException {
         if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_MODIFY.getBitValue()) {
-            boolean success = consultationService.lockConsultation(session, consultationId);
-            if (success) {
-                return Response.ok().build();
-            } else {
-                return Response.serverError().build();
-            }
+            ConsultationResponse response = consultationService.lockConsultation(session, consultationId);
+            return Response.ok().entity(response).build();
         }
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
     }

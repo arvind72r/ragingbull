@@ -6,6 +6,8 @@
 
 package com.medic.ragingbull.jdbi.mapper;
 
+import com.medic.ragingbull.api.Dosage;
+import com.medic.ragingbull.api.Drug;
 import com.medic.ragingbull.api.Prescription;
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.StatementContext;
@@ -13,6 +15,8 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti

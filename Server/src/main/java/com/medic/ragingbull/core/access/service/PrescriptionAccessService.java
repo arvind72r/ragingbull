@@ -7,9 +7,7 @@
 package com.medic.ragingbull.core.access.service;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Drug;
-import com.medic.ragingbull.api.PrescriptionResponse;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.services.PrescriptionService;
@@ -19,6 +17,7 @@ import com.medic.ragingbull.exception.ResourceUpdateException;
 import com.medic.ragingbull.exception.StorageException;
 
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti
@@ -73,5 +72,13 @@ public class PrescriptionAccessService {
             }
         }
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build();
+    }
+
+    public Response orderPrescription(Session session, String prescriptionId, Cart cart) {
+        if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) != UserRoles.Permissions.BLOCK.getBitValue()) {
+            OrderResponse orderResponse = prescriptionService.orderPrescription(session, prescriptionId, cart);
+            return Response.ok().entity(orderResponse).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 }

@@ -51,6 +51,9 @@ public class Consultation {
     @JsonProperty
     private Boolean active = Boolean.TRUE;
 
+    @JsonProperty
+    private Prescription prescription;
+
     private String userName;
 
     private String userAge;
@@ -166,5 +169,13 @@ public class Consultation {
 
     public String getPractitionerName() {
         return practitionerName;
+    }
+
+    public Prescription getPrescription() {
+        return prescription;
+    }
+
+    public void setPrescription(Prescription prescription) {
+        this.prescription = prescription;
     }
 }

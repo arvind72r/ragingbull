@@ -550,7 +550,7 @@
         <createIndex indexName="idx_prescription_consultation_id" tableName="prescription">
             <column name="consultation_id"/>
         </createIndex>
-        
+
         <comment>Drugs table for the prescriptions</comment>
         <createTable tableName="prescription_drug">
             <column name="id" type="CHAR(128)">

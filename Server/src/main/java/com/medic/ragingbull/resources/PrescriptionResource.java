@@ -7,6 +7,7 @@
 package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
+import com.medic.ragingbull.api.Cart;
 import com.medic.ragingbull.api.Drug;
 import com.medic.ragingbull.api.PrescriptionResponse;
 import com.medic.ragingbull.api.Session;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Created by Vamshi Molleti
@@ -51,7 +53,7 @@ public class PrescriptionResource {
     }
 
     @POST
-    @Path("/{prescriptionId}/drug")
+    @Path("/{prescriptionId}/save")
     public Response addDrug(@Auth Session session, @PathParam("prescriptionId") String prescriptionId, @Valid Drug drug) throws StorageException, ResourceFetchException, ResourceCreationException {
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info(String.format("Add Drug: Adding drug to prescription id: %s. Request by: %s", prescriptionId, session.getUserEmail()));
@@ -67,6 +69,16 @@ public class PrescriptionResource {
             LOGGER.info(String.format("Deleting Drug: Deleting drug %s, prescription id: %s. Request by: %s", drugId, prescriptionId, session.getUserEmail()));
         }
         Response response = prescriptionAccessService.deleteDrug(session, prescriptionId, drugId);
+        return response;
+    }
+
+    @POST
+    @Path("/{prescriptionId}/order")
+    public Response orderPrescription(@Auth Session session, @PathParam("prescriptionId") String prescriptionId, @Valid Cart cart) throws StorageException, ResourceFetchException, ResourceCreationException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Add Drug: Adding drug to prescription id: %s. Request by: %s", prescriptionId, session.getUserEmail()));
+        }
+        Response response = prescriptionAccessService.orderPrescription(session, prescriptionId, cart);
         return response;
     }
 

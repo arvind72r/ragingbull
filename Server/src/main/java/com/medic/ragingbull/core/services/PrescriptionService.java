@@ -7,10 +7,7 @@
 package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Drug;
-import com.medic.ragingbull.api.Prescription;
-import com.medic.ragingbull.api.PrescriptionResponse;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.ResourceFetchException;
 import com.medic.ragingbull.exception.ResourceUpdateException;
@@ -160,5 +157,9 @@ public class PrescriptionService {
         Prescription prescription = prescriptionDao.getCurrentPrescription(consultationId);
         List<Drug> drugsList = drugsDao.getByPrescriptionId(prescription.getId());
         return new PrescriptionResponse(prescription.getId(), prescription.getConsultationId(), prescription.getPractitionerId(), prescription.getUserId(), drugsList, prescription.getActive());
+    }
+
+    public OrderResponse orderPrescription(Session session, String prescriptionId, Cart cart) {
+        return null;
     }
 }
