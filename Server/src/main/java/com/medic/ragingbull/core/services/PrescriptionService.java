@@ -147,12 +147,6 @@ public class PrescriptionService {
 
     }
 
-    public Response lockPrescription(Session session, String prescriptionId) {
-
-
-        return null;
-    }
-
     public PrescriptionResponse getCurrentPrescription(Session session, String consultationId) {
         Prescription prescription = prescriptionDao.getCurrentPrescription(consultationId);
         List<Drug> drugsList = drugsDao.getByPrescriptionId(prescription.getId());
@@ -160,6 +154,7 @@ public class PrescriptionService {
     }
 
     public OrderResponse orderPrescription(Session session, String prescriptionId, Cart cart) {
+
         return null;
     }
 }

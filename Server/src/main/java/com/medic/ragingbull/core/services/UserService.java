@@ -424,6 +424,9 @@ public class UserService {
             // Dashboard will current consultations
             List<Consultation> currentPractitionerConsultations = consultationDao.getActivePractitionerConsultations(userId);
             dash.getPractitionerCurrent().addAll(currentPractitionerConsultations);
+
+            List<Consultation> pastPractitionerConsultations = consultationDao.getPastPractitionerConsultations(userId);
+            dash.getPractitionerPast().addAll(pastPractitionerConsultations);
         }
         return dash;
     }

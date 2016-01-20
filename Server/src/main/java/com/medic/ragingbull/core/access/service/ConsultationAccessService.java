@@ -7,10 +7,7 @@
 package com.medic.ragingbull.core.access.service;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.ConsultationResponse;
-import com.medic.ragingbull.api.Prescription;
-import com.medic.ragingbull.api.PrescriptionResponse;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.constants.SystemConstants;
@@ -94,6 +91,14 @@ public class ConsultationAccessService {
                 return Response.serverError().build();
 
             }
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
+    }
+
+    public Response getConsultationCart(Session session, String consultationId) {
+        if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) == UserRoles.Permissions.BLOCK.getBitValue()) {
+            CartResponse response = consultationService.getConsultationCart(session, consultationId);
+            return Response.ok().entity(response).build();
         }
         return Response.status(Response.Status.FORBIDDEN).build();
     }

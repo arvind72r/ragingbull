@@ -47,11 +47,11 @@ public interface ConsultationDao  {
     @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.user_id = :userId and cn.active = false")
     List<Consultation> getPastConsultations(@Bind("userId") String userId);
 
-    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cs.* FROM consultation cs, practitioner pr, practitioner_location location, users consultee, users doctor where consultee.id = cs.user_id AND doctor.id = pr.user_id AND location.id = cs.location_id AND cs.practitioner_id = pr.id AND pr.user_id = :userId AND cs.active = true ;")
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cs.* FROM consultation cs, practitioner pr, practitioner_location location, users consultee, users doctor where consultee.id = cs.user_id AND doctor.id = pr.user_id AND location.id = cs.location_id AND cs.practitioner_id = pr.id AND pr.user_id = :userId AND cs.active = true")
     List<Consultation> getActivePractitionerConsultations(@Bind("userId") String userId);
 
-    @SqlQuery("SELECT * FROM consultation where practitioner_id = :practitionerId and active = false")
-    List<Consultation> getPastPractitionerConsultations(@Bind("practitionerId") String practitionerId);
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cs.* FROM consultation cs, practitioner pr, practitioner_location location, users consultee, users doctor where consultee.id = cs.user_id AND doctor.id = pr.user_id AND location.id = cs.location_id AND cs.practitioner_id = pr.id AND pr.user_id = :userId AND cs.active = false")
+    List<Consultation> getPastPractitionerConsultations(@Bind("userId") String userId);
 
     @SqlUpdate("DELETE FROM consultation")
     int cleanAll();

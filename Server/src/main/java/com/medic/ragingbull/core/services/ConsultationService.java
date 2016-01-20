@@ -7,10 +7,7 @@
 package com.medic.ragingbull.core.services;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.Consultation;
-import com.medic.ragingbull.api.ConsultationResponse;
-import com.medic.ragingbull.api.Notes;
-import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.constants.Ids;
 import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.core.notification.Notifiable;
@@ -145,5 +142,15 @@ public class ConsultationService {
             consultationDao.updateSymptom(consultationId, note);
         }
         return true;
+    }
+
+    public CartResponse getConsultationCart(Session session, String consultationId) {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Fetching the current cart or fresh cart for the consultation: %s", consultationId));
+        }
+
+        // Check if there is already a cart for the entity "Consultation". If not create a cart and return it back
+
+        return null;
     }
 }

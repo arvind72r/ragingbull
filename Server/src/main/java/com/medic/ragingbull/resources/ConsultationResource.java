@@ -102,4 +102,14 @@ public class ConsultationResource {
         Response response = consultationAccessService.lockConsultation(session, consultationId);
         return response;
     }
+
+    @GET
+    @Path("/{consultationId}/cart")
+    public Response getConsultationCart(@Auth Session session,  @PathParam("consultationId") String consultationId) {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Consultation Cart: Creating cart for the consultation. Consultation id: %s. Request by: %s", consultationId, session.getUserEmail()));
+        }
+        Response response = consultationAccessService.getConsultationCart(session, consultationId);
+        return response;
+    }
 }
