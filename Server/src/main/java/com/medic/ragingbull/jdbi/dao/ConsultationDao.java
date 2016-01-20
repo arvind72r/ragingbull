@@ -24,7 +24,7 @@ public interface ConsultationDao  {
     @SqlQuery("SELECT * FROM consultation where id = :id")
     Consultation getConsultation(@Bind("id") String id);
 
-    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.id = :id and cn.active = true")
+    @SqlQuery("SELECT consultee.name, consultee.dob, consultee.phone, doctor.name as doctorName, location.location, cn.* FROM consultation cn, practitioner_location location, practitioner pr, users consultee, users doctor where consultee.id = cn.user_id AND doctor.id = pr.user_id AND location.id = cn.location_id AND pr.id = cn.practitioner_id AND cn.id = :id")
     Consultation getConsultationDetails(@Bind("id") String id);
 
     @SqlUpdate("INSERT INTO consultation (id, location_id, practitioner_id, user_id, creator_id, symptoms, diagnosis, user_notes) " +
