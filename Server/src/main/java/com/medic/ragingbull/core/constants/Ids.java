@@ -14,6 +14,7 @@ public class Ids {
     public enum Type {
         SESSION("ss"),
         USER ("us"),
+        USER_ADDRESS ("us-ad"),
         OAUTH("oa"),
         CONSULTATION("cn"),
         PHARMACY("ph"),
