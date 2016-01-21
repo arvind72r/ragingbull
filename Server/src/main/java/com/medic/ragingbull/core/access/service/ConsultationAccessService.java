@@ -32,9 +32,9 @@ public class ConsultationAccessService {
         this.consultationService = consultationService;
     }
 
-    public Response getConsultation(Session session, String consultationId, boolean hydrated) throws StorageException {
+    public Response getConsultation(Session session, String consultationId) throws StorageException {
         if ((session.getRole() & UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_READ.getBitValue()) == UserRoles.Permissions.PRACTITIONER_LOCATION_CONSULTATION_READ.getBitValue()) {
-            ConsultationResponse response = consultationService.getConsultation(session, consultationId, hydrated);
+            ConsultationResponse response = consultationService.getConsultation(session, consultationId);
             if (response == null) {
                 return Response.status(Response.Status.NOT_FOUND).entity(response).build();
             }

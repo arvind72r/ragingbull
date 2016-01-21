@@ -152,9 +152,11 @@ public abstract class TransactionalDao {
     public Consultation getCompleteConsultation(String consultationId) {
         Consultation consultation = getConsultation(consultationId);
         Prescription prescription = getPrescription(consultation.getId());
-        List<Drug> drugList = getDrugs(prescription.getId());
-        prescription.setDrugs(drugList);
-        consultation.setPrescription(prescription);
+        if (prescription != null) {
+            List<Drug> drugList = getDrugs(prescription.getId());
+            prescription.setDrugs(drugList);
+            consultation.setPrescription(prescription);
+        }
         return consultation;
     }
 
