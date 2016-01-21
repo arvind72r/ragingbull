@@ -75,6 +75,7 @@ public class RagingBullModule extends AbstractModule {
         bind(DrugsDao.class).toInstance(database.onDemand(DrugsDao.class));
         bind(PrescriptionDao.class).toInstance(database.onDemand(PrescriptionDao.class));
         bind(TransactionalDao.class).toInstance(database.onDemand(TransactionalDao.class));
+        bind(AddressDao.class).toInstance(database.onDemand(AddressDao.class));
 
 
         // Binding Services
@@ -87,6 +88,8 @@ public class RagingBullModule extends AbstractModule {
         bind(ImageService.class).asEagerSingleton();
         bind(ConsultationService.class).asEagerSingleton();
         bind(PrescriptionService.class).asEagerSingleton();
+        bind(PrescriptionService.class).asEagerSingleton();
+        bind(AddressService.class).asEagerSingleton();
 
         //Access Service
         bind(UserAccessService.class).asEagerSingleton();
@@ -94,6 +97,8 @@ public class RagingBullModule extends AbstractModule {
         bind(PractitionerLocationAccessService.class).asEagerSingleton();
         bind(ConsultationAccessService.class).asEagerSingleton();
         bind(PrescriptionAccessService.class).asEagerSingleton();
+        bind(AddressAccessService.class).asEagerSingleton();
+
 
         // Registering providers
         bind(Authorization.class).asEagerSingleton();
@@ -111,6 +116,7 @@ public class RagingBullModule extends AbstractModule {
         bind(ImageResource.class).asEagerSingleton();
         bind(ConsultationResource.class).asEagerSingleton();
         bind(PrescriptionResource.class).asEagerSingleton();
+        bind(AddressResource.class).asEagerSingleton();
 
 
     }

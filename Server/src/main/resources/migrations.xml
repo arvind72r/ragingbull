@@ -63,6 +63,39 @@
         <createIndex indexName="idx_user_parent_idl" tableName="users">
             <column name="parent_id"/>
         </createIndex>
+        <comment>User Address Book</comment>
+        <createTable tableName="user_address">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="label" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address1" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address2" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zip" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="FLOAT(9)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="FLOAT(9)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
         <comment>Creating session table</comment>
         <createTable tableName="sessions">

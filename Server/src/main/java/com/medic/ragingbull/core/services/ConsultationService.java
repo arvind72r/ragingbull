@@ -80,7 +80,7 @@ public class ConsultationService {
             if (consultation == null) {
                 return null;
             }
-            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive(), consultation.getUserName(), consultation.getUserAge(), consultation.getUserPhone(), consultation.getPractitionerName(), null);
+            return new ConsultationResponse(consultation.getId(),consultation.getPractitionerId(), consultation.getLocationId(), consultation.getUserId(), consultation.getSymptoms(), consultation.getDiagnosis(), consultation.getUserNotes(), consultation.getActive(), consultation.getUserName(), consultation.getUserAge(), consultation.getUserPhone(), consultation.getPractitionerName(), consultation.getPrescription());
         } catch(Exception e) {
             LOGGER.error(String.format("Error getting consultation with email %s. Exception: %s", session.getUserEmail(), e));
             throw new StorageException(String.format("Error getting consultation with email %s", session.getUserEmail()));

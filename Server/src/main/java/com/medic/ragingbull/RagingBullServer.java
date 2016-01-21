@@ -119,6 +119,7 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
         environment.jersey().register(injector.getInstance(PharmacistResource.class));
         environment.jersey().register(injector.getInstance(PharmacyLocationResource.class));
         environment.jersey().register(injector.getInstance(ImageResource.class));
+        environment.jersey().register(injector.getInstance(AddressResource.class));
 
         //environment.jersey().register(injector.getInstance(OAuthResource.class));
 
