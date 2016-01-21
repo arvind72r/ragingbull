@@ -18,12 +18,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
  * Created by Vamshi Molleti
  */
 @Path("/user/{id}/address")
+@Produces(MediaType.APPLICATION_JSON)
 public class AddressResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddressResource.class);
 

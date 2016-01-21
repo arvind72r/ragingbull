@@ -27,7 +27,7 @@ public interface AddressDao {
     @SqlQuery("SELECT * from user_address where id = :id AND user_id = :userId")
     Address getAddress(@Bind("id") String id, @Bind("userId") String userId);
 
-    @SqlUpdate("INSERT into user_address (id, user_id, label, address1, address2, zip, longitude, latitude) values (:id, :userId, :label, :address1, :address2, :zip, :longitude, :latitude")
+    @SqlUpdate("INSERT INTO user_address (id, user_id, label, address1, address2, zip, longitude, latitude) values (:id, :userId, :label, :address1, :address2, :zip, :longitude, :latitude)")
     int insert(@Bind("id") String id,
             @Bind("userId") String userId,
             @Bind("label") String label,
