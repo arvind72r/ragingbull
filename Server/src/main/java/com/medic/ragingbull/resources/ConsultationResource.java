@@ -45,11 +45,11 @@ public class ConsultationResource {
 
     @GET
     @Path("/{consultationId}")
-    public Response getConsultation(@Auth Session session, @PathParam("consultationId") String consultationId) throws StorageException {
+    public Response getConsultation(@Auth Session session, @PathParam("consultationId") String consultationId, @QueryParam("hydrated") boolean hydrated) throws StorageException {
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info(String.format("Get Consultation: Fetching consultation details id: %s. Request by: %s", consultationId, session.getUserEmail()));
         }
-        Response response = consultationAccessService.getConsultation(session, consultationId);
+        Response response = consultationAccessService.getConsultation(session, consultationId, hydrated);
         return response;
     }
 

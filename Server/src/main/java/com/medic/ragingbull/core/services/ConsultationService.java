@@ -73,10 +73,9 @@ public class ConsultationService {
         }
     }
 
-    public ConsultationResponse getConsultation(Session session, String consultationId) throws StorageException {
+    public ConsultationResponse getConsultation(Session session, String consultationId, boolean hydrated) throws StorageException {
         try {
-
-            Consultation consultation = consultationDao.getConsultationDetails(consultationId);
+            Consultation consultation = transactionalDao.getCompleteConsultation(consultationId);
 
             if (consultation == null) {
                 return null;
