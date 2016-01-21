@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -156,5 +157,16 @@ public class PrescriptionService {
     public OrderResponse orderPrescription(Session session, String prescriptionId, Cart cart) {
 
         return null;
+    }
+
+    public List<PrescriptionResponse> getPrescriptions(Session session, String userId) {
+        List<PrescriptionResponse> response = new ArrayList<>();
+        List<Prescription> prescriptions = prescriptionDao.getPrescriptions(userId);
+        for (Prescription prescription : prescriptions) {
+            List<Drug> drugsList = drugsDao.getByPrescriptionId(prescription.getId());
+            PrescriptionResponse prescriptionResponse = new PrescriptionResponse(prescription.getId(), prescription.getConsultationId(), prescription.getPractitionerId(), prescription.getUserId(), drugsList, prescription.getActive());
+            response.add(prescriptionResponse);
+        }
+        return response;
     }
 }

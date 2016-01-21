@@ -7,13 +7,11 @@
 package com.medic.ragingbull.core.access.service;
 
 import com.google.inject.Inject;
-import com.medic.ragingbull.api.DashBoard;
-import com.medic.ragingbull.api.Member;
-import com.medic.ragingbull.api.Session;
-import com.medic.ragingbull.api.User;
+import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.constants.SystemConstants;
+import com.medic.ragingbull.core.services.PrescriptionService;
 import com.medic.ragingbull.core.services.UserService;
 import com.medic.ragingbull.exception.*;
 import org.apache.commons.lang3.StringUtils;
@@ -29,10 +27,13 @@ import java.util.Map;
 public class UserAccessService {
 
     private UserService userService;
+    private PrescriptionService prescriptionService;
 
     @Inject
-    public UserAccessService(UserService userService) {
+    public UserAccessService(UserService userService, PrescriptionService prescriptionService)
+    {
         this.userService = userService;
+        this.prescriptionService = prescriptionService;
     }
 
     public Response register(User user) throws NotificationException, StorageException, ResourceCreationException, DuplicateEntityException {
@@ -119,9 +120,37 @@ public class UserAccessService {
     }
 
     public Response getUserDashBoard(Session session, String userId) {
+
         DashBoard dashBoard = userService.getDashBoard(session, userId);
         return Response.ok().entity(dashBoard).build();
     }
 
 
+    public Response getUserCart(Session session, String userId) {
+        return null;
+    }
+
+    public Response addItemToCart(Session session, String userId, List<CartItem> item) {
+        return null;
+    }
+
+    public Response orderCart(Session session, String userId) {
+        return null;
+    }
+
+    public Response emptyUserCart(Session session, String userId) {
+        return null;
+    }
+
+    public Response removeCartItem(Session session, String userId) {
+        return null;
+    }
+
+    public Response getPrescriptions(Session session, String userId) {
+        if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) != UserRoles.Permissions.BLOCK.getBitValue()) {
+            List<PrescriptionResponse> prescriptions = prescriptionService.getPrescriptions(session, userId);
+            return Response.ok().entity(prescriptions).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_USER_READ_CODE).build();
+    }
 }

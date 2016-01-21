@@ -8,6 +8,7 @@ package com.medic.ragingbull.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
+import com.medic.ragingbull.api.CartItem;
 import com.medic.ragingbull.api.Member;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.access.service.UserAccessService;
@@ -25,6 +26,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -115,5 +117,58 @@ public class UserResource {
             userId = session.getUserId();
         }
         return userAccessService.update(session, userId, field.getValue(), data);
+    }
+
+    @GET
+    @Path("/{id}/prescriptions")
+    public Response getPrescription(@Auth Session session, @PathParam("id") String userId) {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.getPrescriptions(session, userId);
+    }
+    @GET
+    @Path("/{id}/cart")
+    public Response getUserCart(@Auth Session session, @PathParam("id") String userId) {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.getUserCart(session, userId);
+    }
+
+    @PUT
+    @Path("/{id}/cart")
+    public Response addItemToCart(@Auth Session session, @PathParam("id") String userId, @Valid List<CartItem> items) {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.addItemToCart(session, userId, items);
+    }
+
+    @DELETE
+    @Path("/{id}/cart/{itemId}")
+    public Response removeCartItem(@Auth Session session, @PathParam("id") String userId){
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.removeCartItem(session, userId);
+    }
+
+    @DELETE
+    @Path("/{id}/cart")
+    public Response emptyCart(@Auth Session session, @PathParam("id") String userId) {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.emptyUserCart(session, userId);
+    }
+
+    @POST
+    @Path("/{id}/cart/order")
+    public Response orderCart(@Auth Session session, @PathParam("id") String userId) {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return userAccessService.orderCart(session, userId);
     }
 }

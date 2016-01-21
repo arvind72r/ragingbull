@@ -13,6 +13,8 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
+import java.util.List;
+
 /**
  * Created by Vamshi Molleti
  */
@@ -38,4 +40,7 @@ public interface PrescriptionDao {
 
     @SqlQuery("SELECT * FROM prescription where consultation_id = :consultationId")
     Prescription getCurrentPrescription(@Bind("consultationId") String consultationId);
+
+    @SqlQuery("SELECT * FROM prescription where user_id = :userId")
+    List<Prescription> getPrescriptions(@Bind("userId") String userId);
 }
