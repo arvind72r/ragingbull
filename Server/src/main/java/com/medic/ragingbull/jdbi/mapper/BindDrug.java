@@ -33,7 +33,7 @@ public @interface BindDrug {
                     q.bind("name", arg.getName());
                     q.bind("frequency", arg.getFrequency());
                     q.bind("schedule", arg.getSchedule().getBitValue());
-                    q.bind("dose", arg.getFrequency());
+                    q.bind("dose", arg.getDose());
                     q.bind("unit", arg.getUnit());
                     q.bind("days", arg.getDays());
                 }
