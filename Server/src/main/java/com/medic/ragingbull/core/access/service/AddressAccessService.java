@@ -50,6 +50,5 @@ public class AddressAccessService {
         } else {
             return Response.serverError().build();
         }
-
     }
 }

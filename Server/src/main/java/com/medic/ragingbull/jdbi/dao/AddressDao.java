@@ -27,16 +27,17 @@ public interface AddressDao {
     @SqlQuery("SELECT * from user_address where id = :id AND user_id = :userId")
     Address getAddress(@Bind("id") String id, @Bind("userId") String userId);
 
-    @SqlUpdate("INSERT INTO user_address (id, user_id, label, address1, address2, zip, longitude, latitude) values (:id, :userId, :label, :address1, :address2, :zip, :longitude, :latitude)")
+    @SqlUpdate("DELETE from user_address where id = :id AND user_id = :userId")
+    int delete(String userId, String addressId);
+
+    @SqlUpdate("INSERT INTO user_address (id, user_id, label, address1, address2, city, state, landmark, zip) values (:id, :userId, :label, :address1, :address2, :city, :state, :landmark, :zip)")
     int insert(@Bind("id") String id,
             @Bind("userId") String userId,
             @Bind("label") String label,
             @Bind("address1") String address1,
             @Bind("address2") String address2,
-            @Bind("zip") Integer zip,
-            @Bind("longitude") Float longitude,
-            @Bind("latitude") Float latitude);
-
-    @SqlUpdate("DELETE from user_address where id = :id AND user_id = :userId")
-    int delete(String userId, String addressId);
+            @Bind("city") String city,
+            @Bind("state") String state,
+            @Bind("landmark") String landmark,
+            @Bind("zip") Integer zip);
 }

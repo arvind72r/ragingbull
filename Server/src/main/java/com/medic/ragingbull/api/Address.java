@@ -6,30 +6,63 @@
 
 package com.medic.ragingbull.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.medic.ragingbull.core.constants.ValidationConstants;
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Created by Vamshi Molleti
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
+    @JsonProperty
     private String id;
+
+    @JsonProperty
     private String userId;
+
+    @JsonProperty
+    @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
     private String label;
+
+    @JsonProperty
+    @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
     private String address1;
+
+    @JsonProperty
     private String address2;
+
+    @JsonProperty
+    @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    private String city;
+
+    @JsonProperty
+    @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    private String state;
+
+    @JsonProperty
+    @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
+    private String landmark;
+
+    @JsonProperty
+    @NotBlank(message = ValidationConstants.MANDATORY_PARAM_MISSING)
     private Integer zip;
-    private Float longitude;
-    private Float latitude;
 
     public Address() {}
 
-    public Address(String id, String userId, String label, String address1, String address2, Integer zip, Float longitude, Float latitude) {
+    public Address(String id, String userId, String label, String address1, String address2, String city, String state, String landmark, Integer zip) {
         this.id = id;
         this.userId = userId;
         this.label = label;
         this.address1 = address1;
         this.address2 = address2;
+        this.city = city;
+        this.state = state;
+        this.landmark = landmark;
         this.zip = zip;
-        this.longitude = longitude;
-        this.latitude = latitude;
     }
 
     public String getId() {
@@ -60,11 +93,15 @@ public class Address {
         return zip;
     }
 
-    public Float getLongitude() {
-        return longitude;
+    public String getCity() {
+        return city;
     }
 
-    public Float getLatitude() {
-        return latitude;
+    public String getState() {
+        return state;
+    }
+
+    public String getLandmark() {
+        return landmark;
     }
 }

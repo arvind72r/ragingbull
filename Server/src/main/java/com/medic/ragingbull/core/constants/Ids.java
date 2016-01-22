@@ -15,6 +15,7 @@ public class Ids {
         SESSION("ss"),
         USER ("us"),
         USER_ADDRESS ("us-ad"),
+        USER_FAVOURITES ("us-fav"),
         OAUTH("oa"),
         CONSULTATION("cn"),
         PHARMACY("ph"),

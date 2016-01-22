@@ -6,28 +6,55 @@
 
 package com.medic.ragingbull.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Vamshi Molleti
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressResponse {
-    private String id;
-    private String userId;
-    private String label;
-    private String address1;
-    private String address2;
-    private Integer zip;
-    private Float longitude;
-    private Float latitude;
 
-    public AddressResponse(String id, String userId, String label, String address1, String address2, Integer zip, Float longitude, Float latitude) {
+    @JsonProperty
+    private String id;
+
+    @JsonProperty
+    private String userId;
+
+    @JsonProperty
+    private String label;
+
+    @JsonProperty
+    private String address1;
+
+    @JsonProperty
+    private String address2;
+
+    @JsonProperty
+    private String city;
+
+    @JsonProperty
+    private String state;
+
+    @JsonProperty
+    private String landmark;
+
+    @JsonProperty
+    private Integer zip;
+
+
+    public AddressResponse(String id, String userId, String label, String address1, String address2, String city, String state, String landmark, Integer zip) {
         this.id = id;
         this.userId = userId;
         this.label = label;
         this.address1 = address1;
         this.address2 = address2;
+        this.city = city;
+        this.state = state;
+        this.landmark = landmark;
         this.zip = zip;
-        this.longitude = longitude;
-        this.latitude = latitude;
     }
 
     public String getId() {
@@ -50,15 +77,19 @@ public class AddressResponse {
         return address2;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
     public Integer getZip() {
         return zip;
-    }
-
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public Float getLatitude() {
-        return latitude;
     }
 }

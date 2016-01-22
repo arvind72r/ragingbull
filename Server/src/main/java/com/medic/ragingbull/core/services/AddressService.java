@@ -37,7 +37,7 @@ public class AddressService {
         List<AddressResponse> responses = new ArrayList<>();
         List<Address> addressList = addressDao.getAddressBook(userId);
         for (Address address : addressList) {
-            AddressResponse response = new AddressResponse(address.getId(), address.getUserId(), address.getLabel(), address.getAddress1(), address.getAddress2(), address.getZip(), address.getLongitude(), address.getLatitude());
+            AddressResponse response = new AddressResponse(address.getId(), address.getUserId(), address.getLabel(), address.getAddress1(), address.getAddress2(), address.getCity(), address.getState(), address.getLandmark(), address.getZip());
             responses.add(response);
         }
         return responses;
@@ -45,27 +45,26 @@ public class AddressService {
 
     public AddressResponse getAddress(Session session, String userId, String addressId) {
         Address address = addressDao.getAddress(addressId, userId);
-        AddressResponse response = new AddressResponse(address.getId(), address.getUserId(), address.getLabel(), address.getAddress1(), address.getAddress2(), address.getZip(), address.getLongitude(), address.getLatitude());
+        AddressResponse response = new AddressResponse(address.getId(), address.getUserId(), address.getLabel(), address.getAddress1(), address.getAddress2(), address.getCity(), address.getState(), address.getLandmark(), address.getZip());
         return response;
     }
 
     public AddressResponse addAddress(Session session, String userId, Address address) throws StorageException {
         try {
             address.setId(com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER_ADDRESS));
-            int addressAdded = addressDao.insert(address.getId(), userId, address.getLabel(), address.getAddress1(), address.getAddress2(), address.getZip(), address.getLongitude(), address.getLatitude());
+            int addressAdded = addressDao.insert(address.getId(), userId, address.getLabel(), address.getAddress1(), address.getAddress2(), address.getCity(), address.getState(), address.getLandmark(), address.getZip());
 
             if (addressAdded == 0) {
                 LOGGER.error(String.format("Error adding address for user %s. DB failed to save the record", session.getUserEmail()));
                 throw new StorageException("Error adding user address. Please try again");
             }
 
-            AddressResponse response = new AddressResponse(address.getId(), userId, address.getLabel(), address.getAddress1(), address.getAddress2(), address.getZip(), address.getLongitude(), address.getLatitude());
+            AddressResponse response = new AddressResponse(address.getId(), address.getUserId(), address.getLabel(), address.getAddress1(), address.getAddress2(), address.getCity(), address.getState(), address.getLandmark(), address.getZip());
             return response;
         } catch(Exception e) {
             LOGGER.error(String.format("Error adding user address %s. Exception %s", session.getUserEmail(), e));
             throw e;
         }
-
     }
 
     public boolean deleteAddress(Session session, String userId, String addressId) throws StorageException {
@@ -75,7 +74,6 @@ public class AddressService {
                 LOGGER.error(String.format("Error deleting address for user %s. DB failed to delete the record", session.getUserEmail()));
                 throw new StorageException("Error deleting user address. Please try again");
             }
-
             return true;
         } catch(Exception e) {
             LOGGER.error(String.format("Error adding user address %s. Exception %s", session.getUserEmail(), e));

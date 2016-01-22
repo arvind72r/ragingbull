@@ -80,13 +80,16 @@
             <column name="address2" type="VARCHAR(512)">
                 <constraints nullable="false"/>
             </column>
+            <column name="city" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="landmark" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
             <column name="zip" type="VARCHAR(128)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="longitude" type="FLOAT(9)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="latitude" type="FLOAT(9)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
@@ -725,6 +728,31 @@
                 <constraints nullable="false"/>
             </column>
             <column name="valid" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="molletivamshi">
+        <createTable tableName="user_favourites">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="label" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_id" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">

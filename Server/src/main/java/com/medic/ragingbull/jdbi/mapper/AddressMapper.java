@@ -25,9 +25,10 @@ public class AddressMapper implements ResultSetMapper<Address>{
                 r.getString("label"),
                 r.getString("address1"),
                 r.getString("address2"),
-                r.getInt("zip"),
-                r.getFloat("longitude"),
-                r.getFloat("latitude")
+                r.getString("city"),
+                r.getString("state"),
+                r.getString("landmark"),
+                r.getInt("zip")
         );
     }
 }
