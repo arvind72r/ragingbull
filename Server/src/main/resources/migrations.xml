@@ -644,7 +644,10 @@
             <column name="id" type="CHAR(128)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="entity_id" type="CHAR(128)">
+            <column name="user_id" type="CHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="path" type="TEXT">

@@ -21,7 +21,8 @@ public class ImagesMapper implements ResultSetMapper<Image>{
     @Override
     public Image map(int index, ResultSet r, StatementContext ctx) throws SQLException {
         return new Image(r.getString("id"),
-                r.getString("entity_id"),
+                r.getString("user_id"),
+                r.getString("type"),
                 r.getString("path"),
                 new DateTime(r.getTimestamp("created_at")),
                 new DateTime(r.getTimestamp("updated_at"))

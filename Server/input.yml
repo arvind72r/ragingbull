@@ -203,7 +203,7 @@ facebook:
 
 #images
 images:
-    path: /mnt/applications/rb/user/images
+    path: ../tempImage/
     supportedTypes: jpg, jpeg, png
     #Size in MB
     size: 5

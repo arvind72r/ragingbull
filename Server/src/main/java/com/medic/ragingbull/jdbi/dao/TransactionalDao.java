@@ -176,6 +176,20 @@ public abstract class TransactionalDao {
         return true;
     }
 
+    @Transaction
+    public  boolean addUserProfileImage(String imageId, String userId, String type, String absolutePath) {
+        // Update image table
+
+        int imageCreated = createImage(imageId, userId, type, absolutePath);
+        if (imageCreated == 0) {
+            throw new TransactionException("Unable to create user profile");
+        }
+
+        // Update user table
+        int profieUpdated = updateUserProfileImage(userId, "/user/" + userId + "/image/" + imageId);
+        return true;
+    }
+
     /*
              _____  _____ _       _____                 _
             /  ___||  _  | |     |  _  |               (_)
@@ -277,6 +291,9 @@ public abstract class TransactionalDao {
     @SqlUpdate("UPDATE CONSULTATION SET active = false WHERE id = :id")
     protected abstract int lockConsultations(@Bind("id") String id);
 
+    @SqlUpdate("INSERT INTO IMAGES (id, user_id, type, path) VALUES (:id, :userId, :type, :path)")
+    protected abstract int createImage(String imageId, String userId, String type, String absolutePath);
 
-
+    @SqlUpdate("UPDATE users SET picture_url = :pictureUrl where id = :id")
+    protected abstract int updateUserProfileImage(@Bind("id") String id, @Bind("pictureUrl") String pictureUrl);
 }

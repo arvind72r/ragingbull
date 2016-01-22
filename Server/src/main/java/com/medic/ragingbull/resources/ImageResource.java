@@ -7,9 +7,14 @@
 package com.medic.ragingbull.resources;
 
 import com.google.inject.Inject;
+import com.medic.ragingbull.api.Image;
 import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.core.access.service.ImageAccessService;
 import com.medic.ragingbull.core.services.ImageService;
+import com.medic.ragingbull.exception.ResourceCreationException;
+import com.medic.ragingbull.exception.StorageException;
 import io.dropwizard.auth.Auth;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,38 +26,43 @@ import java.io.IOException;
 /**
  * Created by Vamshi Molleti
  */
-@Path("/images")
-@Consumes(MediaType.MULTIPART_FORM_DATA)
+@Path("/user/{id}/image")
+@Consumes(MediaType.TEXT_PLAIN)
 @Produces(MediaType.APPLICATION_JSON)
 public class ImageResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageResource.class);
+    public enum ImageEntity{ userImage, prescription}
+    private ImageAccessService imageAccessService;
 
-    private ImageService imageService;
 
     @Inject
-    public ImageResource(ImageService imageService) {
-        this.imageService = imageService;
+    public ImageResource(ImageAccessService imageAccessService) {
+        this.imageAccessService = imageAccessService;
     }
 
     @POST
-    @Path("/entity/{id}")
-    public Response createImage(@Auth Session session, @PathParam("entityId") String entityId, byte[] fileBytes) throws IOException {
-        return imageService.createImage(session, entityId, fileBytes);
+    public Response createImage(@Auth Session session, @PathParam("id") String userId, @QueryParam("type") ImageEntity entity, String encodedImage) throws ResourceCreationException, StorageException {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return imageAccessService.createImage(session, userId, entity, encodedImage);
     }
 
     @GET
-    @Path("/entity/{id}/images")
-    public Response getImages(@Auth Session session, @PathParam("entityId") String entityId) throws IOException {
-        return imageService.getImages(session, entityId);
+    public Response getImage(@Auth Session session, @PathParam("id") String userId) {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return imageAccessService.getImages(session, userId);
     }
-
 
     @GET
-    @Path("/{id}")
-    public Response getImage(@Auth Session session, @PathParam("id") String id) {
-
-        return imageService.getImage(session, id);
+    @Path("/{imageId}")
+    public Response getImages(@Auth Session session, @PathParam("id") String userId, @PathParam("imageId") String imageId) throws IOException, ResourceCreationException, StorageException {
+        if (StringUtils.equalsIgnoreCase(userId, "me")) {
+            userId = session.getUserId();
+        }
+        return imageAccessService.getImage(session, userId, imageId);
     }
-
 }

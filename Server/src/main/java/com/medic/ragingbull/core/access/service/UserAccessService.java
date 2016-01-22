@@ -11,10 +11,12 @@ import com.medic.ragingbull.api.*;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.constants.SystemConstants;
+import com.medic.ragingbull.core.services.ImageService;
 import com.medic.ragingbull.core.services.PrescriptionService;
 import com.medic.ragingbull.core.services.UserService;
 import com.medic.ragingbull.exception.*;
 import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONObject;
 
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -28,12 +30,14 @@ public class UserAccessService {
 
     private UserService userService;
     private PrescriptionService prescriptionService;
+    private ImageService imageService;
 
     @Inject
-    public UserAccessService(UserService userService, PrescriptionService prescriptionService)
+    public UserAccessService(UserService userService, PrescriptionService prescriptionService, ImageService imageService)
     {
         this.userService = userService;
         this.prescriptionService = prescriptionService;
+        this.imageService = imageService;
     }
 
     public Response register(User user) throws NotificationException, StorageException, ResourceCreationException, DuplicateEntityException {
@@ -148,8 +152,12 @@ public class UserAccessService {
 
     public Response getPrescriptions(Session session, String userId) {
         if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) != UserRoles.Permissions.BLOCK.getBitValue()) {
+            JSONObject allPrescriptionsResponse = new JSONObject();
             List<PrescriptionResponse> prescriptions = prescriptionService.getPrescriptions(session, userId);
-            return Response.ok().entity(prescriptions).build();
+            List<ImageResponse> prescriptionImages = imageService.getPrescriptionImages(session, userId);
+            allPrescriptionsResponse.put("app", prescriptions);
+            allPrescriptionsResponse.put("offline", prescriptionImages);
+            return Response.ok().entity(allPrescriptionsResponse).build();
         }
         return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_USER_READ_CODE).build();
     }
