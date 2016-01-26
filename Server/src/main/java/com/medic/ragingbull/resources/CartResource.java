@@ -6,6 +6,7 @@
 
 package com.medic.ragingbull.resources;
 
+import com.google.inject.Inject;
 import com.medic.ragingbull.api.CartItem;
 import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.access.service.CartAccessService;
@@ -26,6 +27,12 @@ import java.util.List;
 public class CartResource {
 
     private CartAccessService cartAccessService;
+
+    @Inject
+    public CartResource(CartAccessService cartAccessService) {
+        this.cartAccessService = cartAccessService;
+    }
+
     @GET
     @Path("/{id}/cart")
     public Response getUserCart(@Auth Session session, @PathParam("id") String userId) {
@@ -63,8 +70,8 @@ public class CartResource {
     }
 
     @POST
-    @Path("/{id}/cart/order")
-    public Response orderCart(@Auth Session session, @PathParam("id") String userId) {
+    @Path("/{id}/cart/checkout")
+    public Response checkoutCart(@Auth Session session, @PathParam("id") String userId) {
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
