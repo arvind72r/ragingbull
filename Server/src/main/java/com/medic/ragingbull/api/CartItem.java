@@ -12,14 +12,20 @@ package com.medic.ragingbull.api;
 public class CartItem {
     private String id;
     private String name;
-    private String entityType;
+    private String entityRefType;
+    private String entityRefId;
     private Integer quantity;
 
-    public CartItem(String id, String name, String entityType, Integer quantity) {
+    public CartItem(String id, String name, String entityRefType, String entityRefId, Integer quantity) {
         this.id = id;
         this.name = name;
-        this.entityType = entityType;
+        this.entityRefType = entityRefType;
+        this.entityRefId = entityRefId;
         this.quantity = quantity;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getId() {
@@ -30,8 +36,12 @@ public class CartItem {
         return name;
     }
 
-    public String getEntityType() {
-        return entityType;
+    public String getEntityRefType() {
+        return entityRefType;
+    }
+
+    public String getEntityRefId() {
+        return entityRefId;
     }
 
     public Integer getQuantity() {

@@ -798,6 +798,9 @@
             <column name="quantity" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="entity_ref_type" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
             <column name="entity_ref_id" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
