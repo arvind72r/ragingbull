@@ -12,6 +12,8 @@ import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.access.service.CartAccessService;
 import io.dropwizard.auth.Auth;
 import org.apache.commons.lang3.StringUtils;
+import com.medic.ragingbull.exception.StorageException;
+import com.medic.ragingbull.exception.ResourceCreationException;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -44,7 +46,7 @@ public class CartResource {
 
     @PUT
     @Path("/{id}/cart")
-    public Response addItemToCart(@Auth Session session, @PathParam("id") String userId, @Valid List<CartItem> items) {
+    public Response addItemToCart(@Auth Session session, @PathParam("id") String userId, @Valid List<CartItem> items) throws ResourceCreationException,StorageException{
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
@@ -53,7 +55,7 @@ public class CartResource {
 
     @DELETE
     @Path("/{id}/cart/{itemId}")
-    public Response removeCartItem(@Auth Session session, @PathParam("id") String userId){
+    public Response removeCartItem(@Auth Session session, @PathParam("id") String userId) throws StorageException{
         if (StringUtils.equalsIgnoreCase(userId, "me")) {
             userId = session.getUserId();
         }
