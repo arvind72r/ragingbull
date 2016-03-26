@@ -1,17 +1,11 @@
-define(function(require) {
-    'use strict';    
-    var $ = require("jquery"),
-        _ = require("underscore"),
-        Backbone = require("backbone"),
-        memberModel = require("memberModel"),
-        userDetailModel = require("userDetailModel"),
-        addSymptomsView = require("addSymptomsView"),
-        util = require("util/util");
+/*jslint browser:true*/
+/*global define*/
+define(['jquery', 'underscore', 'backbone', 'util/util', 'memberModel', 'userDetailModel', 'getConsultationModel', 'hbs!tpl/createConsulatationScreen'], 
+    function($, _, backbone,util,memberModel,userDetailModel,getConsultationModel,createConsulatationScreen) {
+    'use strict';
 
-    var createConsulatationScreen  =  require("hbs!tpl/createConsulatationScreen");
-    
     var createConsulatationView = Backbone.View.extend({
-    	el : '#page-content-wrapper',
+    	el : '#createConsultationView',
 
         events : {
             'click .addNewMember': 'addMemberScreen',
@@ -21,7 +15,6 @@ define(function(require) {
     	
     	initialize: function () {
             try{
-                this.addSymptomsView = new addSymptomsView();
                 
             }catch(e){
                 console.log('error in initialize --> ' + e);
@@ -60,7 +53,6 @@ define(function(require) {
             data.setting = {};
             data.setting.userView = false;
             data.setting.practitionerView = false;
-            window.location.hash = 'addSymptoms';
             var practitionerInfo = userDetailModel.get('practitioner');
             if(practitionerInfo){
                 if(practitionerInfo && practitionerInfo.id === response.practitionerId){
@@ -71,8 +63,8 @@ define(function(require) {
             }else{
                 data.setting.userView = true;
             }
-            
-            obj.addSymptomsView.render(data);
+            getConsultationModel.set(data);
+            Backbone.history.navigate('editCons',{trigger:true, replace: true});
         },
 
         changePatientInfo: function(evt){
@@ -94,7 +86,20 @@ define(function(require) {
 
         getMemberList: function(response , obj){
             memberModel.set('members' , response);
-            var patient = config.memberForCons;
+            obj.populateMembers();
+        },
+
+        getMemberECB: function(response , obj){
+            if((memberModel.get('members')).length > 0){
+                obj.populateMembers();
+            }else{
+                localStorage.removeItem('memberForCons');
+                obj.populateMembers();
+            }
+        },
+
+        populateMembers: function(){
+            var patient = localStorage.getItem('memberForCons');
             config.memberForCons = '';
             var dataPoint = {};
             var displayPatient = '';
@@ -106,8 +111,8 @@ define(function(require) {
             dataPoint.user = userDetailModel.attributes;
             dataPoint.members = memberModel.attributes.members;
             dataPoint.selectedUser = displayPatient; 
-            obj.$el.html(createConsulatationScreen(dataPoint));
-            obj.getDoctor();
+            this.$el.html(createConsulatationScreen(dataPoint));
+            this.getDoctor();
             util.hideLoader();
         },
 
@@ -123,9 +128,17 @@ define(function(require) {
             $('#selectDoc').html(docList);
         },
 
+        getDoctorECB: function(response,obj){
+            var docList = '<option value="">Select a Doctor</option>';
+            $('#selectDoc').html(docList);
+            obj.$el.find('.globalError').html('Currently we are unable to fetch the doctor\'s list. Plese try later to create consultation');
+            obj.$el.find('.consultation').addClass('disabled');
+            obj.$el.find('.addNewMember').addClass('disabled');
+        },
+
         addMemberScreen: function(){
             config.nextPage = 'createConsultation';
-            window.location.hash = 'addMember';
+            Backbone.history.navigate('addMember',{trigger:true, replace: false});
         }
     });
     return createConsulatationView;

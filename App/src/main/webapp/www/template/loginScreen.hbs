@@ -6,7 +6,7 @@
 				<div class="col-xs-12">New to this? <a href="#register">Sign Up here</a></div>
 
 				<div class="userDetails pull-left">
-					<div class="col-xs-12 errorText globalError"></div>
+					<div class="col-xs-12 errorText globalError">{{errorMessage}}</div>
 					<div class="col-xs-10">
 						<input type="text" class="form-control" name="userId" id="userId" placeholder="User Id">
 					</div>
@@ -27,7 +27,8 @@
 	    		<span>Or</span>
 			</div>
 
-			<div class="col-xs-12 col-sm-5">
+			<div class="col-xs-12 col-sm-5 socialSignOn">
+				<div class="col-xs-12 errorText signup-other-error"></div>
 				<div class="col-xs-12 signup-other">
 					<a href="/customer/account/googlesignin/callback/" class="signup-g">
 						<small></small><span>sign in with google</span>

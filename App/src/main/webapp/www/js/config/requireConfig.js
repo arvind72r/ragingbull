@@ -51,12 +51,17 @@ requirejs.config({
         'myProfileView': 'app/views/myProfileView',
         'dashboardView': 'app/views/dashboardView',
         'addSymptomsView': 'app/views/addSymptomsView',
+        'summaryView': 'app/views/summaryView',
         'navigationView': 'app/views/navigationView',
+        'myPrescriptionView': 'app/views/myPrescriptionView',
+        'genericModalView': 'app/views/genericModalView',
         
         //Model
         'userModel' : 'app/model/userModel',
         'userDetailModel' : 'app/model/userDetailModel',
         'memberModel' : 'app/model/memberModel',
+        'cartModel' : 'app/model/cartModel',
+        'addressModel' : 'app/model/addressModel',
         'getConsultationModel' : 'app/model/getConsultationModel',
         'allConsultationModel' : 'app/model/allConsultationModel',
         'fb' : 'app/social/fb',

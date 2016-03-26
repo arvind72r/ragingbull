@@ -1,15 +1,11 @@
-define(function(require) {
-    'use strict';    
-    var $ = require("jquery"),
-        _ = require("underscore"),
-        Backbone = require("backbone"),
-        memberModel = require("memberModel"),
-        util = require("util/util");
-
-    var myMemberScreen  =  require("hbs!tpl/myMember");
+/*jslint browser:true*/
+/*global define*/
+define(['jquery', 'backbone', 'util/util', 'memberModel', 'hbs!tpl/myMember'],
+    function($, backbone,util,memberModel,myMemberScreen) {
+    'use strict';
     
-    var addMemberView = Backbone.View.extend({
-    	el : '#page-content-wrapper',
+    var myMemberView = Backbone.View.extend({
+    	el : '#myMemberView',
 
         events : {
             'click .addNewMember' : 'addMember'
@@ -41,14 +37,15 @@ define(function(require) {
             util.hideLoader();
         },
 
-        renderMyMember: function(){
-           this.$el.html(myMemberScreen(memberModel.attributes)); 
+        getMemberECB: function(response , obj){
+            obj.$el.html(myMemberScreen(memberModel.attributes));
+            util.hideLoader();    
         },
 
         addMember: function(){
             config.nextPage = 'myMember';
-            window.location.hash = 'addMember';
+            Backbone.history.navigate('addMember',{trigger:true, replace: false});
         }
     });
-    return addMemberView;
+    return myMemberView;
 });

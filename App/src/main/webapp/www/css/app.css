@@ -1,7 +1,7 @@
 /* Common Style */
 body {
 	font-family: "Helvetica Neue",Helvetica,"Roboto Regular",Arial,sans-serif;
-	font-size:12px;
+	font-size:14px;
 }
 
 #overlay{
@@ -131,6 +131,16 @@ body {
     color: #555555;
 }
 
+.buttonHolder{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: #cccccc;
+    padding-left: 200px;
+    left: 0;
+    z-index: 10;
+}
+
 .secondary {
 	background-color: #ebebeb !important;
 }
@@ -197,6 +207,10 @@ body {
 	display: flex;
 	align-items:center;
 	flex-wrap:wrap;
+}
+
+.socialSignOn .errorText{
+    padding: 0;
 }
 
 .errorText{
@@ -376,7 +390,7 @@ button a.signUp{
     padding: 0;
 }
 
-.addNewMember{
+.addNewMember, .addAddress{
     margin-left: 10px;
 }
 
@@ -405,47 +419,68 @@ button a.signUp{
     width: 100%;
 }
 
-.prescriptionHead{
-    float: left;
-    width: 100%;
-    background: #EDEDED;
-    padding-right: 10px;
-}
-
-.prescriptionHead>div{
-    border-right: 1px dashed #999;
-    line-height: 32px;
-    float: left;
-    padding-left: 10px;
-}
-
-.prescriptionHead>div:last-child{
-    border-right: none;
-}
-
 .prescriptionRow{
     float: left;
     width: 100%;
-    padding-right: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed #999;
 }
 
 .prescriptionRow input[type="text"] {
     width: 100%;
     height: 34px;
 }
-.prescriptionRow input[type="checkbox"] {
-    margin: 12px 10px;
-    font-size: 16px;
+
+.prescriptionRow .frequency{
+    height: 34px;
+    padding: 8px 0;
 }
+
+.prescriptionRow .customChk{
+    display: inline-block;
+    position: relative;
+    margin: 0px 10px;
+    width: 14px;
+    height: 14px;
+}
+
+.prescriptionRow input[type="checkbox"] {
+    opacity: 0;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+}
+
+.prescriptionRow input[type="checkbox"] + div, .prescriptionRow input[type="checkbox"]:checked + div{
+    position: absolute;
+    top: 0;
+    font-size: 16px;
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;    
+}
+
+.prescriptionRow input[type="checkbox"] + div:before{
+    content: "0";
+}
+
+.prescriptionRow input[type="checkbox"]:checked + div:before{
+    content: "1";
+}
+
 .prescriptionRow>div{
-    border-right: 1px dashed #999;
-    height: 54px;
-    padding: 10px;
+    height: 45px;
+    padding: 5px;
     float: left;
 }
 
-.prescriptionRow>div:last-child{
-    border-right: none;
+.prescriptionRow:last-child{
+    border-bottom: none;
 }
 
 .prescriptionBody .drugCol{
@@ -482,9 +517,55 @@ button a.signUp{
     margin:15px;
 }
 
-.dashboard .heading{
+.dashboard .heading,
+.summary .heading{
     background:#c6c6c6;
     padding:10px;
+}
+
+.summary .heading{
+    margin: 10px 0;
+}
+
+.summary .row{
+    margin: 10px 0;
+}
+
+.summary .notes{
+    white-space: pre-wrap;
+}
+
+.summary .prescRow{
+    float: left;
+    width: 100%;
+    margin: 5px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #cdcdcd;
+}
+
+.summary .drugSelector{
+    float: left;
+    width: 2%;
+}
+
+.summary .drugSelector input{
+    width: 100%;
+    font-size: x-large;
+    margin: 0;
+}
+
+.summary .drugDetail{
+    float: left;
+    width: 98%;
+}
+
+.summary .selectAll{
+    float:right;
+}
+
+.summary .selectAll a{
+    color: #000 !important;
+    text-decoration: underline !important;
 }
 
 .dashboard ul{
@@ -498,6 +579,7 @@ button a.signUp{
     float:left;
     width:100%;
     border-bottom: 1px dashed #cdcdcd;
+    padding: 10px 0;
 }
 
 .dashboard ul li:last-child{
@@ -505,7 +587,7 @@ button a.signUp{
 }
 
 .dashboard ul li>div{
-    margin: 5px 0;
+    margin-top: 5px;
 }
 
 .dashboard .symptoms{
@@ -533,9 +615,46 @@ button a.signUp{
 }
 
 @media (max-width: 820px) {
-    .prescriptionRow input[type="checkbox"] {
-        margin: 12px 5px;
-        font-size: 16px;
+    .prescriptionBody .freqCol{
+        width:20%;
+    }
+    .prescriptionBody .doseCol{
+        width:10%;
+    }    
+}
+
+@media (max-width: 767px) {
+    .prescriptionBody .drugCol{
+        width:100%;
+    }
+
+    .prescriptionBody .schCol{
+        width:40%;
+    }
+    .prescriptionBody .freqCol{
+        width:60%;
+    }
+    .prescriptionBody .doseCol{
+        width:30%;
+    }
+    .prescriptionBody .unitCol{
+        width:40%;
+    }
+    .prescriptionBody .daysCol{
+        width:30%;
+    }
+    .nav>li>a{
+        padding: 10px;
+    }
+    .buttonHolder{
+        padding-left: 0px !important;
+    }
+    .summary .drugSelector{
+        width: 4%;
+    }
+    .summary .drugDetail{
+        float: left;
+        width: 96%;
     }
 }
 
@@ -663,6 +782,11 @@ button a.signUp{
     top: 15px;
 }
 
+@media (max-width: 768px) {
+    body {
+        font-size: 12px;
+    }
+}
 
 @media (min-width: 768px) {
     #wrapper {
@@ -694,7 +818,7 @@ button a.signUp{
     
 @media (max-width: 1080px) {
     .hideLeftNav .navbar-toggle.custom{
-        position: absolute;
+        position: fixed;
         border-color: #FFF;
         top: 3px;
         left: 10px;

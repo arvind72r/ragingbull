@@ -1,17 +1,8 @@
-define(function(require) {
-    'use strict';    
-    var $ = require("jquery"),
-        _ = require("underscore"),
-        Backbone = require("backbone"),
-        userDetailModel = require("userDetailModel"),
-        userModel = require("userModel"),
-        memberModel = require("memberModel"),
-        allConsultationModel = require("allConsultationModel"),
-        getConsultationModel = require("getConsultationModel");
-
-
-    var navigation  =  require("hbs!tpl/navigation");
-    var accountConfirmationModal = require("hbs!tpl/accountConfirmationModal");
+/*jslint browser:true*/
+/*global define*/
+define(['jquery', 'backbone', 'userDetailModel', 'userModel', 'memberModel', 'allConsultationModel', 'getConsultationModel', 'hbs!tpl/navigation', 'hbs!tpl/accountConfirmationModal'],
+    function($, backbone,userDetailModel,userModel,memberModel,allConsultationModel,getConsultationModel,navigation,accountConfirmationModal) {
+    'use strict';
     
     var NavigationView = Backbone.View.extend({
     	el : '#container',
@@ -19,9 +10,34 @@ define(function(require) {
         events : {
             'click #sidebar-toggle' : 'toggleSidebar',
             'click .verifyPhone' : 'verifyPhone',
-            'click #logout' : 'logout'
-
+            'click #logout' : 'logout',
+            'click .navLink': 'route'
     	},
+
+        route: function(evt){
+            var hash = $(evt.target).attr('data-prop');
+            var oldHash = (window.location.hash).split('#')[1];
+            if(hash === oldHash){
+                return;
+            }
+            if(hash === 'dashboard'){
+                if(oldHash === 'addMember' || !config.manageHistory){
+                    window.history.go(-2);
+                }else{
+                    window.history.back();
+                }
+            }
+            if(oldHash === 'addMember'){
+                config.manageHistory = false;
+            }else{
+                config.manageHistory = true;
+            }
+            if(oldHash === 'dashboard'){
+                Backbone.history.navigate(hash,{trigger:true, replace: false});
+            }else{
+                Backbone.history.navigate(hash,{trigger:true, replace: true});
+            }
+        },
     	
     	initialize: function () {
             try{
@@ -91,7 +107,6 @@ define(function(require) {
                 obj.name = userDetailModel.get('name');
                 obj.userVerified = userModel.get('isUserVerified')
             	this.$el.html(navigation(obj));
-                $('#wrapper').height($(window).height() - 56);
             }catch(e){
             }
         }

@@ -1,17 +1,13 @@
-define(function(require) {
-    'use strict';    
-    var $ = require("jquery"),
-        _ = require("underscore"),
-        Backbone = require("backbone"),
-        userDetailModel = require("userDetailModel"),
-        allConsultationModel = require("allConsultationModel"),
-        addSymptomsView = require("addSymptomsView"),
-        util = require("util/util");
+/*jslint browser:true*/
+/*global define*/
+define(['jquery', 'backbone', 'util/util', 'userModel', 'userDetailModel', 'genericModalView', 'allConsultationModel', 'getConsultationModel', 'hbs!tpl/dashboard', 'hbs!tpl/fullList', 'hbs!tpl/socialMissingInfoModal','hbs!tpl/summary'],
+    function($, backbone,util,userModel,userDetailModel,genericModalView,allConsultationModel,getConsultationModel,dashboardScreen,allConsultationScreen,missingInfoModal,testScreen) {
+    'use strict';
 
-    var dashboardScreen  =  require("hbs!tpl/dashboard");
+    var missingInfo = require("hbs!tpl/socialMissingInfoModal");
     
     var DashboardView = Backbone.View.extend({
-    	el : '#page-content-wrapper',
+    	el : '#dashboardView',
 
         events : {
             'click .upcc-pat': 'getConsultation',
@@ -21,7 +17,7 @@ define(function(require) {
     	
     	initialize: function () {
             try{
-                this.addSymptomsView = new addSymptomsView();
+                this.genericModalView = new genericModalView();
             }catch(e){
                 console.log('error in initialize --> ' + e);
             }
@@ -45,7 +41,7 @@ define(function(require) {
 
         getFullConsList: function(evt){
             config.desiredCons = $(evt.target).attr('data-prop');
-            window.location.hash = 'allConsultation';
+            Backbone.history.navigate('allConsultation',{trigger:true, replace: true});
         },
 
         getConsultation: function(evt){
@@ -55,7 +51,6 @@ define(function(require) {
             var consultationId = targetLi.attr('data-prop');
             var url = config.root + '/consultation/'+consultationId;
             util.jqueryGet(url , this.getConsultationSCB , this.getConsultationECB , this);
-
         },
 
         getConsultationSCB: function(response , obj){
@@ -64,7 +59,6 @@ define(function(require) {
             data.setting = {};
             data.setting.userView = false;
             data.setting.practitionerView = false;
-            window.location.hash = 'addSymptoms';
             var practitionerInfo = userDetailModel.get('practitioner');
             if(practitionerInfo){
                 if(practitionerInfo && practitionerInfo.id === response.practitionerId){
@@ -75,8 +69,14 @@ define(function(require) {
             }else{
                 data.setting.userView = true;
             }
-            
-            obj.addSymptomsView.render(data);
+
+            getConsultationModel.set(data);
+            if(data.cons.active){
+                Backbone.history.navigate('editCons',{trigger:true, replace: false});
+            }else{
+                Backbone.history.navigate('summaryCons',{trigger:true, replace: false});
+            }
+
         },
 
         getData: function(){
@@ -87,10 +87,10 @@ define(function(require) {
         getFewerData: function(obj){
             var formatedData = {}
             formatedData.showData = true;
-            if(obj.length > 0 && obj.length < 3) {
+            if(obj.length > 0 && obj.length <= 3) {
                 formatedData.consultation = obj;
                 formatedData.showViewMore = false;
-            }else if(obj.length >= 3 ){
+            }else if(obj.length > 3 ){
                 formatedData.consultation = _.first(obj , 3);
                 formatedData.showViewMore = true;
             }else{
@@ -128,24 +128,48 @@ define(function(require) {
                 inputData.userPast = obj.getFewerData(response.userPast);
                 inputData.memberCurrent = obj.getFewerData(response.memberCurrent);
                 inputData.memberPast = obj.getFewerData(response.memberPast);
-                inputData.noPractitionerCons = true;
-                inputData.noUserCons = !(inputData.userCurrent.showData || inputData.userPast.showData || inputData.memberCurrent.showData || inputData.memberPast.showData);
+                inputData.noConsultation = !(inputData.userCurrent.showData || inputData.userPast.showData || inputData.memberCurrent.showData || inputData.memberPast.showData);
             }
+
+            inputData.unableToFetchRecord = false;
 
             obj.$el.html(dashboardScreen(inputData));
             util.hideLoader();
         },
 
         dashboardError: function(response , obj){
-
+            var data = {};
+            data.unableToFetchRecord = true;
+            obj.$el.html(dashboardScreen(data));
+            util.hideLoader();
         },
 
         render : function(){
             try{
-                this.getData();
+                if(userDetailModel.get('phone')){
+                    if(userDetailModel.get('phone') === 'DummyPhoneNo'){
+                        this.genericModalView.render(missingInfoModal , 'missingInfoModal');
+                    }else{
+                        this.getData();
+                    }
+                }else{
+                    this.genericModalView.render(missingInfoModal , 'missingInfoModal');
+                }
             }catch(e){
                 console.log('error in render --> ' + e);    
             }
+        },
+
+        renderAll: function(){
+            var desiredCons = config.desiredCons;
+            var data = {};
+            data.consultation = allConsultationModel.get(desiredCons);
+            data.desiredCons = desiredCons;
+            this.$el.html(allConsultationScreen(data));
+        },
+
+        renderTest: function(){
+            this.$el.html(testScreen());
         }
     });
     return DashboardView;
