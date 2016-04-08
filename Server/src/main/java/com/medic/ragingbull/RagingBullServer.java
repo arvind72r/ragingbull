@@ -59,7 +59,7 @@ public class RagingBullServer extends Application<RagingBullConfiguration> {
     @Override
     public void initialize(Bootstrap<RagingBullConfiguration> bootstrap) {
         // Set up the migration bundle to manage the databases
-        bootstrap.addBundle(new MigrationsBundle<RagingBullConfiguration>() {
+        bootstrap.addBundle(new MigrationsBundle<RagingBullConfiguration>(){
             @Override
             public DataSourceFactory getDataSourceFactory(RagingBullConfiguration configuration) {
                 return configuration.getDataSourceFactory();

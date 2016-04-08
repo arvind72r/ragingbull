@@ -11,9 +11,12 @@ import com.medic.ragingbull.api.CartItem;
 import com.medic.ragingbull.api.CartResponse;
 import com.medic.ragingbull.api.OrderResponse;
 import com.medic.ragingbull.api.Session;
+import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.CartDao;
 import com.medic.ragingbull.jdbi.dao.CartItemsDao;
 import com.medic.ragingbull.jdbi.dao.TransactionalDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ import java.util.List;
  */
 
 public class CartService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private CartDao cartDao;
     private CartItemsDao cartItemsDao;
@@ -35,6 +40,21 @@ public class CartService {
     }
 
     public CartResponse addItemToCart(Session session, String userId, List<CartItem> items) {
+        try{
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info(String.format("Adding items to user cart for user %s", userId));
+
+                int[] itemsAdded = cartDao.addItem(userId, items);
+
+                if (itemsAdded.length != items.size()) {
+                    LOGGER.error(String.format("Error adding cart items for the user %s. DB failed to save the items", userId));
+                    throw new StorageException("Error registering user. Please try again");
+                }
+
+
+            }
+        } catch (Exception e) {
+        }
         return null;
     }
 
