@@ -1,0 +1,24 @@
+{{#if address}}
+	<div class="registerScreen">
+		<div class="container">
+			<div class="row">
+				{{#address}}
+					<div class="col-xs-12 col-sm-10 col-md-6 col-lg-4 memberWidget">
+						<div class="member">
+							<div class="col-xs-12">{{label}}</div>
+							<div class="col-xs-12">{{address1}}</div>
+							<div class="col-xs-12">{{address2}}</div>
+							<div class="col-xs-12">{{zip}}</div>
+						</div>
+					</div>
+				{{/address}}
+			</div>
+			<div class="row">
+				<button type="button" class="btn primary addAddress btn-default navbar-btn pull-left"><a href="javascript:void(0)">Add Address</a></button>
+			</div>
+		</div>
+	</div>
+{{else}}
+	<div style="margin-bottom:20px;">Currently you have not added any address to your account.</div>
+	<button type="button" class="btn primary addAddress btn-default navbar-btn pull-left"><a href="javascript:void(0)">Add Address</a></button>
+{{/if}}

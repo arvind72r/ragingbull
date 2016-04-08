@@ -16,6 +16,8 @@ public class Ids {
         USER ("us"),
         USER_ADDRESS ("us-ad"),
         USER_FAVOURITES ("us-fav"),
+        USER_CART ("us-ct"),
+        USER_CART_ITEM ("us-ct-it"),
         OAUTH("oa"),
         CONSULTATION("cn"),
         PHARMACY("ph"),

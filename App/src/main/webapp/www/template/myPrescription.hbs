@@ -1,0 +1,30 @@
+<div class="registerScreen">
+    <div class="container">
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#onlinePresc" class="consTab">Online Prescription</a></li>
+                <li><a data-toggle="tab" href="#offlinePresc" class="consTab">Offline Prescription</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="onlinePresc" class="tab-pane fade in active">
+                    Place holder of online prescription
+                </div>
+                <div id="offlinePresc" class="tab-pane fade">
+                    <div class="col-xs-12">
+                        <div>Upload your prescription</div>
+                        {{#if isDevice}}
+                            <a href="javascript:void(0)" class="cameraUpload"><img src="{{staticPath}}images/camera.png" with="20" height="20"/></a>
+                            <a href="javascript:void(0)" class="galleryUpload"><img src="{{staticPath}}images/my-photos.png" with="20" height="20"/></a>
+                        {{else}}
+                            <a href="javascript:void(0)" class="galleryUpload"><img src="{{staticPath}}images/my-photos.png" with="20" height="20"/></a>
+                        {{/if}}
+                        <div style="margin-top:20px;" id="image">
+                            <img id="imageTag" src="" width="100" height="100"/>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

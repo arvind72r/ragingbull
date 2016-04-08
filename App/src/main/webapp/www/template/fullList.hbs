@@ -1,0 +1,87 @@
+<div class="registerScreen dashboard">
+	<div class="container">
+		<div class="">
+			<div class="row" data-value="practitioner">
+				<div class="upComing col-xs-12">
+					{{#ifEqual desiredCons 'practitionerCurrent'}}
+						<div class="heading">Active Consultation - Patient</div>
+						<ul>
+							{{#consultation}}
+								<li class="upcc-pat" data-prop="{{id}}">
+									<div class="col-xs-12 col-sm-4 col-md-3">{{userName}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-3">{{createdAt}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-6 symptoms">{{symptoms}}</div>
+								</li>
+							{{/consultation}}
+						</ul>
+					{{/ifEqual}}
+					{{#ifEqual desiredCons 'practitionerPast'}}
+						<div class="heading">Past Consultation - Patient</div>
+						<ul>
+							{{#consultation}}
+								<li class="upcc-pat" data-prop="{{id}}">
+									<div class="col-xs-12 col-sm-4 col-md-3">{{userName}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-3">{{createdAt}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-6 symptoms">{{symptoms}}</div>
+								</li>
+							{{/consultation}}
+						</ul>
+					{{/ifEqual}}
+					{{#ifEqual desiredCons 'userCurrent'}}
+						<div class="heading">Active Consultation - Mine</div>
+						<ul>
+							{{#consultation}}
+								<li class="upcc-pat" data-prop="{{id}}">
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">Self</div>
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+								</li>
+							{{/consultation}}
+						</ul>
+					{{/ifEqual}}
+					{{#ifEqual desiredCons 'userPast'}}
+						<div class="heading">Past Consultation - Mine</div>
+						<ul>
+							{{#consultation}}
+								<li class="upcc-pat" data-prop="{{id}}">
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">Self</div>
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+								</li>
+							{{/consultation}}
+						</ul>
+					{{/ifEqual}}
+					{{#ifEqual desiredCons 'memberCurrent'}}
+						<div class="heading">Active Consultation - Members</div>
+						<ul>
+							{{#consultation}}
+								<li class="upcc-pat" data-prop="{{id}}">
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">{{userName}}</div>
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+								</li>
+							{{/consultation}}
+						</ul>
+					{{/ifEqual}}
+					{{#ifEqual desiredCons 'memberPast'}}
+						<div class="heading">Past Consultation - Members</div>
+						<ul>
+							{{#consultation}}
+								<li class="upcc-pat" data-prop="{{id}}">
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">Dr. {{practitionerName}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">{{createdAt}}</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">{{userName}}</div>
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 symptoms">{{symptoms}}</div>
+								</li>
+							{{/consultation}}
+						</ul>
+					{{/ifEqual}}
+				</div>
+			</div>
+			<div class="clear" style="clear:both;"></div>
+		</div>
+	</div>
+</div>

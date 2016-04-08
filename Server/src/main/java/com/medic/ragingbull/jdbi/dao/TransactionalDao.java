@@ -6,13 +6,13 @@
 
 package com.medic.ragingbull.jdbi.dao;
 
+import com.medic.ragingbull.api.CartItem;
 import com.medic.ragingbull.api.Consultation;
 import com.medic.ragingbull.api.Drug;
 import com.medic.ragingbull.api.Prescription;
-import com.medic.ragingbull.jdbi.mapper.BindDrug;
-import com.medic.ragingbull.jdbi.mapper.ConsultationMapper;
-import com.medic.ragingbull.jdbi.mapper.DrugsMapper;
-import com.medic.ragingbull.jdbi.mapper.PrescriptionMapper;
+import com.medic.ragingbull.core.constants.Ids;
+import com.medic.ragingbull.jdbi.mapper.*;
+import org.apache.commons.lang3.StringUtils;
 import org.skife.jdbi.v2.exceptions.TransactionException;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
@@ -186,8 +186,28 @@ public abstract class TransactionalDao {
         }
 
         // Update user table
-        int profieUpdated = updateUserProfileImage(userId, "/user/" + userId + "/image/" + imageId);
+        int profileUpdated = updateUserProfileImage(userId, "/user/" + userId + "/image/" + imageId);
+        if (profileUpdated == 0) {
+            throw new TransactionException("Unable to update user profile");
+        }
         return true;
+    }
+
+    public String addCartItems(String userId, List<CartItem> items) {
+        String cartId = getUserCartId(userId);
+        if (StringUtils.isBlank(cartId)) {
+            cartId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.USER_CART);
+            int cartCreated = createCart(cartId, userId);
+            if (cartCreated == 0) {
+                throw new TransactionException("Error creating cart for the user");
+            }
+        }
+        int[] cartItemsAdded = addCartItems(cartId, userId, items);
+
+        if (cartItemsAdded.length != items.size()) {
+            throw new TransactionException("Error creating cart items");
+        }
+        return cartId;
     }
 
     /*
@@ -296,4 +316,13 @@ public abstract class TransactionalDao {
 
     @SqlUpdate("UPDATE users SET picture_url = :pictureUrl where id = :id")
     protected abstract int updateUserProfileImage(@Bind("id") String id, @Bind("pictureUrl") String pictureUrl);
+
+    @SqlQuery("SELECT * FROM user_cart where user_id = :userId")
+    protected abstract String getUserCartId(@Bind("userId") String userId);
+
+    @SqlUpdate("INSERT INTO user_cart (id, user_id) values (:id, :userId)")
+    protected abstract int createCart(@Bind("id") String id, @Bind("userId") String userId);
+
+    @SqlUpdate("INSERT INTO user_cart_items (id, user_cart_id, user_id, name, quantity, entity_ref_type, entity_ref_id) values (:id, :userCartId, :userId, :name, :quantity, :entityRefType, :entityRefId)")
+    protected abstract int[] addCartItems(@Bind("id") String id, @Bind("userId") String userId, @BindCartItem List<CartItem> items);
 }

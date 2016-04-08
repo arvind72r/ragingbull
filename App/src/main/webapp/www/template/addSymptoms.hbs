@@ -12,7 +12,7 @@
 				{{/if}}
 				{{#if setting.practitionerView}}
 					<li class="active"><a data-toggle="tab" href="#symptomsTab" class="consTab">Symptoms</a></li>
-					<li><a data-toggle="tab" href="#diagnosisTab" class="consTab">Diagnosis</a></li>
+					<li><a data-toggle="tab" href="#diagnosisTab" class="consTab">Medical Notes</a></li>
 					<li><a data-toggle="tab" href="#prescriptionTab" class="consTab prescTab">Prescription</a></li>
 				{{/if}}
 			</ul>
@@ -21,50 +21,37 @@
 				{{#if setting.userView}}
 					<div id="symptomsTab" class="tab-pane fade in active">
 						<textarea id="symptoms">{{{cons.symptoms}}}</textarea>
-						<div class="buttonHolder text-center">
-							<button type="button" class="btn secondary symptomsSave btn-default navbar-btn"><a href="#dashboard">Go Back</a></button>
-							<button type="button" class="btn primary symptomsSave btn-default navbar-btn"><a href="javascript:void(0)">Save</a></button>
-						</div>
 					</div>
 				{{/if}}
 				{{#if setting.practitionerView}}
 					<div id="symptomsTab" class="tab-pane fade in active">
-						<textarea id="symptoms" disabled>{{{cons.symptoms}}}</textarea>
+						<textarea id="symptoms">{{{cons.symptoms}}}</textarea>
 					</div>
 					<div id="diagnosisTab" class="tab-pane fade">
 						<textarea id="diagnosis">{{{cons.diagnosisNotes}}}</textarea>
-						<div class="buttonHolder text-center">
-							<button type="button" class="btn primary diagnosisSave btn-default navbar-btn"><a href="javascript:void(0)">Save</a></button>
-						</div>
 					</div>
 					<div id="prescriptionTab" class="tab-pane fade pull-left" style="width:100%;">
 						<div class="prescriptionBody">
-							<div class="prescriptionHead">
-								<div class="drugCol">Drug</div>
-								<div class="schCol">Sch</div>
-								<div class="freqCol">Freq</div>
-								<div class="doseCol">Dose</div>
-								<div class="unitCol">Unit</div>
-								<div class="daysCol">Days</div>
-						    </div>
-					    	
-					    	{{> tpl/partials/prescriptionRow }}
+
 				    	</div>
-						<div class="buttonHolder text-center">
-							<button type="button" class="btn primary prescSave btn-default navbar-btn"><a href="javascript:void(0)">Save</a></button>
-							<button type="button" class="btn primary presSubmit btn-default navbar-btn"><a href="javascript:void(0)">Submit</a></button>
-						</div>
 						<div style="clear:both;"></div>
 						
 					</div>
 				{{/if}}
 			</div>
 		</div>
-		<div class="sectionDividerBorder"></div>
-
-		<div class="registerAction">
-			
-		</div>
-
+		{{#if setting.userView}}
+			<div class="buttonHolder text-center">
+				<button type="button" class="btn secondary backToDash btn-default navbar-btn"><a href="javascript:void(0)">Go Back</a></button>
+				<button type="button" class="btn primary symptomsSave btn-default navbar-btn"><a href="javascript:void(0)">Save</a></button>
+			</div>
+		{{/if}}
+		{{#if setting.practitionerView}}
+			<div class="buttonHolder text-center">
+				<button type="button" class="btn secondary backToDash btn-default navbar-btn"><a href="javascript:void(0)">Go Back</a></button>
+				<button type="button" class="btn primary consSave btn-default navbar-btn"><a href="javascript:void(0)">Save</a></button>
+				<button type="button" class="btn primary presSubmit btn-default navbar-btn" style="display:none;"><a href="javascript:void(0)">Submit</a></button>
+			</div>
+		{{/if}}
 	</div>
 </div>

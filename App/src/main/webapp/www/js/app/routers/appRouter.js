@@ -1,14 +1,14 @@
 /* jslint browser : true */
 /* global define */
-define(['jquery','underscore','backbone','bootstrap','loginView','registerView','navigationView','createConsultationView','addMemberView','myMemberView','myProfileView','dashboardView','addSymptomsView','userModel','userDetailModel','memberModel','getConsultationModel','allConsultationModel'], 
-    function ($,_,Backbone,Bootstrap,loginView,registerView,navigationView,createConsultationView,addMemberView,myMemberView,myProfileView,dashboardView,addSymptomsView,userModel,userDetailModel,memberModel,getConsultationModel,allConsultationModel) {
+define(['jquery','underscore','backbone','bootstrap','loginView','registerView','navigationView','createConsultationView','addMemberView','myMemberView','myProfileView','dashboardView','addSymptomsView','summaryView','myPrescriptionView','userModel','userDetailModel','memberModel','cartModel','addressModel','getConsultationModel','allConsultationModel'],
+    function ($,_,Backbone,Bootstrap,loginView,registerView,navigationView,createConsultationView,addMemberView,myMemberView,myProfileView,dashboardView,addSymptomsView,summaryView,myPrescriptionView,userModel,userDetailModel,memberModel,cartModel,addressModel,getConsultationModel,allConsultationModel) {
     'use strict';
 
     var bdView = {};
     bdView.stopExecution = false;
     var AppRouter = Backbone.Router.extend({
         routes: {
-            "" : "login",
+            //"" : "login",
             "login" : "login",
             "register" : "register",
             "createConsultation" : "createConsultation",
@@ -18,6 +18,11 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
             "addSymptoms" : "addSymptoms",
             "profile" : "profile",
             "consultation" : "consultation",
+            "myPrescription" : "myPrescription",
+            "allConsultation": "allConsultation",
+            "editCons": "editCons",
+            "summaryCons": "summaryCons",
+            "test": "test"
             //"logout" : "logout"
 
         },
@@ -73,6 +78,7 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
                 if(!this.menuRendered){
                     this.renderMenu();
                 }
+                $('.mainView').attr('id' , 'createConsultationView');
                 //dUtil.showLoader();
                 document.title = 'Create Consultation';
                 $('h3.header').html('Create Consultation');
@@ -92,6 +98,7 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
                 if(!this.menuRendered){
                     this.renderMenu();
                 }
+                $('.mainView').attr('id' , 'profileView');
                 //dUtil.showLoader();
                 document.title = 'My Profile';
                 $('h3.header').html('My Profile');
@@ -105,25 +112,6 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
             }
         },
 
-        consultation: function(){
-            if(config.userSession){
-                $(window).scrollTop(0);
-                if(!this.menuRendered){
-                    this.renderMenu();
-                }
-                //dUtil.showLoader();
-                document.title = 'Consultation';
-                $('h3.header').html('Consultation');
-                if(!bdView.myConsultationView){
-                    bdView.myConsultationView = new myConsultationView();
-                }
-                bdView.myConsultationView.render();
-                bdView.navigationView.selectMenuItem('consultation');
-            }else{
-                window.location.hash = 'login';
-            }
-        },
-
         addMember: function(){
             if(config.userSession){
                 $(window).scrollTop(0);
@@ -131,6 +119,7 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
                 if(!this.menuRendered){
                     this.renderMenu();
                 }
+                $('.mainView').attr('id' , 'addMemberView');
                 document.title = 'Add Member';
                 $('h3.header').html('Add Member');
                 if(!bdView.addMemberView){
@@ -143,12 +132,17 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
         },
 
         myMember: function(){
+            if(!config.manageHistory){
+                config.manageHistory = true;
+                window.history.back();
+            }
             if(config.userSession){
                 $(window).scrollTop(0);
                 //dUtil.showLoader();
                 if(!this.menuRendered){
                     this.renderMenu();
                 }
+                $('.mainView').attr('id' , 'myMemberView');
                 document.title = 'My Member';
                 $('h3.header').html('My Member');
                 if(!bdView.myMemberView){
@@ -161,12 +155,33 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
             }
         },
 
+        myPrescription: function(){
+            if(config.userSession){
+                $(window).scrollTop(0);
+                //dUtil.showLoader();
+                if(!this.menuRendered){
+                    this.renderMenu();
+                }
+                $('.mainView').attr('id' , 'myPrescription');
+                document.title = 'My Prescription';
+                $('h3.header').html('My Prescription');
+                if(!bdView.myPrescriptionView){
+                    bdView.myPrescriptionView = new myPrescriptionView();
+                }
+                bdView.myPrescriptionView.render();
+                bdView.navigationView.selectMenuItem('myPrescription');
+            }else{
+                window.location.hash = 'login';
+            }
+        },
+
         dashboard: function(){
             if(config.userSession){
                 $(window).scrollTop(0);
                 if(!this.menuRendered){
                     this.renderMenu();
                 }
+                $('.mainView').attr('id' , 'dashboardView');
                 document.title = 'My Dashboard';
                 $('h3.header').html('My Dashboard');
                 if(!bdView.dashboardView){
@@ -177,26 +192,82 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
             }else{
                 window.location.hash = 'login';
             }
-        }
+        },
 
+        allConsultation: function(){
+            if(config.userSession){
+                $(window).scrollTop(0);
+                if(!this.menuRendered){
+                    this.renderMenu();
+                }
+                $('.mainView').attr('id' , 'dashboardView');
+                document.title = 'All Consultation';
+                $('h3.header').html('All Consultation');
+                if(!bdView.dashboardView){
+                    bdView.dashboardView = new dashboardView();
+                }
+                bdView.dashboardView.renderAll();
+                bdView.navigationView.selectMenuItem('allConsultation');
+            }else{
+                window.location.hash = 'login';
+            }    
+        },
 
-        // addSymptoms: function(){
-        //     if(config.userSession){
-        //         $(window).scrollTop(0);
-        //         if(this.menuRendered){
-        //             this.renderMenu();
-        //         }
-        //         document.title = 'Add Symptoms';
-        //         $('h3.header').html('Add Symptoms');
-        //         if(!bdView.addSymptomsView){
-        //             bdView.addSymptomsView = new addSymptomsView();
-        //         }
-        //         bdView.addSymptomsView.render('');
-        //     }else{
-        //         window.location.hash = 'login';
-        //     }
-        // }
+        test: function(){
+            if(config.userSession){
+                $(window).scrollTop(0);
+                if(!this.menuRendered){
+                    this.renderMenu();
+                }
+                document.title = 'Test';
+                $('h3.header').html('Test');
+                if(!bdView.dashboardView){
+                    bdView.dashboardView = new dashboardView();
+                }
+                bdView.dashboardView.renderTest();
+                bdView.navigationView.selectMenuItem('allConsultation');
+            }else{
+                window.location.hash = 'login';
+            }      
+        },
+
+        editCons: function(){
+            if(config.userSession){
+                $('.mainView').attr('id' , 'editConsultation');
+                $(window).scrollTop(0);
+                if(!this.menuRendered){
+                    this.renderMenu();
+                }
+                document.title = 'Edit Consultation';
+                $('h3.header').html('Edit Consultation');
+                if(!bdView.addSymptomsView){
+                    bdView.addSymptomsView = new addSymptomsView();
+                }
+                bdView.addSymptomsView.render();
+                bdView.navigationView.selectMenuItem('editCons');
+            }else{
+                window.location.hash = 'login';
+            }
+        },
         
+        summaryCons: function(){
+            if(config.userSession){
+                $('.mainView').attr('id' , 'consSummary');
+                $(window).scrollTop(0);
+                if(!this.menuRendered){
+                    this.renderMenu();
+                }
+                document.title = 'Medical Summary';
+                $('h3.header').html('Medical Summary');
+                if(!bdView.summaryView){
+                    bdView.summaryView = new summaryView();
+                }
+                bdView.summaryView.render();
+                bdView.navigationView.selectMenuItem('summaryCons');
+            }else{
+                window.location.hash = 'login';
+            }
+        }
         
     });
 

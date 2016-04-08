@@ -14,6 +14,8 @@ import com.medic.ragingbull.api.Session;
 import com.medic.ragingbull.core.access.roles.UserRoles;
 import com.medic.ragingbull.core.constants.ErrorMessages;
 import com.medic.ragingbull.core.services.CartService;
+import com.medic.ragingbull.exception.StorageException;
+import com.medic.ragingbull.exception.ResourceCreationException;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -43,7 +45,7 @@ public class CartAccessService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
-    public Response addItemToCart(Session session, String userId, List<CartItem> items) {
+    public Response addItemToCart(Session session, String userId, List<CartItem> items) throws ResourceCreationException,StorageException{
         if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) != UserRoles.Permissions.BLOCK.getBitValue()) {
             CartResponse response = cartService.addItemToCart(session, userId, items);
             if (response != null) {

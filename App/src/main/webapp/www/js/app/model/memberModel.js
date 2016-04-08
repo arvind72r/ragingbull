@@ -1,4 +1,4 @@
-define(['underscore','backbone'], function (_,Backbone) {
+define(['backbone'], function (Backbone) {
 "use strict"; // jshint ;_;
 
     var MemberModel = Backbone.Model.extend({

@@ -1,22 +1,20 @@
-define(function(require) {
-    'use strict';    
-    var $ = require("jquery"),
-        _ = require("underscore"),
-        Backbone = require("backbone"),
-        userDetailModel = require("userDetailModel"),
-        util = require("util/util");
+/*jslint browser:true*/
+/*global define*/
+define(['jquery', 'backbone', 'util/util', 'util/validation', 'userDetailModel', 'addressModel', 'hbs!tpl/myProfile', 'hbs!tpl/changePasswordModal', 'hbs!tpl/addressView', 'hbs!tpl/addAddressModal'],
+    function($, backbone,util,validate,userDetailModel,addressModel,myProfileScreen,changePwdModal,addressView,addAddressModal) {
+    'use strict';
 
-    var myProfileScreen  =  require("hbs!tpl/myProfile");
-    var changePwdModal   =  require("hbs!tpl/changePasswordModal");
     var mySelf;
     
     var myProfileView = Backbone.View.extend({
-    	el : '#page-content-wrapper',
+    	el : '#profileView',
 
         events : {
             'click .changePwd' : 'changePwd',
             'blur #newEmail' : 'validateEmail',
-            'blur #newName' : 'validateName'
+            'blur #newName' : 'validateName',
+            //'click .addressTab' : 'fetchUserAddress',
+            'click .addAddress' : 'addAddress'
     	},
     	
     	initialize: function () {
@@ -25,6 +23,47 @@ define(function(require) {
             }catch(e){
                 console.log('error in initialize --> ' + e);
             }
+        },
+
+        addAddress: function(evt){
+            $('#modalScreen').html(addAddressModal());
+            $('#addAddressModal').modal('show');
+            $('#addAddressModal .addAddressAction').unbind('click').bind('click' , this.addUserAddress);
+        },
+
+        addUserAddress: function(){
+            var valid = true;
+            $('#addAddressModal input').each(function(){
+                var id = $(this).attr('id');
+                if( id !== 'address2' ){
+                    if( $(this).val() == ''){
+
+                    }
+                }
+            });
+        },
+
+        fetchUserAddress: function(evt){
+            var address = addressModel.get('address');
+            if(address.length === 0){
+                var url = config.root + '/user/me/address';
+                util.jqueryGet(url , this.fetchUserAddressSCB , this.fetchUserAddressECB , this);
+            }else{
+                this.fetchUserAddressSCB(address , this);
+            }
+        },
+
+        fetchUserAddressSCB: function(response , obj){
+            addressModel.set('address' , response);
+            var data = {};
+            data.address = response;
+            obj.$el.find('#addressTab').html(addressView(data));
+        },
+
+        fetchUserAddressECB: function(response , obj){
+            var data = {};
+            data.address = [];
+            obj.$el.find('#addressTab').html(data);
         },
 
         changePwd: function(){
@@ -124,11 +163,8 @@ define(function(require) {
                     }
                 }
             }else{
-                $(evt.target).removeClass('inputError');
-                $('#'+errorContainer).html('');
-                if(value != userDetailModel.get('email')){
-                    this.saveEmail(value);
-                }
+                $(evt.target).addClass('inputError');
+                $('#'+errorContainer).html('Mandatory Field');
             }
         },
 
@@ -185,6 +221,8 @@ define(function(require) {
         
         render : function(){
             try{
+                var data = userDetailModel.attributes;
+                data.staticPath = config.staticPath;
                 this.$el.html(myProfileScreen(userDetailModel.attributes));
             }catch(e){
                 console.log('error in render --> ' + e);    

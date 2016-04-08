@@ -7,8 +7,9 @@
     <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=0">
-	<link rel="stylesheet" type="text/css" href="www-built/css/lib/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="www/css/app.css">
+	<link rel="stylesheet" type="text/css" href="www-built/css/lib/bootstrap.min.css" media="screen, print">
+	<link rel="stylesheet" type="text/css" href="www/css/app.css" media="screen, print">
+	<link rel="stylesheet" type="text/css" href="www/css/print.css" media="print">
 </head>
 <body>
 
@@ -22,10 +23,12 @@
 		var config = {};
 
 		config.userSession = false;
-		config.root = 'http://130.211.246.102:8080';
+		//config.root = 'http://130.211.252.4:8080';
+		config.root = 'http://localhost:8080';
 		config.nextPage = '';
-		config.memberForCons = '';
+		config.manageHistory = true;
 		config.desiredCons = '';
+		config.staticPath = 'www/';
 
 		require(["www/js/config/requireConfig"], function (common) {
 	        //@todo: make a common-webroot instead of over riding build config 

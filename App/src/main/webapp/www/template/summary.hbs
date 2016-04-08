@@ -1,0 +1,38 @@
+<div class="registerScreen summary">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">Patient Name: {{userName}}</div>
+			<div class="col-xs-12 col-sm-6">Age: {{userAge}}</div>
+			<div class="col-xs-12">Doctor Name: {{practitionerName}}</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 heading">Symptoms</div>
+			<div class="col-xs-12 notes">{{{symptoms}}}</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 heading">Medical Notes</div>
+			<div class="col-xs-12 notes">{{{diagnosisNotes}}}</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 heading">Prescription <span class="selectAll"><a class="checkAllToggle" href="javascript:void(0)" data-prop="check">Uncheck All</a></span></div>
+			{{#prescription.drugs}}
+				<div class="prescRow">
+					<div class="drugSelector">
+						<input type="checkbox" class="drugCheck" name="drug{{@index}}" data-prop="{{@index}}" checked>
+					</div>
+					<div class="drugDetail">
+						<div class="col-xs-12 col-sm-6 col-lg-3">{{name}}</div>
+						<div class="col-xs-12 col-sm-6 col-lg-3">{{schedule}}</div>
+						<div class="col-xs-12 col-sm-6 col-lg-4">{{#formatFreq frequency}}{{/formatFreq}} ({{dose}} {{unit}})</div>
+						<div class="col-xs-12 col-sm-6 col-lg-2">{{days}} days</div>
+					</div>
+				</div>
+			{{/prescription.drugs}}
+		</div>
+		<div class="buttonHolder text-center">
+			<button type="button" class="btn primary printPresc btn-default navbar-btn"><a href="javascript:void(0)">Print</a></button>
+			<button type="button" class="btn primary emailPresc btn-default navbar-btn"><a href="javascript:void(0)">Email</a></button>
+			<button type="button" class="btn primary orderPresc btn-default navbar-btn"><a href="javascript:void(0)">Add to Cart</a></button>
+		</div>
+	</div>
+</div>

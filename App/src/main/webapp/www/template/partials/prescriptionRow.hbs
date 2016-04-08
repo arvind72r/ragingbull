@@ -1,40 +1,50 @@
 <div class="prescriptionRow prescRow{{prescRow}}" id="prescRow{{prescRow}}" data-prop="{{prescRow}}">
 	<div class="drugCol">
-		<input type="text" name="drug" class="addPrescRowOnFocus">
+		<input type="text" name="drug" placeholder="Drug" class="addPrescRowOnFocus" value={{drug.name}}>
 	</div>
 	<div class="schCol">
 		<div class="select_style">
 		<select name="schedule">
-			<option value="">-</option>
-			<option value="BF">BF</option>
-			<option value="AF">AF</option>
-			<option value="EM">EM</option>
-			<option value="BB">BB</option>
-			<option value="NA">NA</option>
+			<option value="">Sch</option>
+			<option value="Morning" {{#ifEqual drug.schedule 'morning'}}selected{{/ifEqual}}>BF</option>
+			<option value="Afternoon" {{#ifEqual drug.schedule 'afternoon'}}selected{{/ifEqual}}>AF</option>
+			<option value="Evening" {{#ifEqual drug.schedule 'evening'}}selected{{/ifEqual}}>EM</option>
+			<option value="Night" {{#ifEqual drug.schedule 'night'}}selected{{/ifEqual}}>BB</option>
 		</select>
 		<span></span>
 	</div>
 	</div>
 	<div class="freqCol">
-	  	<input type="checkbox" name="morning" value="1">
-	    <input type="checkbox" name="afternoon" value="1">
-	    <input type="checkbox" name="evening" value="1">
+	  	<div class="frequency text-center">
+		  	<div class="customChk">
+  				<input type="checkbox" name="morning" value="1" {{#ifEqual drug.frequency.[0] '1'}}checked{{/ifEqual}}>
+			  	<div></div>
+			</div>
+			<div class="customChk">
+		    	<input type="checkbox" name="afternoon" value="1" {{#ifEqual drug.frequency.[1] '1'}}checked{{/ifEqual}}>
+		    	<div></div>
+			</div>
+		    <div class="customChk">
+		    	<input type="checkbox" name="evening" value="1" {{#ifEqual drug.frequency.[2] '1'}}checked{{/ifEqual}}>
+		    	<div></div>
+			</div>
+	    </div>
 	</div>
 	<div class="doseCol">
-		<input type="text" name="dose">
+		<input type="text" name="dose" placeholder="Dose" value="{{drug.dose}}">
 	</div>
 	<div class="unitCol">
 		<div class="select_style">
 			<select name="unit">
-				<option value="">-</option>
-				<option value="tab">tab</option>
-				<option value="ml">ml</option>
-				<option value="drop">drop</option>
+				<option value="">Unit</option>
+				<option value="tab" {{#ifEqual drug.unit 'tab'}}selected{{/ifEqual}}>tab</option>
+				<option value="ml" {{#ifEqual drug.unit 'ml'}}selected{{/ifEqual}}>ml</option>
+				<option value="drop" {{#ifEqual drug.unit 'drop'}}selected{{/ifEqual}}>drop</option>
 			</select>
 			<span></span>
 		</div>
 	</div>
 	<div class="daysCol">
-		<input type="text" name="dose">
+		<input type="text" name="days" placeholder="Days" value="{{drug.days}}">
 	</div>
 </div>

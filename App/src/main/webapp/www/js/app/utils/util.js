@@ -30,8 +30,8 @@ define(['jquery'], function($) {
 	                success: function(response){
 	                    callBackSuccess(response , inputData , callBackParam);
 	                },
-	                error: function(){
-	                    callBackFailure(null , inputData , callBackParam);
+	                error: function(response){
+	                    callBackFailure(response , inputData , callBackParam);
 	                }
 	            });
             }catch(e){
@@ -85,8 +85,8 @@ define(['jquery'], function($) {
                     success: function(response){
                         callBackSuccess(response , callBackParam);
                     },
-                    error: function(){
-                        callBackFailure(null , callBackParam);
+                    error: function(response){
+                        callBackFailure(response , callBackParam);
                     }
                 });
             }catch(e){
@@ -124,6 +124,18 @@ define(['jquery'], function($) {
             var tok = user + ':' + password;
             var hash = btoa(tok);
             return "Basic " + hash;
+        },
+
+        setMaxDate: function(container){
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            if (month < 10) {
+                month = '0' + month;
+            }
+            var date = date.getDate();
+            var maxDateString = year + '-' + month + '-' + date;
+            $('#'+container).attr('max' , maxDateString);
         },
 
         serializeObject: function(form) {

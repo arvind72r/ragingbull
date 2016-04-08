@@ -1,15 +1,11 @@
-define(function(require) {
-    'use strict';    
-    var $ = require("jquery"),
-        _ = require("underscore"),
-        Backbone = require("backbone"),
-        util = require("util/util"),
-        memberModel = require("memberModel");
+/*jslint browser:true*/
+/*global define*/
+define(['jquery', 'backbone', 'util/util', 'util/validation', 'memberModel', 'hbs!tpl/addMember'], 
+    function($, backbone,util,validate,memberModel,addMemberScreen) {
+    'use strict';
 
-    var addMemberScreen  =  require("hbs!tpl/addMember");
-    
     var addMemberView = Backbone.View.extend({
-    	el : '#page-content-wrapper',
+    	el : '#addMemberView',
 
         events : {
             'click .addMember': 'addMember',
@@ -32,95 +28,30 @@ define(function(require) {
         render : function(){
             try{
             	this.$el.html(addMemberScreen());
-                this.setMaxDate();
+                util.setMaxDate('dob');
             }catch(e){
                 console.log('error in render --> ' + e);    
             }
         },
 
-        setMaxDate: function(){
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            if (month < 10) {
-                month = '0' + month;
-            }
-            var date = date.getDate();
-            var maxDateString = year + '-' + month + '-' + date;
-            $('#dob').attr('max' , maxDateString);
-        },
-
         validatePhone: function(evt){
-            var value = $.trim($(evt.target).val());
-            var errorContainer = $(evt.target).attr('error');
-            if(value !== ''){
-                if(!(/^\d{10}$/.test(value))){
-                    $(evt.target).addClass('inputError');
-                    $(evt.target).prev().addClass('inputError');
-                    $('#'+errorContainer).html('Invalid Mobile#');
-                }else{
-                    $(evt.target).removeClass('inputError');
-                    $(evt.target).prev().removeClass('inputError');
-                    $('#'+errorContainer).html('');
-                }
-            }else{
-                $(evt.target).removeClass('inputError');
-                $(evt.target).prev().removeClass('inputError');
-                $('#'+errorContainer).html('');
-            }
+            validate.validatePhone(evt);
         },
 
         validateName: function(evt){
-            var value = $.trim($(evt.target).val());
-            var errorContainer = $(evt.target).attr('error');
-            if(value === ''){
-                $(evt.target).addClass('inputError');
-                $('#'+errorContainer).html('Mandatory Field');
-            }else{
-                $(evt.target).removeClass('inputError');
-                $('#'+errorContainer).html('');
-            }    
+            validate.validateName(evt);    
         },
 
         validateSex: function(evt){
-            var value = $(evt.target).val();
-            var errorContainer = $(evt.target).attr('error');
-            if(value === ''){
-                $(evt.target).parent().addClass('inputError');
-                $('#'+errorContainer).html('Mandatory Field');
-            }else{
-                $(evt.target).parent().removeClass('inputError');
-                $('#'+errorContainer).html('');
-            }
+            validate.validateSex(evt);
         },
 
         validateEmail: function(evt){
-            var value = $.trim($(evt.target).val());
-            var errorContainer = $(evt.target).attr('error');
-            if(value !== ''){
-                if(!(/^([\w-+]+(?:\.[\w-+]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/.test(value))){
-                    $(evt.target).addClass('inputError');
-                    $('#'+errorContainer).html('Invalid Email');
-                }else{
-                    $(evt.target).removeClass('inputError');
-                    $('#'+errorContainer).html('');
-                }
-            }else{
-                $(evt.target).removeClass('inputError');
-                $('#'+errorContainer).html('');
-            }
+            validate.validateEmail(evt);
         },
 
         validateDOB: function(evt){
-            var value = $.trim($(evt.target).val());
-            var errorContainer = $(evt.target).attr('error');
-            if(value === ''){
-                $(evt.target).addClass('inputError');
-                $('#'+errorContainer).html('Mandatory Field');
-            }else{
-                $(evt.target).removeClass('inputError');
-                $('#'+errorContainer).html('');
-            }
+            validate.validateDOB(evt);
         },
 
         addMember: function(){
@@ -151,19 +82,28 @@ define(function(require) {
         addMemberCallback: function(response , input , obj){
             var nextPage = config.nextPage;
             if(nextPage === 'createConsultation'){
-                config.memberForCons = input.name;
+                localStorage.setItem('memberForCons' , input.name);
             }
-            window.location.hash = nextPage;
+            (memberModel.attributes.members).push(JSON.parse(response));
+            window.history.back();
         },
 
-        addMemberErrorCb: function(){
-
+        addMemberErrorCb: function(response, input, obj){
+            if(response.status === 409){
+                obj.$el.find('.regError').html("User already exist.");
+                obj.$el.find('.regError').show();
+                util.hideLoader();
+            }else{
+                obj.$el.find('.regError').html("We are unable to add member, please try again later. Inconvinience Regereted");
+                obj.$el.find('.regError').show();
+                util.hideLoader();
+            }
         },
 
         cancelAddMember: function(){
             var nextPage = config.nextPage;
             memberModel.set('newMemberAdded' , false);
-            window.location.hash = nextPage;
+            window.history.back();
         }
     });
     return addMemberView;
