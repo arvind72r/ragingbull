@@ -1,11 +1,11 @@
 /*jslint browser:true*/
 /*global define*/
-define(['jquery', 'backbone', 'util/util', 'getConsultationModel', 'userDetailModel', 'hbs!tpl/addSymptoms', 'hbs!tpl/partials/prescriptionRow', 'hbs!tpl/confirmModal'], 
-    function($, backbone,util,getConsultationModel,userDetailModel,addSymptomsScreen,prescRowPartial,confirmationModal) {
+define(['jquery', 'backbone', 'jqueryui', 'util/util', 'getConsultationModel', 'userDetailModel', 'hbs!tpl/addSymptoms', 'hbs!tpl/partials/prescriptionRow', 'hbs!tpl/confirmModal'], 
+    function($, backbone,jqueryui,util,getConsultationModel,userDetailModel,addSymptomsScreen,prescRowPartial,confirmationModal) {
     'use strict';
     
     var AddSymptomsView = Backbone.View.extend({
-    	el : '#editConsultation',
+        el : '#editConsultation',
 
         events : {
             'click .backToDash': 'backToDash',
@@ -14,9 +14,9 @@ define(['jquery', 'backbone', 'util/util', 'getConsultationModel', 'userDetailMo
             'click .consSave': 'saveConsultation',
             'focus .addPrescRowOnFocus': 'addPrescRowOnFocus',
             'click .consTab': 'showProperButton'
-    	},
-    	
-    	initialize: function () {
+        },
+        
+        initialize: function () {
             try{
                 this.consultationId = '';
                 this.drugs = [];
@@ -110,6 +110,15 @@ define(['jquery', 'backbone', 'util/util', 'getConsultationModel', 'userDetailMo
 
         throwLockError: function(response , input , obj){
             util.hideLoader();
+            var data = {};
+            data.title = 'Error';
+            data.message = 'We are facing some technical issues while saving your prescription at this moment. Please try again later or contact our customer care.';
+            $('#modalScreen').html(confirmationModal(data));
+            $('#confirmationModal').modal('show');
+            util.hideLoader();
+            $('#confirmationModal .confirmSubmit').unbind('click').bind('click' , function(e){
+                $('#confirmationModal').modal('hide');
+            });
         },
 
         saveConsultation: function(evt){
@@ -127,6 +136,13 @@ define(['jquery', 'backbone', 'util/util', 'getConsultationModel', 'userDetailMo
             }
             window.localStorage.setItem(this.consultationId , JSON.stringify(this.consulatationData));
             util.hideLoader();
+            var data = {};
+            data.title = 'Success';
+            data.message = 'Prescription saved succesfullly';
+            $('#modalScreen').html(confirmationModal(data));
+            $('#modalScreen .modal-footer').hide();
+            $('#confirmationModal').modal('show');
+            setTimeout(function(){ $('#confirmationModal').modal('hide'); }, 1500);
         },
 
         getLocalObject: function(){
@@ -149,13 +165,28 @@ define(['jquery', 'backbone', 'util/util', 'getConsultationModel', 'userDetailMo
 
         addSymptomsSCB: function(response , input , obj){
             util.hideLoader();
-            return;
+            var data = {};
+            data.title = 'Success';
+            data.message = 'Prescription saved succesfullly';
+            $('#modalScreen').html(confirmationModal(data));
+            $('#modalScreen .modal-footer').hide();
+            $('#confirmationModal').modal('show');
+            setTimeout(function(){ $('#confirmationModal').modal('hide'); }, 1500);
         },
 
         addSymptomsECB: function(response , input , obj){
             util.hideLoader();
-            return;
-        },        
+            var data = {};
+            data.title = 'Error';
+            data.message = 'We are facing some technical issues while adding symptoms at this moment. Please try again later or contact our customer care.';
+            $('#modalScreen').html(confirmationModal(data));
+            $('#confirmationModal').modal('show');
+            util.hideLoader();
+            $('#confirmationModal .confirmSubmit').unbind('click').bind('click' , function(e){
+                $('#confirmationModal').modal('hide');
+            });
+
+        },
 
         getDrugObject: function(){
             var obj = this;
@@ -281,13 +312,16 @@ define(['jquery', 'backbone', 'util/util', 'getConsultationModel', 'userDetailMo
                 getConsultationModel.set('prescRow' , 0);
                 this.consultationId = data.id;
                 this.consulatationData = {};
-            	this.$el.html(addSymptomsScreen(getConsultationModel.attributes));
+                this.$el.html(addSymptomsScreen(getConsultationModel.attributes));
                 if(this.getLocalObject()){
                     this.populatePrescRow();    
                 }else{
                     this.addPrescRow();
                     this.addPrescRow();                    
                 }
+                $( ".drugBox" ).autocomplete({
+                  source: medicines
+                });
                 util.hideLoader();
                 return this;
             }catch(e){

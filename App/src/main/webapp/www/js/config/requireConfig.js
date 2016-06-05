@@ -11,8 +11,6 @@ requirejs.config({
         'jquery': 'lib/jquery/jquery-2.1.3',
         'bootstrap': 'lib/bootstrap/bootstrap',
         'jqueryui': 'lib/jquery-ui/jquery-ui',
-        'jqueryuitouch': 'lib/jquery-ui/jquery.ui.touch-punch',
-        'jquerymobile': 'lib/jquery/jquery.mobile.custom',
         
         //hbs dependency is not to worry
         //why? - https://github.com/SlexAxton/require-handlebars-plugin#so-many-dependencies-in-the-hbs-plugin
@@ -55,6 +53,8 @@ requirejs.config({
         'navigationView': 'app/views/navigationView',
         'myPrescriptionView': 'app/views/myPrescriptionView',
         'genericModalView': 'app/views/genericModalView',
+        'addDoctorView': 'app/views/addDoctorView',
+        'addLocationView': 'app/views/addLocationView',
         
         //Model
         'userModel' : 'app/model/userModel',

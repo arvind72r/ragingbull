@@ -47,9 +47,9 @@ define(['jquery'], function($) {
             }
         },
 
-        validateRePassword: function(evt){
+        validateRePassword: function(evt , container){
             var value = $.trim($(evt.target).val());
-            var orignalValue = $.trim($('#password').val());
+            var orignalValue = $.trim($('#'+container).val());
             var errorContainer = $(evt.target).attr('error');
             if(value === ''){
                 $(evt.target).addClass('inputError');

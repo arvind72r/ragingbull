@@ -105,7 +105,8 @@ define(['jquery', 'backbone', 'userDetailModel', 'userModel', 'memberModel', 'al
             try{
                 var obj = {};
                 obj.name = userDetailModel.get('name');
-                obj.userVerified = userModel.get('isUserVerified')
+                obj.userVerified = userModel.get('isUserVerified');
+                obj.isAUTH = userDetailModel.get('email') === 'admin@aredvi.com' ? true : false;
             	this.$el.html(navigation(obj));
             }catch(e){
             }

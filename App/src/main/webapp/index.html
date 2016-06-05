@@ -8,8 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=0">
 	<link rel="stylesheet" type="text/css" href="www-built/css/lib/bootstrap.min.css" media="screen, print">
+	<link rel="stylesheet" type="text/css" href="www/css/lib/jquery-ui.min.css" media="screen, print">
 	<link rel="stylesheet" type="text/css" href="www/css/app.css" media="screen, print">
 	<link rel="stylesheet" type="text/css" href="www/css/print.css" media="print">
+	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyD4hT_S83gLFXoHKXG4ftClxZWRra9Fq6Q"></script>
+	<script src="www/js/app/utils/medicines.js"></script>
 </head>
 <body>
 
@@ -29,6 +32,7 @@
 		config.manageHistory = true;
 		config.desiredCons = '';
 		config.staticPath = 'www/';
+		config.geocoder = new google.maps.Geocoder();
 
 		require(["www/js/config/requireConfig"], function (common) {
 	        //@todo: make a common-webroot instead of over riding build config 

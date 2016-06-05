@@ -15,41 +15,56 @@
             <div class="userName">{{name}}</div>
         </div>
         <ul class="sidebar-nav">
-            {{#unless userVerified}}
-                <li class="verifyPhone">
-                    <a href="javascript:void(0)">Verify Phone</a>
+            {{#if isAUTH}}
+                <li class="addDoctor">
+                    <a class="navLink" data-prop='addDoctor' href="javascript:void(0);">Create Doctor</a>
                     <div></div>
                 </li>
-            {{/unless}}
-            <li class="active dashboard">
-                <a class="navLink" data-prop='dashboard' href="javascript:void(0)">Home</a>
-                {{!-- <a href="#dashboard">Home</a> --}}
-                <div></div>
-            </li>
-            <li class="profile">
-                <a class="navLink" data-prop='profile' href="javascript:void(0)">Profile</a>
-                {{!-- <a href="#profile">Profile</a> --}}
-                <div></div>
-            </li>
-            <li class="myMember">
-                <a class="navLink" data-prop='myMember' href="javascript:void(0)">My Members</a>
-                {{!-- <a href="#myMember">My Members</a> --}}
-                <div></div>
-            </li>
-            <li class="createConsultation">
-                <a class="navLink" data-prop='createConsultation' href="javascript:void(0)">Create Consultation</a>
-                {{!-- <a href="#createConsultation">Create Consultation</a> --}}
-                <div></div>
-            </li>
-            <li class="myPrescription">
-                <a class="navLink" data-prop='myPrescription' href="javascript:void(0)">My Prescription</a>
-                {{!-- <a href="#myPrescription">My Prescription</a> --}}
-                <div></div>
-            </li>
-            <li class="logout">
-                <a href="javascript:void(0);" id="logout">Logout</a>
-                <div></div>
-            </li>
+                <li class="addLocation">
+                    <a class="navLink" data-prop='addLocation' href="javascript:void(0);">Create Location</a>
+                    <div></div>
+                </li>
+                <li class="logout">
+                    <a href="javascript:void(0);" id="logout">Logout</a>
+                    <div></div>
+                </li>
+            {{else}}
+                {{#unless userVerified}}
+                    <li class="verifyPhone">
+                        <a href="javascript:void(0)">Verify Phone</a>
+                        <div></div>
+                    </li>
+                {{/unless}}
+                <li class="active dashboard">
+                    <a class="navLink" data-prop='dashboard' href="javascript:void(0)">Home</a>
+                    {{!-- <a href="#dashboard">Home</a> --}}
+                    <div></div>
+                </li>
+                <li class="profile">
+                    <a class="navLink" data-prop='profile' href="javascript:void(0)">Profile</a>
+                    {{!-- <a href="#profile">Profile</a> --}}
+                    <div></div>
+                </li>
+                <li class="myMember">
+                    <a class="navLink" data-prop='myMember' href="javascript:void(0)">My Members</a>
+                    {{!-- <a href="#myMember">My Members</a> --}}
+                    <div></div>
+                </li>
+                <li class="createConsultation">
+                    <a class="navLink" data-prop='createConsultation' href="javascript:void(0)">Create Consultation</a>
+                    {{!-- <a href="#createConsultation">Create Consultation</a> --}}
+                    <div></div>
+                </li>
+                <li class="myPrescription">
+                    <a class="navLink" data-prop='myPrescription' href="javascript:void(0)">My Prescription</a>
+                    {{!-- <a href="#myPrescription">My Prescription</a> --}}
+                    <div></div>
+                </li>
+                <li class="logout">
+                    <a href="javascript:void(0);" id="logout">Logout</a>
+                    <div></div>
+                </li>
+            {{/if}}
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->

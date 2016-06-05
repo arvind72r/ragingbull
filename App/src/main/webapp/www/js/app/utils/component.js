@@ -11,7 +11,11 @@ define(['jquery', 'util/util', 'userDetailModel'], function($,util,userDetailMod
             userDetailModel.set(response);
             config.userSession = true;
             window.localStorage.setItem('userDetailModelLocal' , JSON.stringify(userDetailModel.attributes));
-            window.location.hash = 'dashboard';
+            if(userDetailModel.get('email') === 'admin@aredvi.com'){
+                window.location.hash = 'addDoctor';    
+            }else{
+                window.location.hash = 'dashboard';
+            }
         },
 
         getUserError:function(response , obj){

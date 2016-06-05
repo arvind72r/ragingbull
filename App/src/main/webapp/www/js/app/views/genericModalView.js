@@ -20,7 +20,11 @@ define(['jquery', 'backbone', 'util/util', 'util/validation', 'util/component', 
     	skipVerificationNow: function(){
     		util.showLoader();
             $('#accountConfirmationModal').modal('hide');
-            component.fetchUser();
+            if(window.location.hash === '#register'){
+                component.fetchUser();
+            }else{
+                util.hideLoader();
+            }
     	},
 
     	doVerification: function(){

@@ -1,0 +1,200 @@
+<div class="registerScreen" id="addDocLocScreen">
+	<div class="container">
+		<form name="addPractLoc">
+		<div class="row registerSection practLogReg">
+			<div id="newLocForm">
+				<div class="row">
+					<div class="col-xs-5">Name</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="nameError" name="name" id="description" placeholder="Name">
+						<div class="errorText" id="nameError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Description</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="locDescError" name="description" id="locDescription" placeholder="Description">
+						<div class="errorText" id="locDescError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Speciality</div>
+					<div class="col-xs-7">
+						<div class="select_style">
+							<select id="speciality" name="speciality" error="specialityError" class="mandateField">
+								<option value="">Select</option>
+								<option value="ALLERGOLOGY">Allergology</option>
+								<option value="ANDROLOGY">Andrology</option>
+								<option value="ANESTHESIA">Anesthesia</option>
+								<option value="ANGIOLOGY">Angiology</option>
+								<option value="AVIATIONMEDICINE">Aviation Medicine</option>
+								<option value="BIOMEDICINE">Biomedicine</option>
+								<option value="CARDIOLOGY">Cardiology</option>
+								<option value="DENTISTRY">Dentistry</option>
+								<option value="DENTISTRYBRANCHES">Dentistry Branches</option>
+								<option value="DISASTERMEDICINE">Disaster Medicine</option>
+								<option value="SPORTSPHYSICIANS">Sports Physicians</option>
+								<option value="EMERGENCYMEDICINE">Emergency Medicine</option>
+								<option value="ENDOCRINOLOGY">Endocrinology</option>
+								<option value="FAMILYMEDICINE">Family Medicine</option>
+								<option value="FICTIONALMEDICALSPECIALISTS">Fictional Medical</option>
+								<option value="GASTROENTEROLOGY">Gastroenterology</option>
+								<option value="GENERALPRACTICE">General Practice‎</option>
+								<option value="MEDICALGENETICS">Medical Genetics‎</option>
+								<option value="GERIATRICS">Geriatrics‎</option>
+								<option value="GERONTOLOGY">Gerontology‎</option>
+								<option value="GYNAECOLOGY">Gynaecology‎</option>
+								<option value="HEMATOLOGY">Hematology‎</option>
+								<option value="HEPATOLOGY">Hepatology‎</option>
+								<option value="IMMUNOLOGY">Immunology‎</option>
+								<option value="INFECTIOUSDISEASES">Infectious Diseases‎</option>
+								<option value="INTENSIVECAREMEDICINE">Intensive Care Medicine‎</option>
+								<option value="INTERNALMEDICINE">Internal Medicine‎</option>
+								<option value="MENSHEALTH">Mens Health‎</option>
+								<option value="MILITARYMEDICINE">Military Medicine‎</option>
+								<option value="NEPHROLOGY">Nephrology‎</option>
+								<option value="NEUROLOGY">Neurology‎</option>
+								<option value="NUCLEARMEDICINE">Nuclear Medicine‎</option>
+								<option value="OBSTETRICS">Obstetrics‎</option>
+								<option value="ONCOLOGY">Oncology‎</option>
+								<option value="OPHTHALMOLOGY">Ophthalmology‎</option>
+								<option value="OTORHINOLARYNGOLOGY">Otorhinolaryngology‎</option>
+								<option value="PALLIATIVEMEDICINE">Palliative Medicine‎</option>
+								<option value="PATHOLOGY">Pathology‎</option>
+								<option value="PEDIATRICS">Pediatrics‎</option>
+								<option value="PODIATRY">Podiatry‎</option>
+								<option value="PREVENTIVEMEDICINE">Preventive Medicine‎</option>
+								<option value="PRISONMEDICINE">Prison Medicine‎</option>
+								<option value="PSYCHIATRICSPECIALITIES">Psychiatric Specialities‎</option>
+								<option value="PSYCHIATRY">Psychiatry‎</option>
+								<option value="PULMONOLOGY">Pulmonology‎</option>
+								<option value="RADIOLOGY">Radiology‎</option>
+								<option value="REHABILITATIONMEDICINE">Rehabilitation Medicine‎</option>
+								<option value="RHEUMATOLOGY">Rheumatology‎</option>
+								<option value="SEROLOGY">Serology‎</option>
+								<option value="SEXUALHEALTH">Sexual Health‎</option>
+								<option value="SLEEPMEDICINE">Sleep Medicine‎</option>
+								<option value="SPACEMEDICINE">Space Medicine‎</option>
+								<option value="SPORTSMEDICINE">Sports Medicine‎</option>
+								<option value="SURGERY">Surgery‎</option>
+								<option value="SURGICALSPECIALTIES">Surgical Specialties</option>‎
+								<option value="TOXICOLOGY">Toxicology‎</option>
+								<option value="TRANSPLANTATIONMEDICINE">Transplantation Medicine</option>‎
+								<option value="TRICHOLOGY">Trichology‎</option>
+								<option value="TROPICALMEDICINE">Tropical Medicine‎</option>
+								<option value="UROLOGY">Urology‎</option>
+								<option value="WILDERNESSMEDICINE">Wilderness Medicine‎</option>
+							</select>
+							<span></span>
+						</div>
+						<div class="errorText" id="specialityError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Location</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="locationError" name="location" id="location" placeholder="Location">
+						<div class="errorText" id="locationError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Primary Contact</div>
+					<div class="col-xs-7">
+						<div class="phoneText">+91</div>
+						<input type="tel" class="form-control phone" error="primaryContactError" name="primaryContact" id="locPrimaryContact" placeholder="Primary Contact" maxlength="10">
+						<div class="errorText" id="primaryContactError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Secondary Contact</div>
+					<div class="col-xs-7">
+						<div class="phoneText">+91</div>
+						<input type="text" type="tel" class="form-control phone" error="secondaryContactError" name="secondaryContact" id="secondaryContact" placeholder="Secondary Contact" maxlength="10">
+						<div class="errorText" id="secondaryContactError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Address Line 1</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="address1Error" name="address1" id="address1" placeholder="Address Line 1">
+						<div class="errorText" id="address1Error"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Address Line 2</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="address2Error" name="address2" id="address2" placeholder="Address Line 2">
+						<div class="errorText" id="address2Error"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">City</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="cityError" name="city" id="city" placeholder="City">
+						<div class="errorText" id="cityError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">State</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="stateError" name="state" id="state" placeholder="State">
+						<div class="errorText" id="stateError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Zip</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="zipError" name="zip" id="zip" placeholder="Zip" maxlength="6">
+						<div class="errorText" id="zipError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Landmark</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="landmarkError" name="landmark" id="landmark" placeholder="Landmark">
+						<div class="errorText" id="landmarkError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Working Hours</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="workingHoursError" name="workingHours" id="workingHours" placeholder="Working Hours" maxlength="2">
+						<div class="errorText" id="workingHoursError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">Working Days</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="workingDaysError" name="workingDays" id="workingDays" placeholder="Working Days">
+						<div class="errorText" id="workingDaysError"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">License</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control mandateField" error="locLicenseError" name="license" id="locLicense" placeholder="License">
+						<div class="errorText" id="locLicenseError"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+		<div class="sectionDividerBorder"></div>
+
+		<div class="registerAction">
+			<div class="regError errorText addDocLocError" style="display:none;"></div>
+			<button type="button" class="btn primary addLoc btn-default navbar-btn pull-right"><a href="javascript:void(0)">Add Location</a></button>
+		</div>
+
+		
+		<div class="clear" style="clear:both;"></div>
+	</div>
+</div>
+<div class="registerScreen" id="finalScreen" style="display:none;">
+	<div class="adminStepsHead">You have succesfully created the location.</div>
+	<div class="sectionDividerBorder"></div>
+
+	<div class="registerAction">
+		<button type="button" class="btn primary addAnotherLoc btn-default navbar-btn pull-right"><a href="javascript:void(0)">Add Other Location</a></button>
+	</div>
+</div>

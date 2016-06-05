@@ -1,7 +1,7 @@
 /*jslint browser:true*/
 /*global require*/
-require(['jquery', 'backbone', 'appRouter', 'userModel'],
-       function($, Backbone, Router, userModel) {
+require(['jquery', 'backbone', 'appRouter', 'userModel','userDetailModel'],
+       function($, Backbone, Router, userModel, userDetailModel) {
     'use strict';
 
     $.support.cors = true;
@@ -15,7 +15,11 @@ require(['jquery', 'backbone', 'appRouter', 'userModel'],
 	if(userModel.get('userSignedIn')){
 		var hash = '';
 		if(window.location.hash === ''){
-			hash = 'dashboard';
+			if(userDetailModel.get('email') === 'admin@aredvi.com'){
+                hash = 'addDoctor';    
+            }else{
+                hash = 'dashboard';
+            }
 			Backbone.history.navigate(hash,{trigger:true, replace: true});
 		}
 	}else{

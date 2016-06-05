@@ -1,7 +1,7 @@
 /* jslint browser : true */
 /* global define */
-define(['jquery','underscore','backbone','bootstrap','loginView','registerView','navigationView','createConsultationView','addMemberView','myMemberView','myProfileView','dashboardView','addSymptomsView','summaryView','myPrescriptionView','userModel','userDetailModel','memberModel','cartModel','addressModel','getConsultationModel','allConsultationModel'],
-    function ($,_,Backbone,Bootstrap,loginView,registerView,navigationView,createConsultationView,addMemberView,myMemberView,myProfileView,dashboardView,addSymptomsView,summaryView,myPrescriptionView,userModel,userDetailModel,memberModel,cartModel,addressModel,getConsultationModel,allConsultationModel) {
+define(['jquery','underscore','backbone','bootstrap','loginView','registerView','navigationView','createConsultationView','addMemberView','myMemberView','myProfileView','dashboardView','addSymptomsView','summaryView','myPrescriptionView','addDoctorView','addLocationView','userModel','userDetailModel','memberModel','cartModel','addressModel','getConsultationModel','allConsultationModel'],
+    function ($,_,Backbone,Bootstrap,loginView,registerView,navigationView,createConsultationView,addMemberView,myMemberView,myProfileView,dashboardView,addSymptomsView,summaryView,myPrescriptionView,addDoctorView,addLocationView,userModel,userDetailModel,memberModel,cartModel,addressModel,getConsultationModel,allConsultationModel) {
     'use strict';
 
     var bdView = {};
@@ -22,6 +22,8 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
             "allConsultation": "allConsultation",
             "editCons": "editCons",
             "summaryCons": "summaryCons",
+            "addDoctor": "addDoctor",
+            "addLocation": "addLocation",
             "test": "test"
             //"logout" : "logout"
 
@@ -70,6 +72,46 @@ define(['jquery','underscore','backbone','bootstrap','loginView','registerView',
             }
             bdView.navigationView.render();
             this.menuRendered = true;
+        },
+
+        addLocation: function(){
+            if(config.userSession){
+                $(window).scrollTop(0);
+                if(!this.menuRendered){
+                    this.renderMenu();
+                }
+                $('.mainView').attr('id' , 'addLocationView');
+                //dUtil.showLoader();
+                document.title = 'Add Location';
+                $('h3.header').html('Add Location');
+                if(!bdView.addLocationView){
+                    bdView.addLocationView = new addLocationView();
+                }
+                bdView.addLocationView.render();
+                bdView.navigationView.selectMenuItem('addLocation');
+            }else{
+                window.location.hash = 'login';
+            }
+        },
+
+        addDoctor: function(){
+            if(config.userSession){
+                $(window).scrollTop(0);
+                if(!this.menuRendered){
+                    this.renderMenu();
+                }
+                $('.mainView').attr('id' , 'addDoctorView');
+                //dUtil.showLoader();
+                document.title = 'Add Doctor';
+                $('h3.header').html('Add Doctor');
+                if(!bdView.addDoctorView){
+                    bdView.addDoctorView = new addDoctorView();
+                }
+                bdView.addDoctorView.render();
+                bdView.navigationView.selectMenuItem('addDoctor');
+            }else{
+                window.location.hash = 'login';
+            }
         },
 
         createConsultation: function(){

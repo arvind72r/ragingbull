@@ -53,7 +53,7 @@ define(['jquery', 'backbone', 'util/util', 'util/validation', 'util/component', 
         },
 
         validateRePassword: function(evt){
-            validate.validateRePassword(evt);
+            validate.validateRePassword(evt , 'password');
         },
 
         validateEmail: function(evt){
