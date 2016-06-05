@@ -17,7 +17,9 @@ import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 
 import javax.ws.rs.core.Response;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vamshi Molleti
@@ -30,6 +32,15 @@ public class PractitionerLocationAccessService {
     public PractitionerLocationAccessService(PractitionerLocationService practitionerLocationService, ConsultationService consultationService) {
         this.practitionerLocationService = practitionerLocationService;
         this.consultationService = consultationService;
+    }
+    
+    public Response getAllLocations(Session session) throws StorageException{
+    	if ((session.getRole() & UserRoles.Permissions.BLOCK.getBitValue()) != UserRoles.Permissions.BLOCK.getBitValue()) {
+            List<Map<String, Object>> responseList = practitionerLocationService.getAllLocations();
+            return Response.ok().entity(responseList).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).entity(ErrorMessages.FORBIDDEN_READ_MEMBER_CODE).build(); 
+    	
     }
 
     public Response createPractitionerLocation(Session session, String practitionerId, PractitionerLocation practitionerLocation) throws StorageException {

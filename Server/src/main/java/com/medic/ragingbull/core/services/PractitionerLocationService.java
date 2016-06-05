@@ -16,6 +16,7 @@ import com.medic.ragingbull.core.constants.SystemConstants;
 import com.medic.ragingbull.exception.ResourceCreationException;
 import com.medic.ragingbull.exception.StorageException;
 import com.medic.ragingbull.jdbi.dao.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vamshi Molleti
@@ -47,6 +49,16 @@ public class PractitionerLocationService {
         this.practitionerLocationDao = practitionerLocationDao;
         this.practitionerDao = practitionerDao;
         this.transactionalDao = transactionalDao;
+    }
+    
+    public List<Map<String, Object>> getAllLocations() throws StorageException {
+        try {
+            List<Map<String, Object>> entityUsers = practitionerLocationDao.getAllByType();
+            return entityUsers;
+        } catch (Exception e) {
+            LOGGER.error(String.format("Error fetching a all practitioners Exception: %s", e));
+            throw new StorageException(String.format("Error fetching a all practitioners Exception: %s", e));
+        }
     }
 
     public PractitionerLocationResponse getPractitionerLocation(Session session, String locationId) throws StorageException {

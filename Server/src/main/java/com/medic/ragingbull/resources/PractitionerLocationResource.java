@@ -41,6 +41,15 @@ public class PractitionerLocationResource {
     public PractitionerLocationResource(PractitionerLocationAccessService practitionerLocationAccessService) {
         this.practitionerLocationAccessService = practitionerLocationAccessService;
     }
+    
+    @GET
+    public Response getPractitioners(@Auth Session session) throws StorageException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(String.format("Fetching all Locations in system. Request by: %s", session.getUserEmail()));
+        }
+        Response response = practitionerLocationAccessService.getAllLocations(session);
+        return response;
+    }
 
     @GET
     @Path("/{locationId}")

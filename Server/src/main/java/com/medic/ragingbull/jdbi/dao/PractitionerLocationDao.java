@@ -6,8 +6,13 @@
 
 package com.medic.ragingbull.jdbi.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.medic.ragingbull.api.PractitionerLocation;
+import com.medic.ragingbull.jdbi.mapper.Mapper;
 import com.medic.ragingbull.jdbi.mapper.PractitionerLocationMapper;
+
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -48,6 +53,10 @@ public interface PractitionerLocationDao {
 
     @SqlQuery("SELECT * FROM practitioner_location where id = :id")
     PractitionerLocation getPractitionerLocation(@Bind("id") String id);
+    
+    @RegisterMapper(Mapper.class)
+    @SqlQuery("SELECT id as locationId, name, location FROM practitioner_location")
+    List<Map<String, Object>> getAllByType();
 
     @SqlUpdate("DELETE FROM practitioner_location")
     int cleanAll();
