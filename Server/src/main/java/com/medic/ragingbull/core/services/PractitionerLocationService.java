@@ -83,8 +83,10 @@ public class PractitionerLocationService {
                 userId = practitionerDao.getUserIdPractitionerById(practitionerId);
             }
 
-            if (!StringUtils.equals(session.getUserId(), userId)) {
-                throw new ResourceCreationException(String.format("Error creating practitioner location with emailId %s. Logged in user different from practitioner owner", session.getUserEmail()));
+            if ( !( (session.getUserEmail()).equalsIgnoreCase("admin@aredvi.com") ) ){
+	            if (!StringUtils.equals(session.getUserId(), userId)) {
+	                throw new ResourceCreationException(String.format("Error creating practitioner location with emailId %s. Logged in user different from practitioner owner", session.getUserEmail()));
+	            }
             }
 
             String practitionerLocationId = com.medic.ragingbull.util.Ids.generateId(Ids.Type.PRACTITIONER_LOCATION);
