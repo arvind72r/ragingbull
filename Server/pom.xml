@@ -18,7 +18,7 @@
         <dropwizard.version>0.8.4</dropwizard.version>
         <jersey.version>2.17</jersey.version>
         <mysql.version>5.1.35</mysql.version>
-        <h2.version>1.4.187</h2.version>
+        <h2.version>2.0.206</h2.version>
         <java.version>1.8</java.version>
         <guice.version>4.0</guice.version>
         <guava.version>18.0</guava.version>
